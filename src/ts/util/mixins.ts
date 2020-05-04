@@ -9,3 +9,6 @@
     let result: number = (num.toString().includes('.')) ? (num.toString().split('.').pop().length) : (0);
     return  result
   }
+
+
+  export  {roundToMultiple, countsDecimalPlaces}

@@ -1,8 +1,7 @@
 {
   "name": "plugin-template",
   "version": "1.0.0",
-  "description": "template for plugins",
-  "main": "index.js",
+  "description": "RangeSlider",
   "scripts": {
     "dev": "cross-env NODE_ENV=development   webpack --mode development",
     "build": "cross-env NODE_ENV=production  webpack --mode production",

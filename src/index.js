@@ -2,5 +2,8 @@
 
 import './styles/style.styl'
 
-import './ts/main'
+import RangeSlider from './ts/main'
 
+// let slider = new RangeSlider('123', {})
+
+// console.log(slider)
