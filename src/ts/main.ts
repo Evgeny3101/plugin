@@ -15,6 +15,10 @@ export default class RangeSlider {
 
 let slider = new RangeSlider('js-rangeSlider', {
   value         : 18,
-  range         : false
+  range         : false,
+  minValue      : 0,
+  maxValue      : 100,
+  step          : 10,
+
 })
 
