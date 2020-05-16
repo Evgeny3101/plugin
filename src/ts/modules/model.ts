@@ -17,8 +17,8 @@ export default class Model {
   sliderValue: number[]
 
   constructor(dataset) {
-    this.minValue = dataset.minValue  ||  0
-    this.maxValue = dataset.maxValue  ||  100
+    this.minValue     =  dataset.minValue     ||  0
+    this.maxValue     =  dataset.maxValue     ||  100
 
     this.range        =  dataset.range        ||  false
     this.verticalPos  =  dataset.verticalPos  ||  false
@@ -29,15 +29,15 @@ export default class Model {
 
     // обработка введеных значений для sliderValue
     this.sliderValue =  [];
-    if(this.range === true) {
-      this.sliderValue[0] = Math.min.apply(null, dataset.value)
-      this.sliderValue[1] = Math.max.apply(null, dataset.value)
-    } else {
-      if(typeof dataset.value  === 'number') this.sliderValue[0] = dataset.value;
-      else if (typeof dataset.value  === 'object') this.sliderValue[0] = dataset.value[0];
-      else this.sliderValue[0] = 50
+
+    if(typeof dataset.value  === 'number' && this.range === false) {
+      this.setSliderValue([dataset.value])
     }
-    this.sliderValue = this.checkLimit(this.sliderValue)
+    else if(Array.isArray(dataset.value) === true) {
+      this.setSliderValue(dataset.value)
+    }
+    else this.setSliderValue([50])
+
   } // constructor
 
   // проверить значения по  min max
@@ -48,7 +48,6 @@ export default class Model {
       else if(item > this.maxValue)  result.push(this.maxValue)
       else result.push(item)
     }
-
     return result
   }
 
@@ -70,12 +69,14 @@ export default class Model {
   // установка значений sliderValue по лимитам и шагу
   setSliderValue(data: number[]) {
     let result: number[] = []
-    result.push(Math.min.apply(null, data))
-    result.push(Math.max.apply(null, data))
+    if(this.range === true) {
+      result.push(Math.min.apply(null, data))
+      result.push(Math.max.apply(null, data))
+    } else result = data
     result = this.checkLimit(result)
     result = this.putInStep(result, this.step)
 
-    return result
+    this.sliderValue = result
   }
 
 } // Model

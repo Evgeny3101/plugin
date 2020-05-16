@@ -1,6 +1,7 @@
 const path = require('path')
+const webpack = require('webpack')
 const HTMLWebpackPlugin = require('html-webpack-plugin')
-const {CleanWebpackPlugin} = require('clean-webpack-plugin')
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 const isProd = process.env.NODE_ENV === 'production'
@@ -15,15 +16,15 @@ module.exports = {
   },
 
   output: {
-    filename: '[name].js',
+    filename: '[name].[hash].js',
     path: path.resolve(__dirname, 'dist')
   },
 
   resolve: {
     extensions: ['.ts', '.js'],
     alias: {
-      '@modules' : path.resolve(__dirname, 'src/modules'),
-      '@' : path.resolve(__dirname, 'src'),
+      '@modules': path.resolve(__dirname, 'src/modules'),
+      '@': path.resolve(__dirname, 'src'),
     }
   },
 
@@ -32,7 +33,7 @@ module.exports = {
     rules: [
       {
         test: /\.css$/,
-        use:  [
+        use: [
           {
             loader: MiniCssExtractPlugin.loader,
             options: {
@@ -45,13 +46,13 @@ module.exports = {
           {
             loader: 'postcss-loader',
             options: {
-              config: {path: './postcss.config.js'}
+              config: { path: './postcss.config.js' }
             }
           },
         ]
-      },{
+      }, {
         test: /\.styl$/,
-        use:  [
+        use: [
           {
             loader: MiniCssExtractPlugin.loader,
             options: {
@@ -65,38 +66,24 @@ module.exports = {
           {
             loader: 'postcss-loader',
             options: {
-              config: {path: './postcss.config.js'}
+              config: { path: './postcss.config.js' }
             }
           },
           'stylus-loader'
         ]
-      },{
+      }, {
         test: /\.js$/,
         exclude: '/node_modules/',
-        loader: {
-          loader: 'babel-loader',
-          options: {
-            presets: [
-              '@babel/preset-env'
-            ],
-            plugins: [
-              '@babel/plugin-proposal-class-properties'
-            ]
-          }
-        }
-      },{
+        loader: 'babel-loader'
+      }, {
         test: /\.ts$/,
         exclude: '/node_modules/',
         loader: {
           loader: 'babel-loader',
           options: {
             presets: [
-              '@babel/preset-env',
               '@babel/preset-typescript'
             ],
-            plugins: [
-              '@babel/plugin-proposal-class-properties'
-            ]
           },
         }
       }
@@ -106,7 +93,6 @@ module.exports = {
   devtool: isStart ? 'source-map' : '',
 
   plugins: [
-    // работа с файлами HTML(pug)
     new HTMLWebpackPlugin({
       template: './index.html',
       // сжимать файл HTML
@@ -123,6 +109,11 @@ module.exports = {
       filename: '[name].css',
     }),
 
+    new webpack.ProvidePlugin({
+      $: 'jquery',
+      jQuery: 'jquery',
+      'window.jQuery': 'jquery'
+    })
   ],
 
   optimization: {

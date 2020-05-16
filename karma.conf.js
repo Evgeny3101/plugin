@@ -1,52 +1,49 @@
 const webpackConfig = require('./webpack.config');
+const webpack = require('webpack')
 
-module.exports = function(config) {
+module.exports = function (config) {
   config.set({
-    // base path that will be used to resolve all patterns (eg. files, exclude)
     basePath: '',
-    frameworks: ['jasmine'],
-    files: ['test/*.ts', 'test/*.js'],
-    exclude: [],
+    frameworks: ['jasmine-jquery', 'jasmine'],
 
-    // preprocess matching files before serving them to the browser
+    files: [
+      { pattern: 'src/**/*.ts' },
+      { pattern: 'test/**/*.spec.ts' },
+    ],
+
     preprocessors: {
-        'test/**/*.ts': ['webpack'],
-        'test/**/*.js': ['webpack'],
+      'src/**/*.ts': ['webpack', 'sourcemap'],
+      'test/**/*.ts': ['webpack', 'sourcemap']
     },
+
+    reporters: ['progress', 'coverage-istanbul'],
+
+    // coverageIstanbulReporter: {
+    //   reports: ['html', 'text-summary'],
+    //   dir: 'coverage/',
+    //   combineBrowserReports: true,
+    //   fixWebpackSourcePaths: true,
+    // },
+
     webpack: {
       module: webpackConfig.module,
       resolve: webpackConfig.resolve,
-      mode: 'development'
+      mode: 'development',
+      plugins: [
+        new webpack.ProvidePlugin({
+          $: 'jquery',
+          jQuery: 'jquery',
+          'window.jQuery': 'jquery'
+        })
+      ],
     },
 
-    // test results reporter to use
-    // possible values: 'dots', 'progress'
-    // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['spec'],
-
-    // web server port
     port: 9876,
-
-    // enable / disable colors in the output (reporters and logs)
     colors: true,
-
-    // level of logging
-    // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
     logLevel: config.LOG_INFO,
-
-    // enable / disable watching file and executing tests whenever any file changes
     autoWatch: true,
-
-    // start these browsers
-    // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
     browsers: ['Chrome'],
-
-    // Continuous Integration mode
-    // if true, Karma captures browsers, runs the tests and exits
     singleRun: false,
-
-    // Concurrency level
-    // how many browser should be started simultaneous
     concurrency: Infinity,
   });
 };
