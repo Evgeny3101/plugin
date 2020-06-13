@@ -1,8 +1,8 @@
-import Observable from './observable'
+import {Observable} from './observable'
 import {roundToMultiple, countsDecimalPlaces} from '../util/mixins'
 
 
-export default class Model {
+class Model {
   Observable = new Observable
   minValue: number
   maxValue: number
@@ -14,31 +14,40 @@ export default class Model {
   lable: boolean
 
   textField: number[]
-  sliderValue: number[]
+  value: number[]
 
-  constructor(dataset) {
-    this.minValue     =  dataset.minValue     ||  0
-    this.maxValue     =  dataset.maxValue     ||  100
+  constructor(data) {
+    this.value        = data.value        || [0]
+    this.minValue     = data.minValue     || 0
+    this.maxValue     = data.maxValue     || 100
+    this.step         = data.step         || 1
 
-    this.range        =  dataset.range        ||  false
-    this.verticalPos  =  dataset.verticalPos  ||  false
-    this.lable        =  dataset.lable        ||  false
+    this.range        = data.range        || false
+    this.verticalPos  = data.verticalPos  || false
+    this.lable        = data.lable        || false
 
-    // установка шага
-    this.setStep(dataset.step)
-
-    // обработка введеных значений для sliderValue
-    this.sliderValue =  [];
-
-    if(typeof dataset.value  === 'number' && this.range === false) {
-      this.setSliderValue([dataset.value])
-    }
-    else if(Array.isArray(dataset.value) === true) {
-      this.setSliderValue(dataset.value)
-    }
-    else this.setSliderValue([50])
+    // установка и расчет знаков после запятой
+    this.decimalPlaces = countsDecimalPlaces(this.step)
 
   } // constructor
+
+
+  dataset(data): void {
+    for(let key in data) {
+      this[key] = data[key]
+    }
+
+    // расчет знаков после запятой
+    this.decimalPlaces = countsDecimalPlaces(this.step)
+
+    // обработка введеных значений для слайдера
+    if(typeof this.value  === 'number' && this.range === false) {
+      this.setSliderValue([this.value])
+    }
+    if(this.range === false)  this.setSliderValue([this.value[0]])
+    else                      this.setSliderValue(this.value)
+
+  }
 
   // проверить значения по  min max
   checkLimit(data:number[]): number[] {
@@ -51,12 +60,6 @@ export default class Model {
     return result
   }
 
-  // установка нового step и перерасчет знаков после запятой
-  setStep(step: number) {
-    this.step          = step ||  1
-    this.decimalPlaces = countsDecimalPlaces(this.step)
-  }
-
   // выставляет на ближайший step
   putInStep(num: number[], step: number):number[] {
     let result: number[] = []
@@ -66,24 +69,21 @@ export default class Model {
     return result
   }
 
-  // установка значений sliderValue по лимитам и шагу
+  // установка значений value по лимитам и шагу
   setSliderValue(data: number[]) {
     let result: number[] = []
     if(this.range === true) {
       result.push(Math.min.apply(null, data))
       result.push(Math.max.apply(null, data))
-    } else result = data
+    }
+    else result = data
     result = this.checkLimit(result)
     result = this.putInStep(result, this.step)
 
-    this.sliderValue = result
+    this.value = result
   }
 
 } // Model
 
 
-
-
-
-
-
+export {Model}

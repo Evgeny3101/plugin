@@ -1,6 +1,6 @@
-import Observable from './observable'
+import {Observable} from './observable'
 
-export default class Controller {
+class Controller {
   // Observable = new Observable();
 
   constructor(model, view) {
@@ -14,3 +14,4 @@ export default class Controller {
 
 
 
+export {Controller}

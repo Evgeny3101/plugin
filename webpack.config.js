@@ -106,7 +106,7 @@ module.exports = {
 
     // извлекает css в отдельный файл
     new MiniCssExtractPlugin({
-      filename: '[name].css',
+      filename: '[name].[hash].css',
     }),
 
     new webpack.ProvidePlugin({
@@ -124,7 +124,6 @@ module.exports = {
 
   devServer: {
     port: 4420,
-    hot: isStart
   },
 
 

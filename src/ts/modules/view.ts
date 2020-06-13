@@ -1,7 +1,7 @@
-import Observable from './observable'
+import {Observable} from './observable'
 import '../util/mixins'
 
-export default class View {
+class View {
   Observable = new Observable();
   elemDOM: Element
   rangeDOM: Element
@@ -25,3 +25,4 @@ export default class View {
 
 
 
+export {View}

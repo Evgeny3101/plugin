@@ -1,14 +1,14 @@
-import myPlugin from '../../src/ts/main';
+import {RangeSlider} from '../../src/ts/main';
 
 setFixtures('<div class="js-plugin"></div>')
-let jsPlugin = new myPlugin('.js-plugin', {})
+let newSlider = new RangeSlider('.js-plugin', {})
 
 // beforeEach(() => {
 // })
 
 describe('testing Controller', () => {
   it('fixtures', () => {
-    expect(jsPlugin.controller).toBeDefined();
+    expect(newSlider.controller).toBeDefined();
   });
 
 })

@@ -1,8 +1,8 @@
-import Model from './modules/model'
-import View from './modules/view'
-import Controller from './modules/controller'
+import {Model} from './modules/model'
+import {View} from './modules/view'
+import {Controller} from './modules/controller'
 
-export default class RangeSlider {
+class RangeSlider {
   [x: string]: any;
 
   constructor(id: string, dataset: {}) {
@@ -12,3 +12,4 @@ export default class RangeSlider {
   }
 }
 
+export {RangeSlider}
