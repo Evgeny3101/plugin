@@ -1,28 +1,23 @@
-import {Observable} from './observable'
 import '../util/mixins'
+import {Observable} from '../util/observable'
+import {Range} from "./view/range"
+import {Button} from "./view/button"
+
 
 class View {
   Observable = new Observable();
-  elemDOM: Element
-  rangeDOM: Element
-  btnDOM: Element
+  mainDOM: Element
+  range: Range
+  button: Button[] = []
+  size: number
 
   constructor(id: string) {
-    this.elemDOM = document.querySelector(id)
-
-    this.rangeDOM = document.createElement('div');
-    this.rangeDOM.className = 'range-slider';
-    this.elemDOM.appendChild(this.rangeDOM);
-    this.btnDOM = document.createElement('button');
-    this.btnDOM.className = 'range-btn';
-    this.rangeDOM.appendChild(this.btnDOM);
-
+    this.mainDOM   =  document.querySelector(id)
+    this.range     =  new Range(this.mainDOM)
+    this.button[0] =  new Button(this.range.DOM)
   }
 
-
 }
-
-
 
 
 export {View}

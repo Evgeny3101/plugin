@@ -1,4 +1,4 @@
-import {Observable} from './observable'
+import {Observable} from '../util/observable'
 import {roundToMultiple, countsDecimalPlaces} from '../util/mixins'
 
 

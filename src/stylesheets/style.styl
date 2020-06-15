@@ -29,18 +29,18 @@ body
 
 .range-btn
   position          : absolute;
-  top               : -1px;
+  top               : 50%;
+  transform         : translateY(-50%);
 
-  width             : 18px;
-  height            : 18px;
-  z-index           : 1;
+  width             : 14px;
+  height            : 14px;
 
   border            : 2px solid #fffccc;
   border-radius     : 100%;
   background        : rgb(167, 169, 180);
 
   cursor            : pointer;
-
+  transition        : all
 
 // .vertical
 //   height            : 100%
@@ -52,3 +52,4 @@ body
 //   width             : 100%
 //   max-width         : 600px
 //   min-width         : 200px
+
