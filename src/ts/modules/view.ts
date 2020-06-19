@@ -11,6 +11,7 @@ class View {
   button: Button[] = []
   size: number
   textFieldDOM: HTMLInputElement[] = [];
+  stepSize: number;
 
   constructor(id: string) {
     this.mainDOM   =  document.querySelector(id)
@@ -18,10 +19,38 @@ class View {
     this.button[0] =  new Button(this.range.DOM)
   }
 
+  // для преобразования значений в координаты
+  convertValues(data) {
+    let btn = this.button[0]
+    let rangeInPx = this.range.DOM['clientWidth'] - btn.DOM['offsetWidth'];
+    let valueRange = Math.abs(data.maxValue - data.minValue)
+    this.stepSize = rangeInPx / valueRange
+
+    btn.coord = this.stepSize * (data.value[0] + Math.abs(data.minValue))
+    btn.toPosition()
+  }
+
+  // обновление координат
+  updateCoords(data) {
+    if(data.range === true) {
+      for(let i = 0; i < data.value.length; i++) {
+        let btn = this.button[i]
+        btn.coord = this.stepSize * (data.value[i] + Math.abs(data.minValue))
+        btn.toPosition()
+      }
+    }
+
+    else {
+      let btn = this.button[0]
+      btn.coord = this.stepSize * (data.value[0] + Math.abs(data.minValue))
+      btn.toPosition()
+    }
+  }
+
+
   setTextField(field: string[], value: number[]) {
     for(let i = 0; i < field.length; i++) {
       this.textFieldDOM[i] = document.querySelector(field[i]);
-      if(this.textFieldDOM[i] === null) console.log('textFieldDOM is null, field not found')
     }
     this.updateTextField(value)
   }
@@ -31,8 +60,6 @@ class View {
       this.textFieldDOM[i].value = String(value[i])
     }
   }
-
-
 
 }
 

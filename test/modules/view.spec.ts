@@ -43,11 +43,8 @@ describe('View testing', () => {
     newSlider.view.updateTextField([21])
     expect(newSlider.view.textFieldDOM[0].value).toBe('21');
   });
-})
-
 ////////////////////button////////////////////////
 
-describe('Button testing', () => {
 
   it('move method defined', () => {
     let btn = view.button[0]

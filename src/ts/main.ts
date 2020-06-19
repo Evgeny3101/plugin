@@ -14,7 +14,14 @@ class RangeSlider {
   dataset(data?): void {
     this.model.dataset(data)
     this.view.setTextField(this.model.textField, this.model.value)
+    this.view.convertValues({
+      minValue  : this.model.minValue,
+      maxValue  : this.model.maxValue,
+      value     : this.model.value
+    })
   }
+
+
 
 }
 

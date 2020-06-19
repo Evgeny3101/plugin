@@ -17,7 +17,7 @@ class Model {
   value: number[]
 
   constructor(data) {
-    this.value       =  [0]
+    this.value       =  [0,0]
     this.minValue    =  0
     this.maxValue    =  100
     this.step        =  1
@@ -26,7 +26,7 @@ class Model {
     this.verticalPos =  false
     this.lable       =  false
 
-    this.textField   =  []
+    this.textField   =  ['.text-field', 'text-field2']
 
     this.dataset(data)
   } // constructor
@@ -81,6 +81,21 @@ class Model {
     result = this.putInStep(result, this.step)
 
     this.value = result
+  }
+
+  // для преобразования координат в значения
+  convertCoords(data){
+    let newValue = roundToMultiple((data.coord / data.stepSize), this.step) + this.minValue;
+
+    if(this.range === true) {
+      if(this.value[0] >= newValue) this.value[0] = newValue
+      else this.value[1] = newValue
+    }
+    else this.value[0] = newValue
+
+    this.Observable.notify({
+      value     : this.value,
+    })
   }
 
 } // Model

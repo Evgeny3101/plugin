@@ -1,6 +1,8 @@
 import {elemDOM} from "./elemDOM"
+import {Observable} from '../../util/observable'
 
 class Button extends elemDOM {
+  Observable = new Observable();
 
   constructor(id: Element){
     super(id, 'div', 'range-btn')
@@ -22,13 +24,20 @@ class Button extends elemDOM {
       if (coords < 0) coords =  0;
       if (coords > rangeSize) coords =  rangeSize;
 
-      btn.style['left'] = coords + 'px'
+      this.coord = coords
+
+      this.Observable.notify({
+        coord     : this.coord,
+      })
     }
 
     document.onmouseup  = () =>  {
       document.onmousemove = document.onmouseup = null;
     }
+  }
 
+  toPosition() {
+    this.DOM.style['left'] = this.coord + 'px'
   }
 
 } // class
