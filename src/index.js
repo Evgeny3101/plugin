@@ -1,18 +1,20 @@
 import './stylesheets/style.styl'
 
+
 import {RangeSlider} from './ts/main'
 
-
-let rangeSlider = new RangeSlider('.rangeSlider1', {})
-
-rangeSlider.model.dataset({
-  value: [20, 22],
-  range: true,
-  minValue: 10
+let newSlider = new RangeSlider('.rangeSlider1', {
+  textField : ['.text-field', '.text-field2']
 })
 
-rangeSlider.model.dataset({
-  value: 22,
-  range: false,
-  minValue: 30
+
+
+newSlider.dataset({
+  value: 22
 })
+
+newSlider.view.updateTextField([33,22])
+
+
+
+console.log(newSlider)

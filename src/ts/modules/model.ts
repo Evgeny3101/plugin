@@ -13,22 +13,22 @@ class Model {
   verticalPos: boolean
   lable: boolean
 
-  textField: number[]
+  textField: string[]
   value: number[]
 
   constructor(data) {
-    this.value        = data.value        || [0]
-    this.minValue     = data.minValue     || 0
-    this.maxValue     = data.maxValue     || 100
-    this.step         = data.step         || 1
+    this.value       =  [0]
+    this.minValue    =  0
+    this.maxValue    =  100
+    this.step        =  1
 
-    this.range        = data.range        || false
-    this.verticalPos  = data.verticalPos  || false
-    this.lable        = data.lable        || false
+    this.range       =  false
+    this.verticalPos =  false
+    this.lable       =  false
 
-    // установка и расчет знаков после запятой
-    this.decimalPlaces = countsDecimalPlaces(this.step)
+    this.textField   =  []
 
+    this.dataset(data)
   } // constructor
 
 

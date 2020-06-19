@@ -5,46 +5,30 @@ let newSlider = new RangeSlider('.js-plugin', {})
 let model = newSlider.model
 
 
-
 beforeEach(() => {
   model.dataset({
     value : 10,
     range : false,
     minValue : -100,
-    maxValue : 200
+    maxValue : 200,
+    textField : '.text-field'
   })
 })
 
 
-describe('testing Model', () => {
-  it('minValue set', () => {
-    expect(model).toBeDefined();
+describe('Model testing', () => {
+  it('положить  15, в массив чисел value при range = false', () => {
     model.dataset({
-      minValue : -200,
-    })
-  });
-});
-
-
-describe('testing Model', () => {
-  it('fixtures', () => {
-    expect(model).toBeDefined();
-  });
-
-  it('положить  15, в массив чисел sliderValue при range = false', () => {
-    model.dataset({
-      value : 15
+      value : 15,
+      range : false
     })
 
     expect(model.value).toBeDefined()
     expect(model.value).toEqual([15])
-  })
 
-  it('положить [15], в массив чисел value при range = false', () => {
     model.dataset({
       value : [15]
     })
-    expect(model.value).toBeDefined()
     expect(model.value).toEqual([15])
   })
 
@@ -68,6 +52,14 @@ describe('testing Model', () => {
     expect(model.maxValue).toEqual(90)
   })
 
+  it('положить ".text-field" в textField', () => {
+    model.dataset({
+      textField : ['.text-field']
+    })
+    expect(model.textField).toEqual(['.text-field']);
+  });
+
+
   it('проверка метода checkLimit', () => {
     model.dataset({
       minValue : 0,
@@ -85,8 +77,6 @@ describe('testing Model', () => {
   })
 
   it('выставление на ближайший step, метод putInStep', () => {
-    expect(model.putInStep(model.value, model.step)).toEqual([10])
-
     model.value = [-20.12, 80.54]
     expect(model.putInStep(model.value, model.step)).toEqual([-20, 81])
   })
@@ -107,7 +97,6 @@ describe('testing Model', () => {
     })
     model.setSliderValue([1929, -72.231])
     expect(model.value).toEqual([-50, 100])
-
   })
 })
 

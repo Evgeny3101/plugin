@@ -1,30 +1,53 @@
 import {RangeSlider} from '../../src/ts/main';
 
-setFixtures('<div class="js-plugin"></div>')
-let newSlider = new RangeSlider('.js-plugin', {})
+setFixtures('<div class="js-plugin"></div><input class="text-field"></input><input class="text-field2"></input>')
+let newSlider = new RangeSlider('.js-plugin', {
+  value     : [20],
+  textField : ['.text-field']
+})
 let view = newSlider.view
 
 
-// beforeEach(() => {
-// })
+describe('View testing', () => {
 
-describe('testing View', () => {
+  beforeEach(() => {
+    setFixtures('<div class="js-plugin"></div><input class="text-field"></input><input class="text-field2"></input>')
+    newSlider.dataset({
+      value     : [20,22],
+      textField : ['.text-field', '.text-field2']
+    })
+  })
 
-  it('fixtures', () => {
-    expect(newSlider.view).toBeDefined();
+  it('elements DOM defined', () => {
+    expect(view.range.DOM).toBeDefined();
+    expect(view.button[0].DOM).toBeDefined();
+    expect(view.textFieldDOM[0]).toBeDefined()
+  })
+
+////////////////////textField////////////////////////
+
+  it('установка textFieldDOM', () => {
+    view.setTextField(['.text-field'], [223])
+    expect(view.textFieldDOM[0]).toHaveClass('text-field');
   });
 
 
-  it('elements DOM defined', () => {
-    expect(view.range).toBeDefined();
-    expect(view.button).toBeDefined();
-  })
+  it('установка value в textFieldDOM', () => {
+    newSlider.view.setTextField(['.text-field'], [123])
+    expect(newSlider.view.textFieldDOM[0].value).toBe('123');
 
+    newSlider.view.setTextField(['.text-field', '.text-field2'], [121, 33])
+    expect(newSlider.view.textFieldDOM[0].value).toBe('121');
+    expect(newSlider.view.textFieldDOM[1].value).toBe('33');
+
+    newSlider.view.updateTextField([21])
+    expect(newSlider.view.textFieldDOM[0].value).toBe('21');
+  });
 })
 
-///////////////////////////////////////
+////////////////////button////////////////////////
 
-describe('testing button', () => {
+describe('Button testing', () => {
 
   it('move method defined', () => {
     let btn = view.button[0]
@@ -98,3 +121,4 @@ describe('testing button', () => {
   })
 
 })
+
