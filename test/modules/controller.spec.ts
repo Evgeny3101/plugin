@@ -8,6 +8,11 @@ let newSlider = new RangeSlider('.js-plugin', {
   textField : ['.text-field']
 })
 
+describe('Controller testing', () => {
 
+  beforeEach(() => {
+    setFixtures('<div class="js-plugin"></div><input class="text-field"></input><input class="text-field2"></input>')
+  })
+})
 
 

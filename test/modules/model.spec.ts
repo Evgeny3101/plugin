@@ -60,6 +60,22 @@ describe('Model testing', () => {
   });
 
 
+  // it('преобразовать координаты в число и положить в value', () => {
+  //   newSlider.model.dataset({
+  //     value     : [22, 55],
+  //     range     : true,
+  //     textField : ['.text-field', '.text-field2'],
+  //   })
+
+  //   newSlider.model.convertCoords({
+  //     coord   : 20,
+  //     stepSize: 1,
+  //     id      : 0
+  //   })
+  // });
+
+
+
   it('проверка метода checkLimit', () => {
     model.dataset({
       minValue : 0,

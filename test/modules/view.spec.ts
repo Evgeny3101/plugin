@@ -24,6 +24,29 @@ describe('View testing', () => {
     expect(view.textFieldDOM[0]).toBeDefined()
   })
 
+
+  // it('преобразовать числа в координаты', () => {
+  //   newSlider.dataset({
+  //     value     : [22, 55],
+  //     range     : true,
+  //     minValue  : 0,
+  //     textField : ['.text-field', '.text-field2']
+  //   })
+
+  //   newSlider.view.updateCoords({
+  //     value     : [23, 53],
+  //     range     : true,
+  //     minValue  : 0
+  //   })
+
+  //   newSlider.view.updateCoords({
+  //     value     : [47],
+  //     range     : false,
+  //     minValue  : 0
+  //   })
+  // });
+
+
 ////////////////////textField////////////////////////
 
   it('установка textFieldDOM', () => {
@@ -33,10 +56,12 @@ describe('View testing', () => {
 
 
   it('установка value в textFieldDOM', () => {
-    newSlider.view.setTextField(['.text-field'], [123])
+    newSlider.view.setTextField(['.text-field'])
+    newSlider.view.updateTextField([123])
     expect(newSlider.view.textFieldDOM[0].value).toBe('123');
 
-    newSlider.view.setTextField(['.text-field', '.text-field2'], [121, 33])
+    newSlider.view.setTextField(['.text-field', '.text-field2'])
+    newSlider.view.updateTextField([121, 33])
     expect(newSlider.view.textFieldDOM[0].value).toBe('121');
     expect(newSlider.view.textFieldDOM[1].value).toBe('33');
 
@@ -55,17 +80,6 @@ describe('View testing', () => {
     expect(btn.move).toHaveBeenCalled();
   })
 
-
-  it('"mousedown" event is triggered', () => {
-    let elem = view.button[0].DOM;
-    let spyEvent = spyOnEvent(elem, 'mousedown');
-
-    let event = new MouseEvent("mousedown")
-    elem.dispatchEvent(event)
-
-    expect('mousedown').toHaveBeenTriggeredOn(elem)
-    expect(spyEvent).toHaveBeenTriggered()
-  })
 
 
   it('"mousemove" event is triggered', () => {

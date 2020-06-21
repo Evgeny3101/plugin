@@ -86,10 +86,11 @@ class Model {
   // для преобразования координат в значения
   convertCoords(data){
     let newValue = roundToMultiple((data.coord / data.stepSize), this.step) + this.minValue;
+    let newArrValue = this.value
 
     if(this.range === true) {
-      if(this.value[0] >= newValue) this.value[0] = newValue
-      else this.value[1] = newValue
+      newArrValue[data.id] = newValue
+      this.setSliderValue(newArrValue)
     }
     else this.value[0] = newValue
 

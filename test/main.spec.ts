@@ -10,7 +10,7 @@ let newSlider = new RangeSlider('.js-plugin', {
 
 
 
-describe('App testing', () => {
+describe('Api testing', () => {
 
   beforeEach(() => {
     setFixtures('<div class="js-plugin"></div><input class="text-field"></input><input class="text-field2"></input>')
@@ -19,9 +19,17 @@ describe('App testing', () => {
   it('проверка метода dataset', () => {
     newSlider.dataset({
       value: 25,
+      range: false,
       textField : ['.text-field'],
     })
     expect(newSlider.model.value).toEqual([25]);
+  })
+
+
+  it('проверка метода resize', () => {
+    newSlider.model.value[0] = 15
+    newSlider.resize()
+    expect(newSlider.view.textFieldDOM[0].value).toEqual('15');
   })
 })
 

@@ -28,12 +28,15 @@ class Button extends elemDOM {
 
       this.Observable.notify({
         coord     : this.coord,
+        elem      : this
       })
     }
 
     document.onmouseup  = () =>  {
       document.onmousemove = document.onmouseup = null;
     }
+
+    return
   }
 
   toPosition() {

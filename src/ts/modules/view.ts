@@ -16,18 +16,27 @@ class View {
   constructor(id: string) {
     this.mainDOM   =  document.querySelector(id)
     this.range     =  new Range(this.mainDOM)
-    this.button[0] =  new Button(this.range.DOM)
+  }
+
+  setBtn(data) {
+    this.range.DOM.innerHTML = ''
+    this.button = []
+    for(let i = 0; i <= Number(data.range); i++){
+      this.button[i] =  new Button(this.range.DOM)
+    }
   }
 
   // для преобразования значений в координаты
   convertValues(data) {
-    let btn = this.button[0]
-    let rangeInPx = this.range.DOM['clientWidth'] - btn.DOM['offsetWidth'];
-    let valueRange = Math.abs(data.maxValue - data.minValue)
-    this.stepSize = rangeInPx / valueRange
+    for(let i = 0; i < this.button.length; i++) {
+      let btn = this.button[i]
+      let rangeInPx = this.range.DOM['clientWidth'] - btn.DOM['offsetWidth'];
+      let valueRange = Math.abs(data.maxValue - data.minValue)
+      this.stepSize = rangeInPx / valueRange
 
-    btn.coord = this.stepSize * (data.value[0] + Math.abs(data.minValue))
-    btn.toPosition()
+      btn.coord = this.stepSize * (data.value[i] + Math.abs(data.minValue))
+      btn.toPosition()
+    }
   }
 
   // обновление координат
@@ -45,14 +54,14 @@ class View {
       btn.coord = this.stepSize * (data.value[0] + Math.abs(data.minValue))
       btn.toPosition()
     }
+
   }
 
 
-  setTextField(field: string[], value: number[]) {
+  setTextField(field: string[]) {
     for(let i = 0; i < field.length; i++) {
       this.textFieldDOM[i] = document.querySelector(field[i]);
     }
-    this.updateTextField(value)
   }
 
   updateTextField(value: number[]) {
