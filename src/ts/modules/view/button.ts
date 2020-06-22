@@ -25,6 +25,7 @@ class Button extends elemDOM {
       if (coords > rangeSize) coords =  rangeSize;
 
       this.coord = coords
+      this.toPosition()
 
       this.Observable.notify({
         coord     : this.coord,
@@ -33,6 +34,7 @@ class Button extends elemDOM {
     }
 
     document.onmouseup  = () =>  {
+      this.toPosition()
       document.onmousemove = document.onmouseup = null;
     }
 

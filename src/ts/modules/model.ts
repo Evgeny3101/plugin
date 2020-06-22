@@ -85,7 +85,7 @@ class Model {
 
   // для преобразования координат в значения
   convertCoords(data){
-    let newValue = roundToMultiple((data.coord / data.stepSize), this.step) + this.minValue;
+    let newValue = roundToMultiple((data.coord / data.step), this.step) + this.minValue;
     let newArrValue = this.value
 
     if(this.range === true) {

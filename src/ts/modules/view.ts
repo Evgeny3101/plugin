@@ -11,7 +11,7 @@ class View {
   button: Button[] = []
   size: number
   textFieldDOM: HTMLInputElement[] = [];
-  stepSize: number;
+  step: number;
 
   constructor(id: string) {
     this.mainDOM   =  document.querySelector(id)
@@ -32,9 +32,9 @@ class View {
       let btn = this.button[i]
       let rangeInPx = this.range.DOM['clientWidth'] - btn.DOM['offsetWidth'];
       let valueRange = Math.abs(data.maxValue - data.minValue)
-      this.stepSize = rangeInPx / valueRange
+      this.step = rangeInPx / valueRange
 
-      btn.coord = this.stepSize * (data.value[i] + Math.abs(data.minValue))
+      btn.coord = this.step  * (data.value[i] + Math.abs(data.minValue))
       btn.toPosition()
     }
   }
@@ -43,16 +43,13 @@ class View {
   updateCoords(data) {
     if(data.range === true) {
       for(let i = 0; i < data.value.length; i++) {
-        let btn = this.button[i]
-        btn.coord = this.stepSize * (data.value[i] + Math.abs(data.minValue))
-        btn.toPosition()
+        this.button[i].coord = this.step  * (data.value[i] + Math.abs(data.minValue))
+        this.button[i].toPosition()
       }
     }
 
     else {
-      let btn = this.button[0]
-      btn.coord = this.stepSize * (data.value[0] + Math.abs(data.minValue))
-      btn.toPosition()
+      this.button[0].coord = this.step * (data.value[0] + Math.abs(data.minValue))
     }
 
   }

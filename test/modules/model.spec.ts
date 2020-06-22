@@ -1,6 +1,7 @@
 import {RangeSlider} from '../../src/ts/main';
 
 setFixtures('<div class="js-plugin"></div><input class="text-field"></input><input class="text-field2"></input>')
+
 let newSlider = new RangeSlider('.js-plugin', {})
 let model = newSlider.model
 
@@ -11,7 +12,7 @@ beforeEach(() => {
     range : false,
     minValue : -100,
     maxValue : 200,
-    textField : '.text-field'
+    textField : ['.text-field', '.text-field2']
   })
 })
 
@@ -69,7 +70,7 @@ describe('Model testing', () => {
 
   //   newSlider.model.convertCoords({
   //     coord   : 20,
-  //     stepSize: 1,
+  //     step    : 1,
   //     id      : 0
   //   })
   // });

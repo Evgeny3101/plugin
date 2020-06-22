@@ -4,8 +4,6 @@ class Controller {
   Observable = new Observable();
 
   constructor(model, view) {
-    let self = this
-
     // установка значений в полях и кнопок по координатам
     view.setTextField(model.textField, model.value)
     this.setBtn(model, view)
@@ -25,8 +23,17 @@ class Controller {
 
   //// установка слушателей
   init(model, view) {
+    // перемещение бегунка
     for(let elem of view.button) {
       elem.DOM.addEventListener('mousedown',  elem.move.bind(elem))
+    }
+    // установка значений в input
+    for(let i = 0; i < view.textFieldDOM.length; i++) {
+      if(view.textFieldDOM[i]) {
+        setTimeout( (() => {
+          view.textFieldDOM[i].addEventListener('keyup', () => this.toInputValues(model, view, i) )
+        }), 250)
+      }
     }
   }
 
@@ -46,16 +53,31 @@ class Controller {
       range : model.range
     })
 
-    // установка слушателей
+    // установка слушателейтзь
     this.init(model, view)
     // подписка на кнопки (здесь, чтобы работать при вызове api.dataset ())
     for(let elem of view.button) {
       elem.Observable.subscribe(function (data) {
-        data.stepSize = view.stepSize
+        data.step = view.step
         data.id = view.button.indexOf(data.elem)
         model.convertCoords(data)
       })
     }
+  }
+
+  // установка значений в input
+  toInputValues(model, view, id) {
+    let newValue = [Number(view.textFieldDOM[id].value) || 0]
+    newValue = model.checkLimit(newValue)
+    newValue = model.putInStep(newValue, model.step)
+
+    if(model.range === true) {
+      let newArrValue = model.value
+      newArrValue[id] = newValue[0]
+      model.setSliderValue(newArrValue)
+    } else model.value = newValue
+
+    this.update(model, view)
   }
 }
 

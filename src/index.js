@@ -13,19 +13,9 @@ let newSlider = new RangeSlider('.rangeSlider1', {
 
 newSlider.dataset({
   value: [-23, 42],
-  range: true
+  range: true,
+  step      : 2,
+  maxValue  : 100
 })
 
 
-newSlider.model.convertCoords({
-  coord   : 20,
-  stepSize: 1,
-  id      : 0,
-})
-
-
-newSlider.view.updateCoords({
-  value     : [47],
-  range     : false,
-  minValue  : 0
-})
