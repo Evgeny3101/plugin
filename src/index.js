@@ -5,7 +5,7 @@ import {RangeSlider} from './ts/main'
 
 let newSlider = new RangeSlider('.rangeSlider1', {
   textField : ['.text-field', '.text-field2'],
-  range     : true,
+  range     : false,
   value     : [-22, 33],
   minValue  : -100
 })

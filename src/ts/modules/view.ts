@@ -2,28 +2,45 @@ import '../util/mixins'
 import {Observable} from '../util/observable'
 import {Range} from './view/range'
 import {Button} from './view/button'
+import {Interval} from './view/interval'
 
 
 class View {
-  Observable = new Observable();
+  Observable = new Observable()
   mainDOM: Element
   range: Range
   button: Button[] = []
+  interval: Interval
   size: number
-  textFieldDOM: HTMLInputElement[] = [];
-  step: number;
+  textFieldDOM: HTMLInputElement[] = []
+  step: number
 
   constructor(id: string) {
     this.mainDOM   =  document.querySelector(id)
     this.range     =  new Range(this.mainDOM)
   }
 
+  // создание кнопок
   setBtn(data) {
     this.range.DOM.innerHTML = ''
     this.button = []
     for(let i = 0; i <= Number(data.range); i++){
       this.button[i] =  new Button(this.range.DOM)
     }
+  }
+
+  // создание интервала между кнопками
+  setInterval() {
+    this.interval = new Interval(this.range.DOM)
+  }
+
+
+  // обновить позиции интервала
+  updateInterval() {
+    this.interval.toPosition({
+      btnsCoord : [this.button[0].coord, this.button[1].coord],
+      btnSize   : this.button[0].DOM.offsetWidth
+    })
   }
 
   // для преобразования значений в координаты
@@ -44,8 +61,13 @@ class View {
     if(data.range === true) {
       for(let i = 0; i < data.value.length; i++) {
         this.button[i].coord = this.step  * (data.value[i] + Math.abs(data.minValue))
+
         this.button[i].toPosition()
       }
+      this.interval.toPosition({
+        btnsCoord : [this.button[0].coord, this.button[1].coord],
+        btnSize   : this.button[0].DOM.offsetWidth
+      })
     }
 
     else {

@@ -61,10 +61,12 @@ class Model {
   }
 
   // выставляет на ближайший step
-  putInStep(num: number[], step: number):number[] {
+  putInStep(num: number[]):number[] {
     let result: number[] = []
     for(let item of num) {
-      result.push(roundToMultiple(item, step))
+      let value = roundToMultiple(item, this.step)
+      value = Number(value.toFixed(this.decimalPlaces))
+      result.push(value)
     }
     return result
   }
@@ -78,7 +80,7 @@ class Model {
     }
     else result = data
     result = this.checkLimit(result)
-    result = this.putInStep(result, this.step)
+    result = this.putInStep(result)
 
     this.value = result
   }
