@@ -45,15 +45,19 @@ class Controller {
       maxValue  : model.maxValue,
       value     : model.value
     })
+    // установка интервала по координатам
+    if(model.range) view.updateInterval()
   }
 
-  // установка кнопок
   setBtn(model, view) {
+    // установка  кнопок
     view.setBtn({
       range : model.range
     })
+    // установка  интервала
+    if(model.range) view.setInterval()
 
-    // установка слушателейтзь
+    // установка слушателей
     this.init(model, view)
     // подписка на кнопки (здесь, чтобы работать при вызове api.dataset ())
     for(let elem of view.button) {

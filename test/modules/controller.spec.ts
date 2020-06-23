@@ -9,7 +9,7 @@ let newSlider = new RangeSlider('.js-plugin', {
   textField : ['.text-field', '.text-field2']
 })
 
-describe('Controller testing', () => {
+describe('Controller testing.', () => {
 
   beforeEach(() => {
     setFixtures('<div class="js-plugin"></div><input class="text-field"></input><input class="text-field2"></input>')
@@ -18,6 +18,7 @@ describe('Controller testing', () => {
   it('input[0] содержит "22", input[1] содержит "50"', () => {
     newSlider.dataset({
       value     : [20, 28],
+      range     : true
     })
     newSlider.view.textFieldDOM[0].value = 22
     newSlider.controller.toInputValues(newSlider.model, newSlider.view, 0)

@@ -1,4 +1,4 @@
-import {elemDOM} from "./elemDOM"
+import {elemDOM} from './elemDOM'
 import {Observable} from '../../util/observable'
 
 class Button extends elemDOM {

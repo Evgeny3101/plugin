@@ -5,16 +5,16 @@ import {RangeSlider} from './ts/main'
 
 let newSlider = new RangeSlider('.rangeSlider1', {
   textField : ['.text-field', '.text-field2'],
-  range: true,
-  value: [22, 33],
-  minValue: -100
+  range     : true,
+  value     : [-22, 33],
+  minValue  : -100
 })
 
 
 newSlider.dataset({
-  value: [-23, 42],
-  range: true,
-  step      : 2,
+  value     : [-23, 42],
+  range     : true,
+  step      : 0.2,
   maxValue  : 100
 })
 
