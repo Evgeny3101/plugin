@@ -2,9 +2,11 @@ import {elemDOM} from './elemDOM'
 
 
 class Interval extends elemDOM {
+  pos: any
 
-  constructor(id: Element){
-    super(id, 'div', 'range-interval')
+  constructor(id: Element, pos){
+    super(id, 'div', 'js-range-interval')
+    this.pos = pos
 
   } // constructor
 
@@ -17,8 +19,8 @@ class Interval extends elemDOM {
     let end   =  Math.max.apply(null, btnsCoord)
     let size  =  end - begin
 
-    this.DOM.style['left'] =  begin + (data.btnSize / 2) +  'px'
-    this.DOM.style['width'] =  size  +  'px'
+    this.DOM.style[this.pos.offset] =  begin + (data.btnSize / 2) +  'px'
+    this.DOM.style[this.pos.size] =  size  +  'px'
   }
 
 

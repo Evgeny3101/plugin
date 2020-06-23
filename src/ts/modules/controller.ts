@@ -5,6 +5,7 @@ class Controller {
 
   constructor(model, view) {
     // установка значений в полях и кнопок по координатам
+    view.setValuesPosition(model.vertical)
     view.setTextField(model.textField, model.value)
     this.setBtn(model, view)
     this.update(model, view)

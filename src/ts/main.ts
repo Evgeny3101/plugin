@@ -17,6 +17,7 @@ class RangeSlider {
 
   dataset(data?): void {
     this.model.dataset(data)
+    this.view.setValuesPosition(this.model.vertical)
     this.controller.setBtn(this.model, this.view)
     this.view.setTextField(this.model.textField, this.model.value)
     this.controller.update(this.model, this.view)

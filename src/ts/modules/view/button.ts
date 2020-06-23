@@ -3,22 +3,22 @@ import {Observable} from '../../util/observable'
 
 class Button extends elemDOM {
   Observable = new Observable();
+  pos: any;
 
-  constructor(id: Element){
-    super(id, 'div', 'range-btn')
-
+  constructor(id: Element, pos){
+    super(id, 'div', 'js-range-btn')
+    this.pos = pos
   } // constructor
 
   move(evt) {
     const btn = evt.target;
     const parent = evt.path[1];
-
-    const baseShift  =  evt['pageX'];
-    const rangeShift =  btn['offsetLeft']
-    const rangeSize  =  parent['clientWidth'] - btn['offsetWidth'];
+    const baseShift  =  evt[this.pos.page];
+    const rangeShift =  btn[this.pos.offsetFrom]
+    const rangeSize  =  parent[this.pos.clientSize] - btn[this.pos.offsetSize];
 
     document.onmousemove  = (evt) => {
-      let coords =  rangeShift - (baseShift - event['pageX'])
+      let coords =  rangeShift - (baseShift - event[this.pos.page])
 
       // limit coords
       if (coords < 0) coords =  0;
@@ -42,7 +42,7 @@ class Button extends elemDOM {
   }
 
   toPosition() {
-    this.DOM.style['left'] = this.coord + 'px'
+    this.DOM.style[this.pos.offset] = this.coord + 'px'
   }
 
 } // class

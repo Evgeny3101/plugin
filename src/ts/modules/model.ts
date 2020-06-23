@@ -10,7 +10,7 @@ class Model {
   decimalPlaces: number
 
   range: boolean
-  verticalPos: boolean
+  vertical: boolean
   lable: boolean
 
   textField: string[]
@@ -23,7 +23,7 @@ class Model {
     this.step        =  1
 
     this.range       =  false
-    this.verticalPos =  false
+    this.vertical    =  false
     this.lable       =  false
 
     this.textField   =  ['.text-field', 'text-field2']
@@ -60,7 +60,7 @@ class Model {
     return result
   }
 
-  // выставляет на ближайший step
+  // выставляет на ближайший step и обрезает знаки после запятой
   putInStep(num: number[]):number[] {
     let result: number[] = []
     for(let item of num) {
