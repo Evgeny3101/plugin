@@ -105,14 +105,14 @@ describe('Model testing', () => {
       maxValue : 100,
       range    : true
     })
-    model.setSliderValue([1929, -22.231])
+    model.setNewValues([1929, -22.231])
     expect(model.value).toEqual([0, 100])
 
     model.dataset({
       minValue : -50,
       range    : true
     })
-    model.setSliderValue([1929, -72.231])
+    model.setNewValues([1929, -72.231])
     expect(model.value).toEqual([-50, 100])
   })
 })

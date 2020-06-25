@@ -26,7 +26,7 @@ class Model {
     this.vertical    =  false
     this.lable       =  false
 
-    this.textField   =  ['.text-field', 'text-field2']
+    this.textField   =  []
 
     this.dataset(data)
   } // constructor
@@ -42,10 +42,10 @@ class Model {
 
     // обработка введеных значений для слайдера
     if(typeof this.value  === 'number' && this.range === false) {
-      this.setSliderValue([this.value])
+      this.setNewValues([this.value])
     }
-    if(this.range === false)  this.setSliderValue([this.value[0]])
-    else                      this.setSliderValue(this.value)
+    if(this.range === false)  this.setNewValues([this.value[0]])
+    else                      this.setNewValues(this.value)
 
   }
 
@@ -71,18 +71,31 @@ class Model {
     return result
   }
 
-  // установка значений value по лимитам и шагу
-  setSliderValue(data: number[]) {
+  // установка значениЙ value по лимитам и шагу
+  setNewValues(data: number[]) {
+    data = this.checkLimit(data)
+    data = this.putInStep(data)
+
     let result: number[] = []
     if(this.range === true) {
       result.push(Math.min.apply(null, data))
       result.push(Math.max.apply(null, data))
     }
     else result = data
-    result = this.checkLimit(result)
-    result = this.putInStep(result)
-
     this.value = result
+  }
+
+  // обновить значение value по лимитам, шагу и выставить по id
+  updateValue(num: number[], id) {
+    num = this.checkLimit(num)
+    num = this.putInStep(num)
+
+    if(this.range === true) this.value[id] = num[0]
+    else this.value = num
+
+    this.Observable.notify({
+      value     : this.value,
+    })
   }
 
   // для преобразования координат в значения
@@ -92,13 +105,24 @@ class Model {
 
     if(this.range === true) {
       newArrValue[data.id] = newValue
-      this.setSliderValue(newArrValue)
+      this.setNewValues(newArrValue)
     }
     else this.value[0] = newValue
 
     this.Observable.notify({
       value     : this.value,
     })
+
+
+
+    // newValue = model.checkLimit(newValue)
+    // newValue = model.putInStep(newValue, model.step)
+
+    // if(model.range === true) {
+    //   let newArrValue = model.value
+    //   newArrValue[id] = newValue[0]
+    //   model.setNewValues(newArrValue)
+    // } else model.value = newValue
   }
 
 } // Model

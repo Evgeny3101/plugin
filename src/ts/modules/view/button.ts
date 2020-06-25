@@ -4,10 +4,12 @@ import {Observable} from '../../util/observable'
 class Button extends elemDOM {
   Observable = new Observable();
   pos: any;
+  coord: number;
 
   constructor(id: Element, pos){
     super(id, 'div', 'js-range-btn')
     this.pos = pos
+
   } // constructor
 
   move(evt) {
@@ -38,7 +40,7 @@ class Button extends elemDOM {
       document.onmousemove = document.onmouseup = null;
     }
 
-    return
+    return false
   }
 
   toPosition() {

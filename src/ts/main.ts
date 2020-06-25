@@ -3,7 +3,9 @@ import {View} from './modules/view'
 import {Controller} from './modules/controller'
 
 class RangeSlider {
-  [x: string]: any;
+  model: Model;
+  view: View;
+  controller: Controller;
 
   constructor(id: string, data?: {}) {
     this.model      = new Model(data);
@@ -17,19 +19,15 @@ class RangeSlider {
 
   dataset(data?): void {
     this.model.dataset(data)
-    this.view.setValuesPosition(this.model.vertical)
-    this.controller.setBtn(this.model, this.view)
-    this.view.setTextField(this.model.textField, this.model.value)
+    this.controller.init(this.model, this.view)
+    this.view.setTextField(this.model.textField)
     this.controller.update(this.model, this.view)
   }
-
 
   // автоматическое обновление при изменении ширины экрана
   resize(): void {
     this.controller.update(this.model, this.view)
   }
-
-
 
 }
 
