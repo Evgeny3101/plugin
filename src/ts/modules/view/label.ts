@@ -19,7 +19,7 @@ class Label extends elemDOM {
     container.appendChild(this.input)
   } // constructor
 
-  toPosition(coord, posit) {
+  toPosition(coord: number, posit: string) {
     this.DOM.style[posit] = coord + 'px'
   }
 

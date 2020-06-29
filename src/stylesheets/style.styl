@@ -1,3 +1,6 @@
+*
+  box-sizing: border-box
+
 .page
   display           : flex
   flex-direction    : column
@@ -22,7 +25,7 @@
   position            relative
   height            : 400px
   width             : 100%
-  padding: 20px
+  padding           : 20px
 
 .plugin
   width             : 100%
@@ -42,11 +45,10 @@
   margin            : 0 10px
   width             : 70px
 
-  font              : 700 15px sans-serif
+  font              : 700 14px sans-serif
   color             : #414c5c
 
-// slider display setting
-
+//// slider display setting ////
 // range
 .js-range-slider
   position          : relative
@@ -55,31 +57,19 @@
   margin            : 30px
 
   &__vertical
-    width             : 18px
-    height            : 100%
-
-    & .js-range-interval
-      left              : 50%
-      transform         : translateX(-50%)
-      width             : 14px
-
+    width           : 20px
+    height          : 100%
 
   &__horizontal
-    height            : 18px
-    width             : 100%
-
-    & .js-range-interval
-      top               : 50%
-      transform         : translateY(-50%)
-      height            : 14px
-
+    height          : 20px
+    width           : 100%
 
 
 // button
 .js-range-btn
   position          : absolute
-  width             : 14px
-  height            : 14px
+  width             : 16px
+  height            : 16px
 
   border            : 2px solid #fffccc
   border-radius     : 100%
@@ -94,6 +84,16 @@
   position          : absolute
   background        : rgb(167, 169, 180)
 
+.js-range-slider__horizontal .js-range-interval
+  top               : 50%
+  transform         : translateY(-50%)
+  height            : 12px
+
+.js-range-slider__vertical .js-range-interval
+  left              : 50%
+  transform         : translateX(-50%)
+  width             : 12px
+
 
 // label
 .js-label-wrapper
@@ -102,12 +102,13 @@
 .js-label-container
   position          : absolute
   top               : -58px
-  left              : -13px
+  left              : -14.1px
 
-  width             : 40px
-  height            : 40px
+  width             : 45px
+  height            : 45px
   transform         : rotate(45deg)
 
+  z-index           : 1
   border            : 2px solid rgb(167, 169, 180)
   border-radius     : 100% 100% 0 100%
   background        : #fff
@@ -126,5 +127,81 @@
   &:focus
     outline      none
 
+// scale
+.js-range-slider__horizontal .js-scale-range
+  position        absolute
+  top             25px
+  width           100%
 
+  display         flex
+  justify-content space-between
 
+.js-range-slider__horizontal .js-scale-line
+  position        relative
+  height          20px
+  width           15px
+
+  display         flex
+  justify-content space-around
+
+  &__long
+    height        15px
+    border-left   3px solid rgb(167, 169, 180)
+
+  &__short
+    height        10px
+    border-left   2px solid rgb(167, 169, 180)
+
+  &__number
+    position      absolute
+    top           30px
+
+    height        20px
+    width         30px
+
+    text-align    center
+    font          700 14px sans-serif
+    color         #414c5c
+
+  ::selection
+    background    transparent
+
+.js-range-slider__vertical .js-scale-range
+  position        absolute
+  left            25px
+  height          100%
+
+  display         flex
+  flex-direction  column
+  justify-content space-between
+  align-items     center
+
+.js-range-slider__vertical .js-scale-line
+  height          15px
+  width           20px
+
+  display         flex
+  align-items     center
+
+  &__long
+    width         20px
+    border-top    3px solid rgb(167, 169, 180)
+
+  &__short
+    width         10px
+    border-top    2px solid rgb(167, 169, 180)
+
+  &__number
+    position      absolute
+    left          30px
+
+    height        30px
+    width         30px
+
+    font          700 14px sans-serif
+    color         #414c5c
+    display       flex
+    align-items   center
+
+  ::selection
+    background    transparent

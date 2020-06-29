@@ -25,12 +25,6 @@ describe('Api testing', () => {
     expect(newSlider.model.value).toEqual([25]);
   })
 
-
-  it('проверка метода resize', () => {
-    newSlider.model.value[0] = 15
-    newSlider.resize()
-    expect(newSlider.view.textFieldDOM[0].value).toEqual('15');
-  })
 })
 
 

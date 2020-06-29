@@ -1,4 +1,4 @@
-abstract class elemDOM {
+class elemDOM {
   DOM: HTMLElement
 
   constructor(id: Element, elem: string, className: string) {

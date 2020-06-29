@@ -1,4 +1,5 @@
 import {elemDOM} from './elemDOM'
+import { Button } from './button'
 
 
 class Interval extends elemDOM {
@@ -11,16 +12,17 @@ class Interval extends elemDOM {
   } // constructor
 
   // для установки по координатам, с учетом ширины кнопки
-  toPosition(data) {
+  toPosition(btns: Button[]) {
 
-    let btnsCoord: number[] = data.btnsCoord
+    let btnsCoord: number[] = [btns[0].coord, btns[1].coord]
+    let btnSize = btns[0].DOM[this.pos.offsetSize]
 
     let begin =  Math.min.apply(null, btnsCoord)
     let end   =  Math.max.apply(null, btnsCoord)
     let size  =  end - begin
 
-    this.DOM.style[this.pos.offset] =  begin + (data.btnSize / 2) +  'px'
-    this.DOM.style[this.pos.size] =  size  +  'px'
+    this.DOM.style[this.pos.offset] =  begin + (btnSize/ 2) + 'px'
+    this.DOM.style[this.pos.size]   =  size + 'px'
   }
 
 

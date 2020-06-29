@@ -20,9 +20,9 @@ describe('Controller testing.', () => {
       value     : [20, 28],
       range     : true
     })
-    newSlider.view.textFieldDOM[0].value = 22
+    newSlider.view.textFieldDOM[0].value = '22'
     newSlider.controller.toInputValues(newSlider.model, newSlider.view, 0)
-    newSlider.view.textFieldDOM[1].value = 50
+    newSlider.view.textFieldDOM[1].value = '50'
     newSlider.controller.toInputValues(newSlider.model, newSlider.view, 1)
 
     expect(newSlider.view.textFieldDOM[0].value).toBe('22');
@@ -33,7 +33,7 @@ describe('Controller testing.', () => {
     newSlider.dataset({
       range     : false
     })
-    newSlider.view.textFieldDOM[0].value = 55
+    newSlider.view.textFieldDOM[0].value = '55'
     newSlider.controller.toInputValues(newSlider.model, newSlider.view, 0)
 
     expect(newSlider.view.textFieldDOM[0].value).toBe('55');

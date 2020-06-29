@@ -24,33 +24,10 @@ describe('View testing', () => {
     expect(view.textFieldDOM[0]).toBeDefined()
   })
 
-
-  // it('преобразовать числа в координаты', () => {
-  //   newSlider.dataset({
-  //     value     : [22, 55],
-  //     range     : true,
-  //     minValue  : 0,
-  //     textField : ['.text-field', '.text-field2']
-  //   })
-
-  //   newSlider.view.updateCoords({
-  //     value     : [23, 53],
-  //     range     : true,
-  //     minValue  : 0
-  //   })
-
-  //   newSlider.view.updateCoords({
-  //     value     : [47],
-  //     range     : false,
-  //     minValue  : 0
-  //   })
-  // });
-
-
 ////////////////////textField////////////////////////
 
   it('установка textFieldDOM', () => {
-    view.setTextField(['.text-field'], [223])
+    view.setTextField(['.text-field'])
     expect(view.textFieldDOM[0]).toHaveClass('text-field');
   });
 
@@ -130,6 +107,7 @@ describe('View testing', () => {
     expect(document.onmouseup).toBe(null)
     expect(document.onmousemove).toBe(null)
   })
+
 
 })
 

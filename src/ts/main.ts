@@ -11,21 +11,12 @@ class RangeSlider {
     this.model      = new Model(data);
     this.view       = new View(id);
     this.controller = new Controller(this.model, this.view)
-
-    let self        = this
-    // автоматическое обновление при изменении ширины экрана
-    window.addEventListener('resize', self.resize.bind(self))
   }
 
   dataset(data?): void {
     this.model.dataset(data)
     this.controller.init(this.model, this.view)
     this.view.setTextField(this.model.textField)
-    this.controller.update(this.model, this.view)
-  }
-
-  // автоматическое обновление при изменении ширины экрана
-  resize(): void {
     this.controller.update(this.model, this.view)
   }
 

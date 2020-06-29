@@ -6,18 +6,20 @@ let newSlider = new RangeSlider('.js-plugin', {})
 let model = newSlider.model
 
 
-beforeEach(() => {
-  model.dataset({
-    value : 10,
-    range : false,
-    minValue : -100,
-    maxValue : 200,
-    textField : ['.text-field', '.text-field2']
-  })
-})
-
-
 describe('Model testing', () => {
+
+  beforeEach(() => {
+    setFixtures('<div class="js-plugin"></div><input class="text-field"></input><input class="text-field2"></input>')
+
+    model.dataset({
+      value : 10,
+      range : false,
+      minValue : -100,
+      maxValue : 200,
+      textField : ['.text-field', '.text-field2']
+    })
+  })
+
   it('положить  15, в массив чисел value при range = false', () => {
     model.dataset({
       value : 15,

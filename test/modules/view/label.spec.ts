@@ -29,9 +29,13 @@ describe('Label testing.', () => {
     expect(slider.view.label[1].input).toEqual('input.js-label-input')
   })
 
-  // it('Set elements to position', () => {
-  //   expect(slider.view.label[0].coord).toEqual(slider.view.button[0].coord);
-  // });
+  it('Check methods show/hide elements', () => {
+    slider.view.label[0].show()
+    expect(slider.view.label[0].DOM).toHaveCss({'display': 'block'});
+
+    slider.view.label[0].hide()
+    expect(slider.view.label[0].DOM).toHaveCss({"display": "none"});
+  });
 
 
 })

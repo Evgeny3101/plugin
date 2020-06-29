@@ -113,16 +113,6 @@ class Model {
       value     : this.value,
     })
 
-
-
-    // newValue = model.checkLimit(newValue)
-    // newValue = model.putInStep(newValue, model.step)
-
-    // if(model.range === true) {
-    //   let newArrValue = model.value
-    //   newArrValue[id] = newValue[0]
-    //   model.setNewValues(newArrValue)
-    // } else model.value = newValue
   }
 
 } // Model
