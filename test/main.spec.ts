@@ -1,30 +1,22 @@
-import {RangeSlider} from '../src/ts/main';
+import  '../src/ts/main';
+
+let elem
+beforeEach(() => {
+  setFixtures('<div class="js-plugin"></div><input class="text-field"></input>input class="text-field2"></input>')
+  elem = $('.js-plugin')
+});
 
 
-setFixtures('<div class="js-plugin"></div><input class="text-field"></input>input class="text-field2"></input>')
-let newSlider = new RangeSlider('.js-plugin', {
-  value     : [20],
-  textField : ['.text-field'],
-  range     : false
-})
+describe('jquery.rangeSlider.', () => {
+  it('Must be available in jquery object', () => {
+    expect($.fn.rangeSlider).toBeDefined()
+  });
 
+  it('Must have a chain method of calling', () => {
+    expect(elem.rangeSlider()).toBe(elem);
+  });
 
+});
 
-describe('Api testing', () => {
-
-  beforeEach(() => {
-    setFixtures('<div class="js-plugin"></div><input class="text-field"></input><input class="text-field2"></input>')
-  })
-
-  it('проверка метода dataset', () => {
-    newSlider.dataset({
-      value: 25,
-      range: false,
-      textField : ['.text-field'],
-    })
-    expect(newSlider.model.value).toEqual([25]);
-  })
-
-})
 
 

@@ -21,7 +21,7 @@ class View {
   rangeSize: number
   pos: {} = {}
 
-  constructor(id: Element, settings) {
+  constructor(id: Element) {
     this.mainDOM   =  id
     this.range     =  new Range(this.mainDOM)
   }
