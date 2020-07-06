@@ -1,25 +1,6 @@
-import {Model} from '../ts/modules/model'
-import {View} from '../ts/modules/view'
-import {Controller} from '../ts/modules/controller'
-
-class RangeSlider {
-  model: Model
-  view: View
-  controller: Controller
-
-  constructor(id: Element, settings?: {}) {
-    this.model      = new Model(settings)
-    this.view       = new View(id)
-    this.controller = new Controller(this.model, this.view)
-
-  } // constructor
-
-  dataset(data?): void {
-    this.model.dataset(data)
-    this.controller.init(this.model, this.view)
-    this.controller.update(this.model, this.view)
-  }
-} // class
+import { Model } from '../ts/modules/model'
+import { View } from '../ts/modules/view'
+import { Controller } from '../ts/modules/controller'
 
 (function($){
 
@@ -28,33 +9,28 @@ class RangeSlider {
     view: View
     controller: Controller
 
-    constructor(id: Element, settings?: {}) {
-      this.model      = new Model(settings)
-      this.view       = new View(id, settings)
-      this.controller = new Controller(this.model, this.view)
+    constructor(id: Element, config: {}) {
+      this.model      = new Model(config)
+      this.view       = new View(id, config)
+      this.controller = new Controller(this.model, this.view, config)
 
     } // constructor
-
-    dataset(data?): void {
-      this.model.dataset(data)
-      this.controller.init(this.model, this.view)
-      this.controller.update(this.model, this.view)
-    }
   } // class
 
-  let slider
-  let methods = {
+  let config, methods = {
     init: function(options) {
       return this.each(function() {
-        let settings = $.extend({}, $.fn.rangeSlider.defaults, options)
-        slider = new RangeSlider(this, settings)
+        config = $.extend({}, $.fn.rangeSlider.defaults, options)
+        new RangeSlider(this, config)
       })
     },
 
-    settings: function(options) {
+    config: function(options) {
       return this.each(function() {
-        let settings = $.extend({}, $.fn.rangeSlider.defaults, options)
-        slider.dataset(settings)
+        this.innerHTML = ''
+
+        config = $.extend({}, $.fn.rangeSlider.defaults, options)
+        new RangeSlider(this, config)
       })
     }
   }
@@ -70,9 +46,23 @@ class RangeSlider {
   }
 
   $.fn.rangeSlider.defaults = {
-    value     : [-25, 25],
-    minValue  : -100,
-    maxValue  : 100,
+    value         :  [-25, 25],
+    minValue      :  -100,
+    maxValue      :  100,
+    step          :  0.1,
+    textField     :  [],
+
+    range         :  false,
+    vertical      :  false,
+    invert        :  false,
+
+    lable         :  false,
+    lableOnClick  :  false,
+
+    scale         :  false,
+    points        :  13,
+    numberForEach :  4,
+    longForEach   :  2,
   }
 
 }(jQuery));

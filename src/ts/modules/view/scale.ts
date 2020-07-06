@@ -1,7 +1,7 @@
-import {Observable} from '../../util/observable'
+import { Observable } from '../../util/observable'
 import { Point } from './point'
-import {elemDOM} from './elemDOM'
-import {roundToMultiple} from '../../util/mixins'
+import { elemDOM } from './elemDOM'
+import { roundToMultiple } from '../../util/mixins'
 
 class Scale extends elemDOM {
   Observable = new Observable()
@@ -11,12 +11,12 @@ class Scale extends elemDOM {
   short: elemDOM[] = []
   coord: number
   pos: any
-  isInvert: boolean
+  invert: boolean
 
   constructor(id: Element, pos, data){
     super(id, 'div', 'js-scale-range')
     this.pos = pos
-    this.isInvert = data.isInvert
+    this.invert = data.invert
     this.setPoints(data)
   }
 
@@ -46,10 +46,10 @@ class Scale extends elemDOM {
     let currentValue = data.minValue
 
     for(let elem of this.points) {
-      elem.value = (roundToMultiple(currentValue, data.step))
+      elem.value = roundToMultiple(currentValue, data.step)
 
       if(elem.textField) {
-        if(this.isInvert) elem.textField.DOM.innerText = String(-elem.value)
+        if(this.invert) elem.textField.DOM.innerText = String(-elem.value)
         else elem.textField.DOM.innerText = String(elem.value)
       }
       currentValue += step

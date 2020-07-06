@@ -1,14 +1,14 @@
-  function roundToMultiple(num: number, multiple: number) {
-    // округляет по числу
-    let result: number = Math.round(num/multiple) * multiple;
-    return result
-  }
+// округляет по числу и убирает лишние знаки
+function roundToMultiple(num: number, multiple: number) {
+  // округление
+  let result: number = Math.round(num/multiple) * multiple;
+  // расчет знаков после запятой
+  let decimalPlaces = (multiple.toString().includes('.')) ? (multiple.toString().split('.').pop().length) : (0);
+  // обрезает лишние знаки после запятой
+  result = Number(result.toFixed(decimalPlaces))
+  return result
+}
 
-  function countsDecimalPlaces(num: number) {
-    // считает знаки после запятой
-    let result: number = (num.toString().includes('.')) ? (num.toString().split('.').pop().length) : (0);
-    return  result
-  }
 
 
-  export  {roundToMultiple, countsDecimalPlaces}
+export  { roundToMultiple }

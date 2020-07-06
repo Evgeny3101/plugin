@@ -1,16 +1,16 @@
-import {elemDOM} from './elemDOM'
-import {Observable} from '../../util/observable'
+import { elemDOM } from './elemDOM'
+import { Observable } from '../../util/observable'
 
 class Label extends elemDOM {
   Observable = new Observable();
   input: HTMLInputElement;
   show: Function;
   hide: Function;
-  isInvert: Boolean;
+  invert: Boolean;
 
-  constructor(id: Element, onClick: boolean, isInvert: boolean){
+  constructor(id: Element, onClick: boolean, invert: boolean){
     super(id, 'div', 'js-label-wrapper')
-    this.isInvert = isInvert
+    this.invert = invert
 
     let container = document.createElement('div')
     container.className = 'js-label-container'
@@ -24,6 +24,7 @@ class Label extends elemDOM {
 
     if(onClick) this.onClick()
   } // constructor
+
 
   toPosition(coord: number, posit: string) {
     this.DOM.style[posit] = coord + 'px'
@@ -40,7 +41,7 @@ class Label extends elemDOM {
   }
 
   setValue(value: number) {
-    if(this.isInvert) this.input.value = String(-value)
+    if(this.invert) this.input.value = String(-value)
     else this.input.value = String(value)
   }
 

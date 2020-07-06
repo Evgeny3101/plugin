@@ -1,57 +1,44 @@
-import {Observable} from '../util/observable'
-import {roundToMultiple, countsDecimalPlaces} from '../util/mixins'
+import { Observable } from '../util/observable'
+import { roundToMultiple } from '../util/mixins'
 
 
 class Model {
-  isInvert: boolean
   Observable = new Observable
+
+  value: number[]
   minValue: number
   maxValue: number
   step: number
-  decimalPlaces: number
-
   range: boolean
-  vertical: boolean
-  lable: boolean
 
-  textField: string[]
-  value: number[]
-  lableOnClick: boolean
-  scale: boolean
-
-  constructor(data) {
-    this.value        =  [0,0]
-    this.minValue     =  0
-    this.maxValue     =  100
-    this.step         =  1
-
-    this.range        =  false
-    this.vertical     =  false
-    this.lable        =  false
-    this.scale        =  false
-    this.lableOnClick =  false
-
-    this.textField   =  []
-
-    this.dataset(data)
+  constructor(config) {
+    this.settingData( config )
   } // constructor
 
 
-  dataset(data): void {
-    for(let key in data) {
-      this[key] = data[key]
-    }
+  settingData( config ): void {
+    this.minValue  =  config.minValue
+    this.maxValue  =  config.maxValue
+    this.step      =  config.step
+    this.range     =  config.range
 
-    // расчет знаков после запятой
-    this.decimalPlaces = countsDecimalPlaces(this.step)
 
     // обработка введеных значений для слайдера
-    if(typeof this.value  === 'number' && this.range === false) {
-      this.setNewValues([this.value])
-    }
-    if(this.range === false)  this.setNewValues([this.value[0]])
-    else                      this.setNewValues(this.value)
+    this.setNewValues(config.value)
+  }
 
+  // установка значениЙ value по лимитам и шагу
+  setNewValues(num: number[]) {
+    num = this.checkLimit(num)
+    num = this.putInStep(num)
+
+    let result: number[] = []
+    if(this.range === true) {
+      result.push(Math.min.apply(null, num))
+      result.push(Math.max.apply(null, num))
+    }
+    else result = num
+    this.value = result
   }
 
   // проверить значения по  min max
@@ -70,24 +57,9 @@ class Model {
     let result: number[] = []
     for(let item of num) {
       let value = roundToMultiple(item, this.step)
-      value = Number(value.toFixed(this.decimalPlaces))
       result.push(value)
     }
     return result
-  }
-
-  // установка значениЙ value по лимитам и шагу
-  setNewValues(data: number[]) {
-    data = this.checkLimit(data)
-    data = this.putInStep(data)
-
-    let result: number[] = []
-    if(this.range === true) {
-      result.push(Math.min.apply(null, data))
-      result.push(Math.max.apply(null, data))
-    }
-    else result = data
-    this.value = result
   }
 
   // обновить значение value по лимитам, шагу и выставить по id
@@ -99,7 +71,7 @@ class Model {
     else this.value = num
 
     this.Observable.notify({
-      value     : this.value,
+      value : this.value
     })
   }
 
@@ -117,7 +89,6 @@ class Model {
     this.Observable.notify({
       value     : this.value,
     })
-
   }
 
 } // Model

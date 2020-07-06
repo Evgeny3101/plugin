@@ -1,10 +1,11 @@
 import '../util/mixins'
-import {Observable} from '../util/observable'
-import {Range} from './view/range'
-import {Button} from './view/button'
-import {Interval} from './view/interval'
-import {Label} from './view/label'
-import {Scale} from './view/scale'
+import { Observable } from '../util/observable'
+import { Range } from './view/range'
+import { Button } from './view/button'
+import { Interval } from './view/interval'
+import { Label } from './view/label'
+import { Scale } from './view/scale'
+import { TextField } from './view/textField'
 
 
 class View {
@@ -12,53 +13,85 @@ class View {
   mainDOM: Element
   range: Range
   button: Button[] = []
-  interval: Interval
-  size: number
-  textFieldDOM: HTMLInputElement[] = []
-  step: number
   label: Label[] = []
+  textField: TextField[] = []
   scale: Scale
   rangeSize: number
+  interval: Interval
+  step: number
   pos: {} = {}
 
-  constructor(id: Element, settings) {
+  constructor(id: Element, config) {
     this.mainDOM   =  id
     this.range     =  new Range(this.mainDOM)
+    this.init(config)
   }
 
+  init(config) {
+    // удалит установленые элементы
+    this.range.DOM.innerHTML = ''
 
-  // для преобразования значений в координаты и установка кнопок
-  setStepInPx(data) {
-    for(let i = 0; i < this.button.length; i++) {
-      let btn = this.button[i]
-      this.rangeSize = this.range.DOM[this.pos.clientSize] - btn.DOM[this.pos.offsetSize];
-      let valueRange = Math.abs(data.maxValue - data.minValue)
-      this.step = this.rangeSize / valueRange
+    // установка переменных для вертикального или горизонтального позиционирования
+    this.setPositionVariables(config.vertical)
+
+    // установка  кнопок
+    this.button = []
+    for(let i = 0; i <= Number(config.range); i++){
+      this.button[i] = new Button(this.range.DOM, this.pos)
     }
-  }
 
-  // обновление координат для элементов
-  updateCoords(data) {
-    if(data.range === true) {
-      for(let i = 0; i < data.value.length; i++) {
-        const newCoord = this.step  * (data.value[i] + Math.abs(data.minValue))
+    // установка  интервала  между кнопками
+    if(config.range) {
+      this.interval = new Interval(this.range.DOM, this.pos)
+    }
 
-        this.button[i].toPosition(newCoord)
+    // установка  лейблов над кнопками
+    if(config.label){
+      this.label = []
+      for(let i = 0; i < this.button.length; i++){
+        this.label[i] = new Label(this.range.DOM, config.onClick, config.invert)
+        this.label[i].input.value = config.value[i]
       }
-      // для интервала
-      this.updateInterval()
-    }
-    else {
-      const newCoord = this.step  * (data.value[0] + Math.abs(data.minValue))
-      this.button[0].toPosition(newCoord)
     }
 
-    // для Label
-    this.updateLabel(data.value)
+    // установка текстовых полей
+    if(config.textField) {
+      for(let i = 0; i < config.textField.length; i++) {
+        this.textField[i] = new TextField( config.textField[i], config.invert )
+        this.textField[i].updateTextField({
+          value   : config.value,
+          id      : i,
+        })
+      }
+    }
+
+    // установит значения this.rangeSize и this.step
+    this.updateRangeSize({
+      maxValue  : config.maxValue,
+      minValue  : config.minValue
+    })
+
+    // установка  шкалы
+    if(config.scale) {
+      this.scale = new Scale(this.range.DOM, this.pos, config)
+      this.scale.determineСoordScale(this.rangeSize)
+      this.scale.setValue(config)
+      this.scale.determineСoordScale(this.rangeSize)
+    }
+
+    // обновление координат и установка элементов
+    this.updateCoords({
+      range     : config.range,
+      label     : config.label,
+      minValue  : config.minValue,
+      value     : config.value,
+    })
+
+    // установка слушателей
+    this.setListeners( config )
   }
 
-  //// устанавливает переменные позиций ////
-  // для переключения горизонтального и вертикального видов
+  // установка переменных для вертикального или горизонтального позиционирования
   setPositionVariables(vertical: boolean){
     if(vertical) {
       this.pos = {
@@ -85,73 +118,88 @@ class View {
     }
 
     this.range.setClassPositon(vertical)
-
   }
 
-  //// создание кнопок ////
-  setBtn(isRange: boolean) {
-    this.range.DOM.innerHTML = ''
-    this.button = []
-    for(let i = 0; i <= Number(isRange); i++){
-      this.button[i] =  new Button(this.range.DOM, this.pos)
+  // установка слушателей
+  setListeners( config ) {
+
+    // автоматическое обновление при изменении ширины экрана
+    window.addEventListener('resize', () => {
+      this.updateRangeSize({
+        maxValue  : config.maxValue,
+        minValue  : config.minValue
+      })
+
+      this.updateCoords({
+        range     : config.range,
+        label     : config.label,
+        minValue  : config.minValue,
+        value     : config.value,
+      })
+    })
+
+    // перемещение бегунка
+    for(let elem of this.button) {
+      elem.DOM.addEventListener('mousedown', elem.move.bind(elem))
     }
-  }
 
-  //// интервал между кнопками ////
-  setInterval() {
-    this.interval = new Interval(this.range.DOM, this.pos)
-  }
+    // при вводе значений в text-field
+    for(let i = 0; i < this.textField.length; i++) {
+      if(this.textField[i].DOM) {
+        this.textField[i].DOM.addEventListener('blur', () => this.textField[i].toInputValues(i) )
+      }
 
-  updateInterval() {
-    this.interval.toPosition([this.button[0], this.button[1]])
-  }
-
-  //// текстовое поле ////
-  setTextField(field: string[]) {
-    for(let i = 0; i < field.length; i++) {
-      this.textFieldDOM[i] = document.querySelector(field[i]);
     }
-  }
 
-  updateTextField(value: number[], isInvert: boolean) {
-    for(let i = 0; i < value.length; i++) {
-      if(this.textFieldDOM[i]) {
-        if(isInvert) this.textFieldDOM[i].value = String(-value[i])
-        else this.textFieldDOM[i].value = String(value[i])
+    // клик на деление шкалы
+    if(config.scale) {
+      for(let i = 0; i < this.scale.points.length; i++) {
+        this.scale.points[i].DOM.addEventListener('click', () => this.scale.pressScaleBar(this.button, config.range, i))
       }
     }
-  }
 
-  //// лейблы над кнопками ////
-  setLabel(data){
-    this.label = []
-    for(let i = 0; i < this.button.length; i++){
-      this.label[i] =  new Label(this.range.DOM, data.onClick, data.isInvert)
-      this.label[i].input.value = data.value[i]
-    }
     // показывать / скрывать лейбл при нажатии
-    if(data.onClick) {
+    if(config.onClick) {
       for(let i = 0; i < this.label.length; i++) {
         this.button[i].DOM.addEventListener('mousedown', this.label[i].show.bind(this.label[i]))
-        this.button[i].DOM.addEventListener('mouseup', this.label[i].hide.bind(this.label[i]))
+        document.addEventListener('mouseup', this.label[i].hide.bind(this.label[i]))
       }
     }
   }
 
-  updateLabel(value: number[]) {
-    for(let i = 0; i < this.label.length; i++){
-      this.label[i].toPosition(this.button[i].coord, this.pos.offset)
-      this.label[i].setValue(value[i])
+  // установит значения this.rangeSize и this.step
+  updateRangeSize(data) {
+    let btn = this.button[0]
+    this.rangeSize = this.range.DOM[this.pos.clientSize] - btn.DOM[this.pos.offsetSize];
+    let valueRange = Math.abs(data.maxValue - data.minValue)
+
+    this.step = this.rangeSize / valueRange
+  }
+
+  // обновление координат и установка элементов
+  updateCoords(data) {
+    if(data.range === true) {
+      for(let i = 0; i < data.value.length; i++) {
+        const newCoord = this.step  * (data.value[i] + Math.abs(data.minValue))
+
+        this.button[i].toPosition(newCoord)
+      }
+      // установка интервала по координатам
+      this.interval.toPosition([this.button[0], this.button[1]])
+    }
+    else {
+      const newCoord = this.step  * (data.value[0] + Math.abs(data.minValue))
+      this.button[0].toPosition(newCoord)
+    }
+
+    // для установка Label по координатам
+    if( data.label ){
+      for(let i = 0; i < this.label.length; i++){
+        this.label[i].toPosition(this.button[i].coord, this.pos.offset)
+        this.label[i].setValue(data.value[i])
+      }
     }
   }
-
-  //// шкала ////
-  setScale(data) {
-    this.scale = new Scale(this.range.DOM, this.pos, data)
-    this.scale.determineСoordScale(this.rangeSize)
-    this.scale.setValue(data)
-  }
-
 
 } // class View
 
