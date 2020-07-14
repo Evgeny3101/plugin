@@ -1,23 +1,22 @@
-const path = require('path')
-const webpack = require('webpack')
-const HTMLWebpackPlugin = require('html-webpack-plugin')
-const { CleanWebpackPlugin } = require('clean-webpack-plugin')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const path = require('path');
+const webpack = require('webpack');
+const HTMLWebpackPlugin = require('html-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-const isProd = process.env.NODE_ENV === 'production'
-const isStart = process.env.NODE_ENV === 'start'
-
+const isProd = process.env.NODE_ENV === 'production';
+const isStart = process.env.NODE_ENV === 'start';
 
 module.exports = {
   context: path.resolve(__dirname, 'src'),
 
   entry: {
-    main: './index.js'
+    main: './index.js',
   },
 
   output: {
     filename: '[name].[hash].js',
-    path: path.resolve(__dirname, 'dist')
+    path: path.resolve(__dirname, 'dist'),
   },
 
   resolve: {
@@ -25,9 +24,8 @@ module.exports = {
     alias: {
       '@modules': path.resolve(__dirname, 'src/modules'),
       '@': path.resolve(__dirname, 'src'),
-    }
+    },
   },
-
 
   module: {
     rules: [
@@ -39,18 +37,19 @@ module.exports = {
             options: {
               // изменение без перезагрузки css
               hmr: isStart,
-              reloadAll: true
+              reloadAll: true,
             },
           },
           'css-loader',
           {
             loader: 'postcss-loader',
             options: {
-              config: { path: './postcss.config.js' }
-            }
+              config: { path: './postcss.config.js' },
+            },
           },
-        ]
-      }, {
+        ],
+      },
+      {
         test: /\.styl$/,
         use: [
           {
@@ -58,7 +57,7 @@ module.exports = {
             options: {
               // изменение без перезагрузки css
               hmr: isStart,
-              reloadAll: true
+              reloadAll: true,
             },
           },
 
@@ -66,28 +65,28 @@ module.exports = {
           {
             loader: 'postcss-loader',
             options: {
-              config: { path: './postcss.config.js' }
-            }
+              config: { path: './postcss.config.js' },
+            },
           },
-          'stylus-loader'
-        ]
-      }, {
+          'stylus-loader',
+        ],
+      },
+      {
         test: /\.js$/,
         exclude: '/node_modules/',
-        loader: 'babel-loader'
-      }, {
+        loader: 'babel-loader',
+      },
+      {
         test: /\.ts$/,
         exclude: '/node_modules/',
         loader: {
           loader: 'babel-loader',
           options: {
-            presets: [
-              '@babel/preset-typescript'
-            ],
+            presets: ['@babel/preset-typescript'],
           },
-        }
-      }
-    ]
+        },
+      },
+    ],
   },
 
   devtool: isStart ? 'source-map' : '',
@@ -97,8 +96,8 @@ module.exports = {
       template: './index.html',
       // сжимать файл HTML
       minify: {
-        collapseWhitespace: isProd
-      }
+        collapseWhitespace: isProd,
+      },
     }),
 
     // очистка dist
@@ -112,19 +111,17 @@ module.exports = {
     new webpack.ProvidePlugin({
       $: 'jquery',
       jQuery: 'jquery',
-      'window.jQuery': 'jquery'
-    })
+      'window.jQuery': 'jquery',
+    }),
   ],
 
   optimization: {
     splitChunks: {
-      chunks: 'all'
-    }
+      chunks: 'all',
+    },
   },
 
   devServer: {
     port: 4420,
   },
-
-
-}
+};

@@ -1,14 +1,15 @@
 // округляет по числу и убирает лишние знаки
 function roundToMultiple(num: number, multiple: number) {
   // округление
-  let result: number = Math.round(num/multiple) * multiple;
+  let result: number = Math.round(num / multiple) * multiple;
   // расчет знаков после запятой
-  let decimalPlaces = (multiple.toString().includes('.')) ? (multiple.toString().split('.').pop().length) : (0);
+  const decimalPlaces = multiple.toString().includes('.')
+    ? multiple.toString().split('.').pop().length
+    : 0;
   // обрезает лишние знаки после запятой
-  result = Number(result.toFixed(decimalPlaces))
-  return result
+  result = Number(result.toFixed(decimalPlaces));
+  return result;
 }
 
-
-
-export  { roundToMultiple }
+// eslint-disable-next-line import/prefer-default-export
+export { roundToMultiple };

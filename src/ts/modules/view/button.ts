@@ -1,53 +1,52 @@
-import {elemDOM} from './elemDOM'
-import {Observable} from '../../util/observable'
+import ElemDOM from '../../util/elemDOM';
+import Observable from '../../util/observable';
 
-class Button extends elemDOM {
+class Button extends ElemDOM {
   Observable = new Observable();
-  pos: any;
-  coord: number;
+  pos: { [key: string]: string } = {};
+  coord!: number;
 
-  constructor(id: Element, pos){
-    super(id, 'div', 'js-range-btn')
-    this.pos = pos
-
+  constructor(id: Element, pos: { [key: string]: string }) {
+    super(id, 'div', 'js-range-btn');
+    this.pos = pos;
   } // constructor
 
   move(evt) {
     const btn = evt.target;
     const parent = evt.path[1];
-    const baseShift  =  evt[this.pos.page];
-    const rangeShift =  btn[this.pos.offsetFrom]
-    const rangeSize  =  parent[this.pos.clientSize] - btn[this.pos.offsetSize];
+    const baseShift = evt[this.pos.page];
+    const rangeShift = btn[this.pos.offsetFrom];
+    const rangeSize = parent[this.pos.clientSize] - btn[this.pos.offsetSize];
 
-    document.onmousemove  = (evt) => {
-      let coords =  rangeShift - (baseShift - event[this.pos.page])
+    document.onmousemove = (event) => {
+      let coords = rangeShift - (baseShift - event[this.pos.page]);
 
       // limit coords
-      if (coords < 0) coords =  0;
-      if (coords > rangeSize) coords =  rangeSize;
+      if (coords < 0) coords = 0;
+      if (coords > rangeSize) coords = rangeSize;
 
-      this.coord = coords
-      this.toPosition(this.coord)
+      this.coord = coords;
+      this.toPosition(this.coord);
 
       this.Observable.notify({
-        coord     : this.coord,
-        elem      : this
-      })
-    }
+        coord: this.coord,
+        elem: this,
+      });
+    };
 
-    document.onmouseup  = () =>  {
-      this.toPosition(this.coord)
-      document.onmousemove = document.onmouseup = null;
-    }
+    document.onmouseup = () => {
+      this.toPosition(this.coord);
+      document.onmousemove = null;
+      document.onmouseup = null;
+    };
 
-    return false
+    return false;
   }
 
   toPosition(coord: number) {
-    this.coord = coord
-    this.DOM.style[this.pos.offset] = this.coord + 'px'
+    this.coord = coord;
+    this.DOM.setAttribute('style', `${this.pos.offset} : ${this.coord}px`);
   }
-
 } // class
 
-export {Button}
+export default Button;

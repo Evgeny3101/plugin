@@ -1,98 +1,101 @@
-import { Observable } from '../../util/observable'
-import { Point } from './point'
-import { elemDOM } from './elemDOM'
-import { roundToMultiple } from '../../util/mixins'
+import Observable from '../../util/observable';
+import Point from './point';
+import ElemDOM from '../../util/elemDOM';
+import { roundToMultiple } from '../../util/mixins';
+import Config from '../interface/config';
+import Button from './button';
 
-class Scale extends elemDOM {
-  Observable = new Observable()
-  points: Point[] = []
-  numbers: elemDOM[] = []
-  long: elemDOM[] = []
-  short: elemDOM[] = []
-  coord: number
-  pos: any
-  invert: boolean
+class Scale extends ElemDOM {
+  Observable = new Observable();
+  points: Point[] = [];
+  numbers: ElemDOM[] = [];
+  long: ElemDOM[] = [];
+  short: ElemDOM[] = [];
+  coord!: number;
+  pos: { [key: string]: string };
+  invert: boolean;
 
-  constructor(id: Element, pos, data){
-    super(id, 'div', 'js-scale-range')
-    this.pos = pos
-    this.invert = data.invert
-    this.setPoints(data)
+  constructor(id: Element, pos: { [key: string]: string }, config: Config) {
+    super(id, 'div', 'js-scale-range');
+    this.pos = pos;
+    this.invert = config.invert;
+    this.setPoints({
+      points: config.points,
+      numberForEach: config.numberForEach,
+      longForEach: config.longForEach,
+    });
   }
 
   // установка точек шкалы
-  setPoints(data) {
-    for(let i = 0; i < data.points; i++) {
-      this.points[i] = new Point(this.DOM)
-      const point = this.points[i]
+  setPoints(data: { points: number; numberForEach: number; longForEach: number }) {
+    for (let i = 0; i < data.points; i++) {
+      this.points[i] = new Point(this.DOM);
+      const point = this.points[i];
 
-      if(i % data.numberForEach === 0) {
-        point.textField = new elemDOM(point.DOM, "div", 'js-scale-line__number')
+      if (i % data.numberForEach === 0) {
+        point.textField = new ElemDOM(point.DOM, 'div', 'js-scale-line__number');
       }
 
-      if(i % data.longForEach === 0) {
-        new elemDOM(point.DOM, "div", 'js-scale-line__long')
-      }
-      else {
-        new elemDOM(point.DOM, "div", 'js-scale-line__short')
+      if (i % data.longForEach === 0) {
+        point.line = new ElemDOM(point.DOM, 'div', 'js-scale-line__long');
+      } else {
+        point.line = new ElemDOM(point.DOM, 'div', 'js-scale-line__short');
       }
     }
   }
 
-  setValue(data) {
-    const rangeValues = Math.abs(data.minValue) + data.maxValue
-    const step = rangeValues / (this.points.length - 1)
+  setValue(data: { minValue: number; maxValue: number; step: number }) {
+    const rangeValues = Math.abs(data.minValue) + data.maxValue;
+    const step = rangeValues / (this.points.length - 1);
 
-    let currentValue = data.minValue
+    let currentValue = data.minValue;
 
-    for(let elem of this.points) {
-      elem.value = roundToMultiple(currentValue, data.step)
+    this.points.forEach((elem) => {
+      const point: Point = elem;
+      point.value = roundToMultiple(currentValue, data.step);
 
-      if(elem.textField) {
-        if(this.invert) elem.textField.DOM.innerText = String(-elem.value)
-        else elem.textField.DOM.innerText = String(elem.value)
+      if (point.textField) {
+        if (this.invert) point.textField.DOM.innerText = String(-point.value);
+        else point.textField.DOM.innerText = String(point.value);
       }
-      currentValue += step
-    }
+
+      currentValue += step;
+    });
   }
 
   // определение координат полос шкалы
   determineСoordScale(rangeSize: number) {
-    const step = rangeSize / (this.points.length - 1)
-    let coord = 0
+    const step = rangeSize / (this.points.length - 1);
+    let coord = 0;
 
-    for(let elem of this.points) {
-      elem.coord = coord
-      coord += step
-    }
+    this.points.forEach((elem) => {
+      const point: Point = elem;
+      point.coord = coord;
+      coord += step;
+    });
   }
 
-
   // обработчик нажатия на полосу шкалы
-  pressScaleBar(buttonArr, isRange: boolean, id: number){
-    let scale = this.points[id].coord
-    let btnId
-    if(!isRange) {
-      buttonArr[0].toPosition(scale)
-      btnId = 0
-    }
-    else {
-      let btn1 = buttonArr[0].coord
-      let btn2 = buttonArr[1].coord
-      let range = Math.abs(btn2) - Math.abs(btn1)
-      let diaposon = (range / 2) + Math.abs(btn1)
-      if(scale > diaposon)  btnId = 1
-      else                  btnId = 0
+  pressScaleBar(buttonArr: Button[], isRange: boolean, id: number) {
+    const scale = this.points[id].coord;
+    let btnId;
+    if (!isRange) {
+      buttonArr[0].toPosition(scale);
+      btnId = 0;
+    } else {
+      const btn1 = buttonArr[0].coord;
+      const btn2 = buttonArr[1].coord;
+      const range = Math.abs(btn2) - Math.abs(btn1);
+      const diaposon = range / 2 + Math.abs(btn1);
+      if (scale > diaposon) btnId = 1;
+      else btnId = 0;
     }
 
     this.Observable.notify({
-      value     : this.points[id].value,
-      id        : btnId
-    })
+      value: this.points[id].value,
+      id: btnId,
+    });
   }
-
-
 } // class
 
-
-export {Scale}
+export default Scale;

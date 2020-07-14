@@ -1,50 +1,45 @@
-import { elemDOM } from './elemDOM'
-import { Observable } from '../../util/observable'
+import ElemDOM from '../../util/elemDOM';
+import Observable from '../../util/observable';
 
-class Label extends elemDOM {
+class Label extends ElemDOM {
   Observable = new Observable();
   input: HTMLInputElement;
-  show: Function;
-  hide: Function;
   invert: Boolean;
+  lableOnClick: boolean;
 
-  constructor(id: Element, onClick: boolean, invert: boolean){
-    super(id, 'div', 'js-label-wrapper')
-    this.invert = invert
+  constructor(id: Element, lableOnClick: boolean, invert: boolean) {
+    super(id, 'div', 'js-label-wrapper');
+    this.invert = invert;
+    this.lableOnClick = lableOnClick;
 
-    let container = document.createElement('div')
-    container.className = 'js-label-container'
-    this.DOM.appendChild(container)
+    const container = document.createElement('div');
+    container.className = 'js-label-container';
+    this.DOM.appendChild(container);
 
-    this.input = document.createElement('input')
-    this.input.className = 'js-label-input'
-    this.input.setAttribute('readonly', 'readonly')
-    container.appendChild(this.input)
+    this.input = document.createElement('input');
+    this.input.className = 'js-label-input';
+    this.input.setAttribute('readonly', 'readonly');
+    container.appendChild(this.input);
 
-
-    if(onClick) this.onClick()
+    if (this.lableOnClick) this.DOM.style.display = 'none';
   } // constructor
 
-
-  toPosition(coord: number, posit: string) {
-    this.DOM.style[posit] = coord + 'px'
+  toPosition(coord: number, key: string) {
+    this.DOM.setAttribute('style', `${key} : ${coord}px`);
   }
 
-  onClick() {
-    this.DOM.style.display = "none"
-    this.show = () => {
-      this.DOM.style.display = "block"
-    }
-    this.hide = () => {
-      this.DOM.style.display = "none"
-    }
+  show() {
+    this.DOM.style.display = 'block';
+  }
+
+  hide() {
+    this.DOM.style.display = 'none';
   }
 
   setValue(value: number) {
-    if(this.invert) this.input.value = String(-value)
-    else this.input.value = String(value)
+    if (this.invert) this.input.value = String(-value);
+    else this.input.value = String(value);
   }
-
 } // class
 
-export {Label}
+export default Label;

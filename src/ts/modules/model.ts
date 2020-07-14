@@ -1,97 +1,91 @@
-import { Observable } from '../util/observable'
-import { roundToMultiple } from '../util/mixins'
-
+import { roundToMultiple } from '../util/mixins';
+import Observable from '../util/observable';
+import Config from './interface/config';
 
 class Model {
-  Observable = new Observable
+  Observable: Observable = new Observable();
+  value!: number[];
+  minValue!: number;
+  maxValue!: number;
+  step!: number;
+  range!: boolean;
 
-  value: number[]
-  minValue: number
-  maxValue: number
-  step: number
-  range: boolean
-
-  constructor(config) {
-    this.settingData( config )
+  constructor(config: Config) {
+    this.settingData(config);
   } // constructor
 
-
-  settingData( config ): void {
-    this.minValue  =  config.minValue
-    this.maxValue  =  config.maxValue
-    this.step      =  config.step
-    this.range     =  config.range
-
+  settingData(config: Config): void {
+    this.minValue = config.minValue;
+    this.maxValue = config.maxValue;
+    this.step = config.step;
+    this.range = config.range;
 
     // обработка введеных значений для слайдера
-    this.setNewValues(config.value)
+    this.setNewValues(config.value);
   }
 
   // установка значениЙ value по лимитам и шагу
-  setNewValues(num: number[]) {
-    num = this.checkLimit(num)
-    num = this.putInStep(num)
+  setNewValues(numberArr: number[]) {
+    let newValue: number[] = numberArr;
+    newValue = this.checkLimit(newValue);
+    newValue = this.putInStep(newValue);
 
-    let result: number[] = []
-    if(this.range === true) {
-      result.push(Math.min.apply(null, num))
-      result.push(Math.max.apply(null, num))
-    }
-    else result = num
-    this.value = result
+    let result: number[] = [];
+    if (this.range === true) {
+      result.push(Math.min.apply(null, newValue));
+      result.push(Math.max.apply(null, newValue));
+    } else result = newValue;
+    this.value = result;
   }
 
   // проверить значения по  min max
-  checkLimit(data:number[]): number[] {
-    let result: number[] = []
-    for(let item of data) {
-      if(item < this.minValue)       result.push(this.minValue)
-      else if(item > this.maxValue)  result.push(this.maxValue)
-      else result.push(item)
-    }
-    return result
+  checkLimit(numberArr: number[]): number[] {
+    const result: number[] = [];
+    numberArr.forEach((number) => {
+      if (number < this.minValue) result.push(this.minValue);
+      else if (number > this.maxValue) result.push(this.maxValue);
+      else result.push(number);
+    });
+    return result;
   }
 
   // выставляет на ближайший step и обрезает знаки после запятой
-  putInStep(num: number[]):number[] {
-    let result: number[] = []
-    for(let item of num) {
-      let value = roundToMultiple(item, this.step)
-      result.push(value)
-    }
-    return result
+  putInStep(numberArr: number[]): number[] {
+    const result: number[] = [];
+    numberArr.forEach((number) => {
+      const value = roundToMultiple(number, this.step);
+      result.push(value);
+    });
+    return result;
   }
 
   // обновить значение value по лимитам, шагу и выставить по id
-  updateValue(num: number[], id) {
-    num = this.checkLimit(num)
-    num = this.putInStep(num)
+  updateValue(numberArr: number[], id: number) {
+    let newValue: number[] = this.checkLimit(numberArr);
+    newValue = this.putInStep(newValue);
 
-    if(this.range === true) this.value[id] = num[0]
-    else this.value = num
+    if (this.range === true) this.value[id] = Number(newValue);
+    else this.value = newValue;
 
     this.Observable.notify({
-      value : this.value
-    })
+      value: this.value,
+    });
   }
 
   // для преобразования координат в значения
-  convertCoords(data){
-    let newValue = roundToMultiple((data.coord / data.step), this.step) + this.minValue;
-    let newArrValue = this.value
+  convertCoords(data: { coord: number; step: number; id: number }) {
+    const newValue = roundToMultiple(data.coord / data.step, this.step) + this.minValue;
+    const newArrValue = this.value;
 
-    if(this.range === true) {
-      newArrValue[data.id] = newValue
-      this.setNewValues(newArrValue)
-    }
-    else this.value[0] = newValue
+    if (this.range === true) {
+      newArrValue[data.id] = newValue;
+      this.setNewValues(newArrValue);
+    } else this.value[0] = newValue;
 
     this.Observable.notify({
-      value     : this.value,
-    })
+      value: this.value,
+    });
   }
-
 } // Model
 
-
-export {Model}
+export default Model;

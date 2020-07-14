@@ -1,15 +1,14 @@
-import {elemDOM} from './elemDOM'
+import ElemDOM from '../../util/elemDOM';
 
-class Point extends elemDOM {
-  textField: elemDOM
-  value: number
-  coord: number
+class Point extends ElemDOM {
+  textField!: ElemDOM;
+  value!: number;
+  coord!: number;
+  line!: ElemDOM;
 
   constructor(id: Element) {
-    super(id, 'div', 'js-scale-line')
-
+    super(id, 'div', 'js-scale-line');
   }
 } // class
 
-
-export {Point}
+export default Point;

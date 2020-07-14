@@ -1,127 +1,170 @@
 <!DOCTYPE html>
 <html lang="ru">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>webpack</title>
-</head>
-<body class="page">
-  <div class="wrapper">
-    <form class="tuning">
-      <div class="tuning__container">
-        <h3>values</h3>
-        <input type="text" class="field-style" name="value" placeholder="number" value="-25">
-        <input type="text" class="field-style" name="value2" placeholder="number" value="25">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>webpack</title>
+  </head>
+  <body class="page">
+    <div class="wrapper">
+      <form class="tuning">
+        <div class="tuning__container">
+          <h3>values</h3>
+          <input
+            type="text"
+            class="field-style"
+            name="value"
+            placeholder="number"
+            value="-25"
+          />
+          <input
+            type="text"
+            class="field-style"
+            name="value2"
+            placeholder="number"
+            value="25"
+          />
+        </div>
+
+        <div class="tuning__container">
+          <h3>min max values</h3>
+          <input
+            type="text"
+            class="field-style"
+            name="minValue"
+            placeholder="min"
+            value="-100"
+          />
+          <input
+            type="text"
+            class="field-style"
+            name="maxValue"
+            placeholder="max"
+            value="100"
+          />
+        </div>
+
+        <div class="tuning__container">
+          <h3>range</h3>
+          <input type="radio" id="isRange1" name="range" value="true" checked />
+          <label for="isRange1">true</label>
+
+          <input type="radio" id="isRange2" name="range" value="false" />
+          <label for="isRange2">false</label>
+        </div>
+
+        <div class="tuning__container">
+          <h3>vertical</h3>
+          <input type="radio" id="isVertical1" name="vertical" value="true" checked />
+          <label for="isVertical1">true</label>
+
+          <input type="radio" id="isVertical2" name="vertical" value="false" />
+          <label for="isVertical2">false</label>
+        </div>
+
+        <div class="tuning__container">
+          <h3>invert</h3>
+          <input type="radio" id="isInvert1" name="invert" value="true" checked />
+          <label for="isInvert1">true</label>
+
+          <input type="radio" id="isInvert2" name="invert" value="false" />
+          <label for="isInvert2">false</label>
+        </div>
+
+        <div class="tuning__container">
+          <h3>step</h3>
+          <input
+            type="text"
+            class="field-style"
+            name="step"
+            placeholder="number"
+            value="1"
+          />
+        </div>
+        <hr />
+
+        <div class="tuning__container">
+          <h3>label</h3>
+          <input type="radio" id="isLabel1" name="label" value="true" checked />
+          <label for="isLabel1">true</label>
+
+          <input type="radio" id="isLabel2" name="label" value="false" />
+          <label for="isLabel2">false</label>
+        </div>
+
+        <div class="tuning__container">
+          <h3>onClick</h3>
+          <input type="radio" id="onClick1" name="onClick" value="true" checked />
+          <label for="onClick1">true</label>
+
+          <input type="radio" id="onClick2" name="onClick" value="false" />
+          <label for="onClick2">false</label>
+        </div>
+        <hr />
+
+        <div class="tuning__container">
+          <h3>scale</h3>
+          <input type="radio" id="isScale1" name="scale" value="true" checked />
+          <label for="isScale1">true</label>
+
+          <input type="radio" id="isScale2" name="scale" value="false" />
+          <label for="isScale2">false</label>
+        </div>
+
+        <div class="tuning__container">
+          <h3>points</h3>
+          <input
+            type="text"
+            class="field-style"
+            name="points"
+            placeholder="number"
+            value="13"
+          />
+        </div>
+
+        <div class="tuning__container">
+          <h3>numberForEach</h3>
+          <input
+            type="text"
+            class="field-style"
+            name="numberForEach"
+            placeholder="number"
+            value="4"
+          />
+        </div>
+
+        <div class="tuning__container">
+          <h3>longForEach</h3>
+          <input
+            type="text"
+            class="field-style"
+            name="longForEach"
+            placeholder="number"
+            value="2"
+          />
+        </div>
+
+        <input type="button" value="accept" />
+      </form>
+
+      <div class="container">
+        <div class="container-field">
+          <input type="text" class="field-style text-field" />
+          <input type="text" class="field-style text-field2" />
+        </div>
+        <div class="plugin rangeSlider1"></div>
       </div>
-
-      <div class="tuning__container">
-        <h3>min max values</h3>
-        <input type="text" class="field-style" name="minValue" placeholder="min" value="-100">
-        <input type="text" class="field-style" name="maxValue" placeholder="max" value="100">
-      </div>
-
-      <div class="tuning__container">
-        <h3>range</h3>
-        <input type="radio" id="isRange1" name="range" value="true" checked>
-        <label for="isRange1">true</label>
-
-        <input type="radio" id="isRange2" name="range" value="false">
-        <label for="isRange2">false</label>
-      </div>
-
-      <div class="tuning__container">
-        <h3>vertical</h3>
-        <input type="radio" id="isVertical1" name="vertical" value="true" checked>
-        <label for="isVertical1">true</label>
-
-        <input type="radio" id="isVertical2" name="vertical" value="false">
-        <label for="isVertical2">false</label>
-      </div>
-
-      <div class="tuning__container">
-        <h3>invert</h3>
-        <input type="radio" id="isInvert1" name="invert" value="true" checked>
-        <label for="isInvert1">true</label>
-
-        <input type="radio" id="isInvert2" name="invert" value="false">
-        <label for="isInvert2">false</label>
-      </div>
-
-      <div class="tuning__container">
-        <h3>step</h3>
-        <input type="text" class="field-style" name="step" placeholder="number" value="1">
-      </div>
-      <hr>
-
-      <div class="tuning__container">
-        <h3>label</h3>
-        <input type="radio" id="isLabel1" name="label" value="true" checked>
-        <label for="isLabel1">true</label>
-
-        <input type="radio" id="isLabel2" name="label" value="false">
-        <label for="isLabel2">false</label>
-      </div>
-
-      <div class="tuning__container">
-        <h3>onClick</h3>
-        <input type="radio" id="onClick1" name="onClick" value="true" checked>
-        <label for="onClick1">true</label>
-
-        <input type="radio" id="onClick2" name="onClick" value="false">
-        <label for="onClick2">false</label>
-      </div>
-      <hr>
-
-      <div class="tuning__container">
-        <h3>scale</h3>
-        <input type="radio" id="isScale1" name="scale" value="true" checked>
-        <label for="isScale1">true</label>
-
-        <input type="radio" id="isScale2" name="scale" value="false">
-        <label for="isScale2">false</label>
-      </div>
-
-      <div class="tuning__container">
-        <h3>points</h3>
-        <input type="text" class="field-style" name="points" placeholder="number" value="13">
-      </div>
-
-      <div class="tuning__container">
-        <h3>numberForEach</h3>
-        <input type="text" class="field-style" name="numberForEach" placeholder="number" value="4">
-      </div>
-
-      <div class="tuning__container">
-        <h3>longForEach</h3>
-        <input type="text" class="field-style" name="longForEach" placeholder="number" value="2">
-      </div>
-
-      <input type="button" value="accept">
-    </form>
-
-    <div class="container">
-      <div class="container-field">
-        <input type="text" class="field-style text-field">
-        <input type="text" class="field-style text-field2">
-      </div>
-      <div class="plugin rangeSlider1"></div>
     </div>
 
-  </div>
-
-  <div class="wrapper">
-    <div class="tuning">
-
-    </div>
-    <div class="container">
-      <div class="container-field ">
-        <input type="text" class="field-style text-field3">
-        <input type="text" class="field-style text-field4">
+    <div class="wrapper">
+      <div class="tuning"></div>
+      <div class="container">
+        <div class="container-field">
+          <input type="text" class="field-style text-field3" />
+          <input type="text" class="field-style text-field4" />
+        </div>
+        <div class="plugin rangeSlider2"></div>
       </div>
-      <div class="plugin rangeSlider2"></div>
     </div>
-  </div>
-
-
-</body>
+  </body>
 </html>

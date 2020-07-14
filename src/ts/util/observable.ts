@@ -8,12 +8,12 @@ class Observable {
   }
 
   unsubscribe(f) {
-    this.observers = this.observers.filter(subscribe => subscribe !== f);
+    this.observers = this.observers.filter((subscribe) => subscribe !== f);
   }
 
   notify(data) {
-    this.observers.forEach(observer => observer(data));
+    this.observers.forEach((observer) => observer(data));
   }
 }
 
-export {Observable}
+export default Observable;
