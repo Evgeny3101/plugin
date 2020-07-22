@@ -15,15 +15,26 @@ class Scale extends ElemDOM {
   pos: { [key: string]: string };
   invert: boolean;
 
-  constructor(id: Element, pos: { [key: string]: string }, config: Config) {
-    super(id, 'div', 'js-scale-range');
-    this.pos = pos;
+  constructor(data: {
+    id: Element;
+    size: number;
+    pos: { [key: string]: string };
+    config: Config;
+  }) {
+    super(data.id, 'div', 'js-scale-range');
+    const { config } = data;
+    this.pos = data.pos;
     this.invert = config.invert;
+
     this.setPoints({
       points: config.points,
       numberForEach: config.numberForEach,
       longForEach: config.longForEach,
     });
+
+    this.setValue(config);
+
+    this.determineСoordScale(data.size);
   }
 
   // установка точек шкалы

@@ -9,7 +9,6 @@ import Config from './interface/config';
 
 class View {
   Observable = new Observable();
-  mainDOM: Element;
   range: Range;
   button: Button[] = [];
   label: Label[] = [];
@@ -21,11 +20,8 @@ class View {
   scale: Scale | undefined;
 
   constructor(id: Element, config: Config) {
-    this.mainDOM = id;
-    this.range = new Range(this.mainDOM);
+    this.range = new Range(id);
     this.init(config);
-    // установка слушателей
-    this.setListeners(config);
   }
 
   init(config: Config) {
@@ -46,11 +42,11 @@ class View {
       this.interval = new Interval(this.range.DOM, this.pos);
     }
 
-    // установка  лейблов над кнопками
+    // установка лейблов над кнопками
     if (config.label) {
       this.label = [];
       for (let i = 0; i < this.button.length; i++) {
-        this.label[i] = new Label(this.range.DOM, config.lableOnClick, config.invert);
+        this.label[i] = new Label(this.range.DOM, config.labelOnClick, config.invert);
         this.label[i].input.value = String(config.value[i]);
       }
     }
@@ -74,10 +70,12 @@ class View {
 
     // установка  шкалы
     if (config.scale) {
-      this.scale = new Scale(this.range.DOM, this.pos, config);
-      this.scale.determineСoordScale(this.rangeSize);
-      this.scale.setValue(config);
-      this.scale.determineСoordScale(this.rangeSize);
+      this.scale = new Scale({
+        id: this.range.DOM,
+        size: this.rangeSize,
+        pos: this.pos,
+        config,
+      });
     }
 
     // обновление координат и установка элементов
@@ -87,6 +85,9 @@ class View {
       minValue: config.minValue,
       value: config.value,
     });
+
+    // установка слушателей
+    this.setListeners(config);
   }
 
   // установка переменных для вертикального или горизонтального позиционирования
@@ -146,11 +147,9 @@ class View {
     }
 
     // показывать / скрывать лейбл при нажатии
-    if (this.label.lableOnClick) {
+    if (config.labelOnClick) {
       for (let i = 0; i < this.label.length; i++) {
-        const elem = this.label[i];
-        this.button[i].DOM.addEventListener('mousedown', elem.show.bind(elem));
-        document.addEventListener('mouseup', elem.hide.bind(elem));
+        this.label[i].showOnClick(this.button[i]);
       }
     }
   }

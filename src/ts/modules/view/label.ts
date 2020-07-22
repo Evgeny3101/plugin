@@ -1,16 +1,17 @@
 import ElemDOM from '../../util/elemDOM';
 import Observable from '../../util/observable';
+import Button from './button';
 
 class Label extends ElemDOM {
   Observable = new Observable();
   input: HTMLInputElement;
   invert: Boolean;
-  lableOnClick: boolean;
+  labelOnClick: boolean;
 
-  constructor(id: Element, lableOnClick: boolean, invert: boolean) {
+  constructor(id: Element, labelOnClick: boolean, invert: boolean) {
     super(id, 'div', 'js-label-wrapper');
     this.invert = invert;
-    this.lableOnClick = lableOnClick;
+    this.labelOnClick = labelOnClick;
 
     const container = document.createElement('div');
     container.className = 'js-label-container';
@@ -20,20 +21,24 @@ class Label extends ElemDOM {
     this.input.className = 'js-label-input';
     this.input.setAttribute('readonly', 'readonly');
     container.appendChild(this.input);
-
-    if (this.lableOnClick) this.DOM.style.display = 'none';
   } // constructor
 
   toPosition(coord: number, key: string) {
     this.DOM.setAttribute('style', `${key} : ${coord}px`);
   }
 
+  showOnClick(btn: Button) {
+    this.DOM.classList.add('js-label__hide');
+    btn.DOM.addEventListener('mousedown', this.show.bind(this));
+    document.addEventListener('mouseup', this.hide.bind(this));
+  }
+
   show() {
-    this.DOM.style.display = 'block';
+    this.DOM.classList.remove('js-label__hide');
   }
 
   hide() {
-    this.DOM.style.display = 'none';
+    this.DOM.classList.add('js-label__hide');
   }
 
   setValue(value: number) {

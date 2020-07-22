@@ -10,7 +10,7 @@ interface Config {
   invert: boolean;
 
   label: boolean;
-  lableOnClick: boolean;
+  labelOnClick: boolean;
 
   scale: boolean;
   points: number;

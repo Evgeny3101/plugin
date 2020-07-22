@@ -2,8 +2,8 @@ import './stylesheets/style.styl';
 import './stylesheets/range_slider.styl';
 import './ts/main';
 
-const slider1 = $('.rangeSlider1');
-slider1.rangeSlider({
+const slider = $('.rangeSlider');
+slider.rangeSlider({
   value: [-22, 43],
   minValue: -100,
 
@@ -19,13 +19,13 @@ const slider2 = $('.rangeSlider2');
 slider2
   .rangeSlider({
     range: false,
-    textField: ['.text-field3', '.text-field4'],
   })
   .rangeSlider('config', {
     range: true,
     vertical: true,
     scale: true,
     label: true,
+    textField: ['.text-field3', '.text-field4'],
   });
 
 const form = document.querySelector('.tuning');
@@ -52,5 +52,5 @@ function stringInValue(data) {
 function sendOptions() {
   const data = $(form).serializeArray();
   const result = stringInValue(data);
-  slider1.rangeSlider('config', result);
+  slider.rangeSlider('config', result);
 }

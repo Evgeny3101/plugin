@@ -1,46 +1,56 @@
-/* eslint-disable no-param-reassign */
 import Model from './modules/model';
 import View from './modules/view';
 import Controller from './modules/controller';
 import Config from './modules/interface/config';
 
-(($) => {
+((jQuery) => {
   class RangeSlider {
-    model: Model;
-    view: View;
-    controller: Controller;
+    mainDOM: Element;
+    config: Config;
+    model!: Model;
+    view!: View;
+    controller!: Controller;
 
-    constructor(id: Element, config: Config) {
-      id.innerHTML = '';
-      this.model = new Model(config);
-      this.view = new View(id, config);
-      this.controller = new Controller(this.model, this.view, config);
+    constructor(mainElemet: Element, config: Config) {
+      this.mainDOM = mainElemet;
+      this.config = config;
+      this.init();
     } // constructor
 
+    init() {
+      this.model = new Model(this.config);
+      this.view = new View(this.mainDOM, this.config);
+      this.controller = new Controller(this.model, this.view, this.config);
+    }
+
     dataset(config: Config) {
-      this.model.update(config);
-      this.view.update(config);
-      this.controller.update(config);
+      this.config = config;
+      this.mainDOM.innerHTML = '';
+      this.init();
     }
   } // class
 
-  const slider: RangeSlider[] = [];
-  let config: Config;
+  const $ = jQuery;
+  const sliders: RangeSlider[] = [];
+
   const methods: { [key: string]: Function } = {
     init(options: {}): Element {
-      return this.each((index: number, value: Element) => {
-        config = $.extend({}, $.fn.rangeSlider.defaults, options);
-
-        slider[index] = new RangeSlider(value, config);
+      return this.each((index: number, elem: Element) => {
+        const config: Config = $.extend({}, $.fn.rangeSlider.defaults, options);
+        const newSlider = new RangeSlider(elem, config);
+        sliders.push(newSlider);
       });
     },
 
     config(options: {}): Element {
-      return this.each((index: number, value: Element) => {
-        config = $.extend({}, $.fn.rangeSlider.defaults, options);
-
-        slider[index] = new RangeSlider(value, config);
-        // slider[index].dataset(config);
+      return this.each((index: number, elem: Element) => {
+        sliders.forEach((slider) => {
+          if (slider.mainDOM === elem) {
+            const config = $.extend({}, slider.config, options);
+            return slider.dataset(config);
+          }
+          return false;
+        });
       });
     },
   };
@@ -68,7 +78,7 @@ import Config from './modules/interface/config';
     invert: false,
 
     lable: false,
-    lableOnClick: false,
+    labelOnClick: false,
 
     scale: false,
     points: 13,
