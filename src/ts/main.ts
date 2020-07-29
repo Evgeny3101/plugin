@@ -23,7 +23,7 @@ import Config from './modules/interface/config';
       this.controller = new Controller(this.model, this.view, this.config);
     }
 
-    dataset(config: Config) {
+    setNewConfig(config: Config) {
       this.config = config;
       this.mainDOM.innerHTML = '';
       this.init();
@@ -47,7 +47,7 @@ import Config from './modules/interface/config';
         sliders.forEach((slider) => {
           if (slider.mainDOM === elem) {
             const config = $.extend({}, slider.config, options);
-            return slider.dataset(config);
+            return slider.setNewConfig(config);
           }
           return false;
         });

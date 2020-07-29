@@ -1,4 +1,4 @@
-import { roundToMultiple } from '../util/mixins';
+import roundToMultiple from '../util/mixins';
 import Observable from '../util/observable';
 import Config from './interface/config';
 
@@ -24,9 +24,9 @@ class Model {
     this.setNewValues(config.value);
   }
 
-  // установка значениЙ value по лимитам и шагу
-  setNewValues(numberArr: number[]) {
-    let newValue: number[] = numberArr;
+  // установка значений value по лимитам и шагу
+  setNewValues(numbersArr: number[]) {
+    let newValue: number[] = numbersArr;
     newValue = this.checkLimit(newValue);
     newValue = this.putInStep(newValue);
 
@@ -39,9 +39,9 @@ class Model {
   }
 
   // проверить значения по  min max
-  checkLimit(numberArr: number[]): number[] {
+  checkLimit(numbersArr: number[]): number[] {
     const result: number[] = [];
-    numberArr.forEach((number) => {
+    numbersArr.forEach((number) => {
       if (number < this.minValue) result.push(this.minValue);
       else if (number > this.maxValue) result.push(this.maxValue);
       else result.push(number);
@@ -50,9 +50,9 @@ class Model {
   }
 
   // выставляет на ближайший step и обрезает знаки после запятой
-  putInStep(numberArr: number[]): number[] {
+  putInStep(numbersArr: number[]): number[] {
     const result: number[] = [];
-    numberArr.forEach((number) => {
+    numbersArr.forEach((number) => {
       const value = roundToMultiple(number, this.step);
       result.push(value);
     });
@@ -60,10 +60,9 @@ class Model {
   }
 
   // обновить значение value по лимитам, шагу и выставить по id
-  updateValue(numberArr: number[], id: number) {
-    let newValue: number[] = this.checkLimit(numberArr);
+  updateValue(number: [number], id: number) {
+    let newValue: number[] = this.checkLimit(number);
     newValue = this.putInStep(newValue);
-
     if (this.range === true) this.value[id] = Number(newValue);
     else this.value = newValue;
 

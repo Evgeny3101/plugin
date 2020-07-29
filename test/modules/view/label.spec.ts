@@ -1,42 +1,43 @@
-// import {RangeSlider} from '../../../src/ts/main';
+import '../../../src/ts/main';
+import View from '../../../src/ts/modules/view';
+import Config from '../../../src/ts/modules/interface/config';
 
-// setFixtures('<div class="js-plugin"></div><input class="text-field"></input><input class="text-field2"></input>')
+let config: Config;
+let view: View;
+let mainDOM: Element;
 
-// let slider = new RangeSlider('.js-plugin', {
-//   value     : [20,50],
-//   label     : true,
-//   range     : true,
-//   textField : ['.text-field', '.text-field2']
-// })
+jasmine.getFixtures().fixturesPath = 'base/test/fixtures';
+jasmine.getStyleFixtures().fixturesPath = 'base/test/fixtures';
 
+describe('Model testing.', () => {
+  beforeEach(() => {
+    loadFixtures('fixt.html');
+    loadStyleFixtures('fixt.css');
+    mainDOM = document.querySelector('.js-plugin');
 
-// describe('Label testing.', () => {
+    config = $.fn.rangeSlider.defaults;
+    config.textField = ['.text-field', '.text-field2'];
 
-//   beforeEach(() => {
-//     setFixtures('<div class="js-plugin"></div><input class="text-field"></input><input class="text-field2"></input>')
-//     slider.dataset({
-//       label     : true,
-//       range     : true,
-//     })
-//   })
+    view = new View(mainDOM, config);
+  });
 
+  it('The "show/hide" method. Show label on click.', () => {
+    config.label = true;
+    view.init(config);
 
-//   it('Check elements by class and tag', () => {
-//     expect(slider.view.label[0].DOM).toEqual('div.js-label-wrapper')
-//     expect(slider.view.label[1].DOM).toEqual('div.js-label-wrapper')
+    view.label[0].hide();
+    expect(view.label[0].DOM).toHaveClass('js-label__hide');
 
-//     expect(slider.view.label[0].input).toEqual('input.js-label-input')
-//     expect(slider.view.label[1].input).toEqual('input.js-label-input')
-//   })
+    view.label[0].show();
+    expect(view.label[0].DOM).not.toHaveClass('js-label__hide');
+  });
 
-//   it('Check methods show/hide elements', () => {
-//     slider.view.label[0].show()
-//     expect(slider.view.label[0].DOM).toHaveCss({'display': 'block'});
+  // it('The "setValue" method. Sets value in label.', () => { // переделать invert
+  //   config.value = [100];
+  //   config.label = true;
+  //   config.invert = true;
+  //   view.init(config);
 
-//     slider.view.label[0].hide()
-//     expect(slider.view.label[0].DOM).toHaveCss({"display": "none"});
-//   });
-
-
-// })
-
+  //   expect(view.label[0].input.value).toBe('100');
+  // });
+});

@@ -1,113 +1,73 @@
-// import {RangeSlider} from '../../src/ts/main';
+import '../../src/ts/main';
+import View from '../../src/ts/modules/view';
+import Config from '../../src/ts/modules/interface/config';
 
-// setFixtures('<div class="js-plugin"></div><input class="text-field"></input><input class="text-field2"></input>')
-// let newSlider = new RangeSlider('.js-plugin', {
-//   value     : [20],
-//   textField : ['.text-field']
-// })
-// let view = newSlider.view
+let config: Config;
+let view: View;
+let mainDOM: Element;
 
+jasmine.getFixtures().fixturesPath = 'base/test/fixtures';
+jasmine.getStyleFixtures().fixturesPath = 'base/test/fixtures';
 
-// describe('View testing', () => {
+describe('View testing.', () => {
+  beforeEach(() => {
+    loadFixtures('fixt.html');
+    loadStyleFixtures('fixt.css');
+    mainDOM = document.querySelector('.js-plugin');
 
-//   beforeEach(() => {
-//     setFixtures('<div class="js-plugin"></div><input class="text-field"></input><input class="text-field2"></input>')
-//     newSlider.dataset({
-//       value     : [20,22],
-//       textField : ['.text-field', '.text-field2']
-//     })
-//   })
+    config = $.fn.rangeSlider.defaults;
+    config.textField = ['.text-field', '.text-field2'];
 
-//   it('elements DOM defined', () => {
-//     expect(view.range.DOM).toBeDefined();
-//     expect(view.button[0].DOM).toBeDefined();
-//     expect(view.textFieldDOM[0]).toBeDefined()
-//   })
+    view = new View(mainDOM, config);
+  });
 
-// ////////////////////textField////////////////////////
+  it('Elements DOM defined.', () => {
+    expect(view.range.DOM).toBeDefined();
+    expect(view.button[0].DOM).toBeDefined();
+    expect(view.textField[0].DOM).toBeDefined();
+  });
 
-//   it('установка textFieldDOM', () => {
-//     view.setTextField(['.text-field'])
-//     expect(view.textFieldDOM[0]).toHaveClass('text-field');
-//   });
+  it('Element "interval" is defined, if range == true.', () => {
+    config.range = true;
+    view.init(config);
 
+    expect(view.interval.DOM).toBeDefined();
+  });
 
-//   it('установка value в textFieldDOM', () => {
-//     newSlider.view.setTextField(['.text-field'])
-//     newSlider.view.updateTextField([123])
-//     expect(newSlider.view.textFieldDOM[0].value).toBe('123');
+  it('Element "label" is defined, if label == true.', () => {
+    config.label = true;
+    view.init(config);
 
-//     newSlider.view.setTextField(['.text-field', '.text-field2'])
-//     newSlider.view.updateTextField([121, 33])
-//     expect(newSlider.view.textFieldDOM[0].value).toBe('121');
-//     expect(newSlider.view.textFieldDOM[1].value).toBe('33');
+    expect(view.label[0].DOM).toBeDefined();
+  });
 
-//     newSlider.view.updateTextField([21])
-//     expect(newSlider.view.textFieldDOM[0].value).toBe('21');
-//   });
-// ////////////////////button////////////////////////
+  it('Element "scale" is defined, if scale == true.', () => {
+    config.scale = true;
+    view.init(config);
 
+    expect(view.scale.DOM).toBeDefined();
+  });
 
-//   it('move method defined', () => {
-//     let btn = view.button[0]
+  it('Vertical pos current selected, if vertical == true.', () => {
+    config.vertical = true;
+    view.init(config);
 
-//     spyOn(btn, 'move')
-//     btn.move();
+    expect(view.pos.offset).toBe('top');
+  });
 
-//     expect(btn.move).toHaveBeenCalled();
-//   })
+  it('Show label on click selected, if labelOnClick == true.', () => {
+    config.label = true;
+    config.labelOnClick = true;
+    view.init(config);
 
+    expect(view.label[0].DOM).toHaveClass('js-label__hide');
+  });
 
+  it('The "updateSize" method. Updates size slider.', () => {
+    view.range.DOM.classList.add('js-test-size');
+    view.updateSize(config);
+    view.range.DOM.classList.remove('js-test-size');
 
-//   it('"mousemove" event is triggered', () => {
-//     let elem = view.button[0].DOM;
-//     let spyEvent = spyOnEvent(document, 'mousemove');
-
-//     let mousedown = new MouseEvent("mousedown")
-//     elem.dispatchEvent(mousedown)
-//     let event = new MouseEvent("mousemove")
-//     document.dispatchEvent(event)
-
-//     expect('mousemove').toHaveBeenTriggeredOn(document)
-//     expect(spyEvent).toHaveBeenTriggered()
-//   });
-
-
-//   it('"mousemove" event checking limits', () => {
-//     let elem = view.button[0].DOM;
-
-//     let mousedown = new MouseEvent("mousedown")
-//     elem.dispatchEvent(mousedown)
-
-//     let event = new MouseEvent("mousemove", {
-//       clientX: 10000,
-//       clientY: 10000
-//     })
-//     document.dispatchEvent(event)
-
-//     let event2 = new MouseEvent("mousemove", {
-//       clientX: -10000,
-//       clientY: -10000
-//     })
-//     document.dispatchEvent(event2)
-//   });
-
-
-//   it('"mouseup" event is triggered', () => {
-//     var elem = view.button[0].DOM;
-//     var spyEvent = spyOnEvent(document, 'mouseup');
-
-//     let mousedown = new MouseEvent("mousedown")
-//     elem.dispatchEvent(mousedown)
-//     let event = new MouseEvent("mouseup")
-//     document.dispatchEvent(event)
-
-//     expect('mouseup').toHaveBeenTriggeredOn(document)
-//     expect(spyEvent).toHaveBeenTriggered()
-//     expect(document.onmouseup).toBe(null)
-//     expect(document.onmousemove).toBe(null)
-//   })
-
-
-// })
-
+    expect(view.rangeSize).toBe(110);
+  });
+});

@@ -25,12 +25,12 @@ class Controller {
         label: config.label,
       });
 
-      for (let i = 0; i < view.textField.length; i++) {
-        view.textField[i].updateTextField({
+      view.textField.forEach((element, index) => {
+        element.updateTextField({
           value: data.value,
-          id: i,
+          id: index,
         });
-      }
+      });
     });
 
     /// / notify View ////

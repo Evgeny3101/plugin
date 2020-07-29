@@ -1,0 +1,23 @@
+.js-plugin {
+  width: 200px;
+  height: 200px;
+}
+
+.js-range-slider {
+  width: 220px;
+  height: 220px;
+}
+
+.js-plugin .js-test-size {
+  width: 120px;
+  height: 120px;
+}
+
+.js-plugin .js-range-btn {
+  width: 10px;
+  height: 10px;
+}
+
+.js-label__hide {
+  display: none;
+}

@@ -11,5 +11,4 @@ function roundToMultiple(num: number, multiple: number) {
   return result;
 }
 
-// eslint-disable-next-line import/prefer-default-export
-export { roundToMultiple };
+export default roundToMultiple;

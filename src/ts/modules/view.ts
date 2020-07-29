@@ -33,7 +33,8 @@ class View {
 
     // установка  кнопок
     this.button = [];
-    for (let i = 0; i <= Number(config.range); i++) {
+    const buttonArrayLength = Number(config.range) + 1;
+    for (let i = 0; i < buttonArrayLength; i += 1) {
       this.button[i] = new Button(this.range.DOM, this.pos);
     }
 
@@ -45,21 +46,21 @@ class View {
     // установка лейблов над кнопками
     if (config.label) {
       this.label = [];
-      for (let i = 0; i < this.button.length; i++) {
+      this.button.forEach((element, i) => {
         this.label[i] = new Label(this.range.DOM, config.labelOnClick, config.invert);
         this.label[i].input.value = String(config.value[i]);
-      }
+      });
     }
 
     // установка текстовых полей
     if (config.textField) {
-      for (let i = 0; i < config.textField.length; i++) {
-        this.textField[i] = new TextField(config.textField[i], config.invert);
+      config.textField.forEach((element, i) => {
+        this.textField[i] = new TextField(element, config.invert);
         this.textField[i].updateTextField({
           value: config.value,
           id: i,
         });
-      }
+      });
     }
 
     // установит значения this.rangeSize и this.step
@@ -138,19 +139,17 @@ class View {
 
     // клик на деление шкалы
     if (this.scale) {
-      for (let i = 0; i < this.scale.points.length; i++) {
-        this.scale.points[i].DOM.addEventListener(
+      this.scale.points.forEach((element, i) => {
+        element.DOM.addEventListener(
           'click',
           this.scale.pressScaleBar.bind(this.scale, this.button, config.range, i)
         );
-      }
+      });
     }
 
     // показывать / скрывать лейбл при нажатии
-    if (config.labelOnClick) {
-      for (let i = 0; i < this.label.length; i++) {
-        this.label[i].showOnClick(this.button[i]);
-      }
+    if (config.label && config.labelOnClick) {
+      this.label.forEach((element, i) => element.showOnClick(this.button[i]));
     }
   }
 
@@ -171,6 +170,7 @@ class View {
   // установит значения this.rangeSize и this.step
   updateRangeSize(data: { minValue: number; maxValue: number }) {
     const btn = this.button[0];
+
     this.rangeSize = this.range.DOM[this.pos.clientSize] - btn.DOM[this.pos.offsetSize];
     const valueRange = Math.abs(data.maxValue - data.minValue);
 
@@ -185,13 +185,13 @@ class View {
     value: number[];
   }) {
     if (data.range === true) {
-      for (let i = 0; i < data.value.length; i++) {
-        const newCoord = this.step * (data.value[i] + Math.abs(data.minValue));
-
+      data.value.forEach((value, i) => {
+        const newCoord = this.step * (value + Math.abs(data.minValue));
         this.button[i].toPosition(newCoord);
-      }
+      });
+
       // установка интервала по координатам
-      this.interval.toPosition([this.button[0], this.button[1]]);
+      this.interval.toPosition(this.button);
     } else {
       const newCoord = this.step * (data.value[0] + Math.abs(data.minValue));
       this.button[0].toPosition(newCoord);
@@ -199,10 +199,10 @@ class View {
 
     // для установка Label по координатам
     if (data.label) {
-      for (let i = 0; i < this.label.length; i++) {
-        this.label[i].toPosition(this.button[i].coord, this.pos.offset);
-        this.label[i].setValue(data.value[i]);
-      }
+      this.label.forEach((element, i) => {
+        element.toPosition(this.button[i].coord, this.pos.offset);
+        element.setValue(data.value[i]);
+      });
     }
   }
 } // class View

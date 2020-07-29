@@ -1,5 +1,5 @@
 const webpackConfig = require('./webpack.config');
-const webpack = require('webpack')
+const webpack = require('webpack');
 
 module.exports = function (config) {
   config.set({
@@ -9,11 +9,13 @@ module.exports = function (config) {
     files: [
       { pattern: 'src/**/*.ts' },
       { pattern: 'test/**/*.spec.ts' },
+      { pattern: 'test/**/*.html' },
+      { pattern: 'test/**/*.css' },
     ],
 
     preprocessors: {
       'src/**/*.ts': ['webpack', 'sourcemap'],
-      'test/**/*.ts': ['webpack', 'sourcemap']
+      'test/**/*.ts': ['webpack', 'sourcemap'],
     },
 
     reporters: ['progress', 'coverage-istanbul'],
@@ -33,17 +35,17 @@ module.exports = function (config) {
         new webpack.ProvidePlugin({
           $: 'jquery',
           jQuery: 'jquery',
-          'window.jQuery': 'jquery'
-        })
+          'window.jQuery': 'jquery',
+        }),
       ],
     },
 
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
-    autoWatch: false,
+    autoWatch: true,
     browsers: ['Chrome'],
-    singleRun: true,
+    singleRun: false,
     concurrency: Infinity,
   });
 };

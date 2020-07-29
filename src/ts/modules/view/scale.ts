@@ -1,7 +1,7 @@
 import Observable from '../../util/observable';
 import Point from './point';
 import ElemDOM from '../../util/elemDOM';
-import { roundToMultiple } from '../../util/mixins';
+import roundToMultiple from '../../util/mixins';
 import Config from '../interface/config';
 import Button from './button';
 
@@ -39,7 +39,7 @@ class Scale extends ElemDOM {
 
   // установка точек шкалы
   setPoints(data: { points: number; numberForEach: number; longForEach: number }) {
-    for (let i = 0; i < data.points; i++) {
+    for (let i = 0; i < data.points; i += 1) {
       this.points[i] = new Point(this.DOM);
       const point = this.points[i];
 
