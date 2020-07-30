@@ -5,11 +5,12 @@ import Config from '../../../src/ts/modules/interface/config';
 let config: Config;
 let view: View;
 let mainDOM: Element;
+let elem: HTMLElement;
 
 jasmine.getFixtures().fixturesPath = 'base/test/fixtures';
 jasmine.getStyleFixtures().fixturesPath = 'base/test/fixtures';
 
-describe('Button testing.', () => {
+describe('Button testing. The "move" method.', () => {
   beforeEach(() => {
     loadFixtures('fixt.html');
     loadStyleFixtures('fixt.css');
@@ -19,26 +20,45 @@ describe('Button testing.', () => {
     config.textField = ['.text-field', '.text-field2'];
 
     view = new View(mainDOM, config);
+    elem = view.button[0].DOM;
+
+    const mousedown = new MouseEvent('mousedown');
+    elem.dispatchEvent(mousedown);
   });
 
-  it('The "move" event. Receives the coordinates of a button and sends a notification to subscribers.', () => {
-    view.button[0].Observable.subscribe((data: { value: number[]; elem: TextField }) => {
-      console.log('event');
-      expect(data.elem).toBeDefined();
+  it('The "mousemove" event. Event call.', () => {
+    const spyEvent = spyOnEvent(document, 'mousemove');
+
+    const event = new MouseEvent('mousemove');
+    document.dispatchEvent(event);
+
+    expect('mousemove').toHaveBeenTriggeredOn(document);
+    expect(spyEvent).toHaveBeenTriggered();
+  });
+
+  it('The "mousemove" event. Checking limits.', () => {
+    const event = new MouseEvent('mousemove', {
+      clientX: 10000,
+      clientY: 10000,
     });
-    console.log(view.button[0].DOM);
-    $(view.button[0].DOM).trigger('click');
+    document.dispatchEvent(event);
+
+    const event2 = new MouseEvent('mousemove', {
+      clientX: -10000,
+      clientY: -10000,
+    });
+    document.dispatchEvent(event2);
   });
 
-  // it('The "toInputValues" method. Sets values from text-field.', () => {
-  //   const textField = $('.text-field');
+  it('The "mouseup" event. Event call.', () => {
+    const spyEvent = spyOnEvent(document, 'mouseup');
 
-  //   textField.val(-120);
-  //   view.textField[0].Observable.subscribe(
-  //     (data: { value: number[]; elem: TextField }) => {
-  //       expect(data.value).toEqual([-120]);
-  //     }
-  //   );
-  //   view.textField[0].toInputValues();
-  // });
+    const event = new MouseEvent('mouseup');
+    document.dispatchEvent(event);
+
+    expect('mouseup').toHaveBeenTriggeredOn(document);
+    expect(spyEvent).toHaveBeenTriggered();
+    expect(document.onmouseup).toBe(null);
+    expect(document.onmousemove).toBe(null);
+  });
 });
