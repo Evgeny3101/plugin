@@ -9,7 +9,7 @@ let mainDOM: Element;
 jasmine.getFixtures().fixturesPath = 'base/test/fixtures';
 jasmine.getStyleFixtures().fixturesPath = 'base/test/fixtures';
 
-describe('Model testing.', () => {
+describe('Label testing.', () => {
   beforeEach(() => {
     loadFixtures('fixt.html');
     loadStyleFixtures('fixt.css');

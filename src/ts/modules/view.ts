@@ -20,7 +20,7 @@ class View {
   scale: Scale | undefined;
 
   constructor(id: Element, config: Config) {
-    this.range = new Range(id);
+    this.range = new Range(id, config.vertical);
     this.init(config);
   }
 
@@ -116,8 +116,6 @@ class View {
         offsetFrom: 'offsetLeft',
       };
     }
-
-    this.range.setClassPositon(vertical);
   }
 
   // установка слушателей
