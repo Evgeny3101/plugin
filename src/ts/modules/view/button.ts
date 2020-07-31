@@ -5,9 +5,11 @@ class Button extends ElemDOM {
   Observable = new Observable();
   pos: { [key: string]: string } = {};
   coord!: number;
+  isInvert: boolean;
 
-  constructor(id: Element, pos: { [key: string]: string }) {
+  constructor(id: Element, pos: { [key: string]: string }, isInvert: boolean) {
     super(id, 'div', 'js-range-btn');
+    this.isInvert = isInvert;
     this.pos = pos;
   } // constructor
 
@@ -19,7 +21,13 @@ class Button extends ElemDOM {
     const rangeSize = parent[this.pos.clientSize] - btn[this.pos.offsetSize];
 
     document.onmousemove = (event) => {
-      let coords = rangeShift - (baseShift - event[this.pos.page]);
+      let coords;
+
+      if (this.isInvert) {
+        coords = baseShift - event[this.pos.page] + (rangeSize - rangeShift);
+      } else {
+        coords = rangeShift - (baseShift - event[this.pos.page]);
+      }
 
       // limit coords
       if (coords < 0) coords = 0;

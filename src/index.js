@@ -21,6 +21,7 @@ slider2
     range: false,
   })
   .rangeSlider('config', {
+    value: [-22, 33],
     range: true,
     vertical: true,
     scale: true,

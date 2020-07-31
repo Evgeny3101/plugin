@@ -18,6 +18,8 @@ class View {
   pos: { [key: string]: string } = {};
   interval: Interval | undefined;
   scale: Scale | undefined;
+  isVertical!: boolean;
+  isInvert!: boolean;
 
   constructor(id: Element, config: Config) {
     this.range = new Range(id, config.vertical);
@@ -25,17 +27,19 @@ class View {
   }
 
   init(config: Config) {
+    this.isInvert = config.invert;
+    this.isVertical = config.vertical;
     // удалит установленые элементы
     this.range.DOM.innerHTML = '';
 
     // установка переменных для вертикального или горизонтального позиционирования
-    this.setPositionVariables(config.vertical);
+    this.setPositionVariables();
 
     // установка  кнопок
     this.button = [];
     const buttonArrayLength = Number(config.range) + 1;
     for (let i = 0; i < buttonArrayLength; i += 1) {
-      this.button[i] = new Button(this.range.DOM, this.pos);
+      this.button[i] = new Button(this.range.DOM, this.pos, this.isInvert);
     }
 
     // установка  интервала  между кнопками
@@ -47,7 +51,7 @@ class View {
     if (config.label) {
       this.label = [];
       this.button.forEach((element, i) => {
-        this.label[i] = new Label(this.range.DOM, config.labelOnClick, config.invert);
+        this.label[i] = new Label(this.range.DOM, config.labelOnClick);
         this.label[i].input.value = String(config.value[i]);
       });
     }
@@ -55,7 +59,7 @@ class View {
     // установка текстовых полей
     if (config.textField) {
       config.textField.forEach((element, i) => {
-        this.textField[i] = new TextField(element, config.invert);
+        this.textField[i] = new TextField(element);
         this.textField[i].updateTextField({
           value: config.value,
           id: i,
@@ -92,29 +96,33 @@ class View {
   }
 
   // установка переменных для вертикального или горизонтального позиционирования
-  setPositionVariables(vertical: boolean) {
-    if (vertical) {
+  setPositionVariables() {
+    if (this.isVertical) {
       this.pos = {
-        // range
-        offset: 'top',
         size: 'height',
+        offset: 'top',
         clientSize: 'clientHeight',
         offsetSize: 'offsetHeight',
-        // btn
         page: 'pageY',
         offsetFrom: 'offsetTop',
       };
     } else {
       this.pos = {
-        // range
-        offset: 'left',
         size: 'width',
+        offset: 'left',
         clientSize: 'clientWidth',
         offsetSize: 'offsetWidth',
-        // btn
         page: 'pageX',
         offsetFrom: 'offsetLeft',
       };
+    }
+
+    if (this.isInvert) {
+      if (this.isVertical) {
+        this.pos.offset = 'bottom';
+      } else {
+        this.pos.offset = 'right';
+      }
     }
   }
 
@@ -198,7 +206,13 @@ class View {
     // для установка Label по координатам
     if (data.label) {
       this.label.forEach((element, i) => {
-        element.toPosition(this.button[i].coord, this.pos.offset);
+        let coord: number;
+
+        if (this.isInvert)
+          coord = this.button[i].coord + this.button[i].DOM[this.pos.offsetSize];
+        else coord = this.button[i].coord;
+
+        element.toPosition(coord, this.pos.offset);
         element.setValue(data.value[i]);
       });
     }

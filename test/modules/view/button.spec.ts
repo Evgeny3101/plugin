@@ -1,7 +1,9 @@
 import '../../../src/ts/main';
+import RangeSlider from '../../../src/ts/modules/RangeSlider';
 import View from '../../../src/ts/modules/view';
 import Config from '../../../src/ts/modules/interface/config';
 
+let slider: RangeSlider;
 let config: Config;
 let view: View;
 let mainDOM: Element;
@@ -19,7 +21,8 @@ describe('Button testing. The "move" method.', () => {
     config = $.fn.rangeSlider.defaults;
     config.textField = ['.text-field', '.text-field2'];
 
-    view = new View(mainDOM, config);
+    slider = new RangeSlider(mainDOM, config);
+    view = slider.view;
     elem = view.button[0].DOM;
 
     const mousedown = new MouseEvent('mousedown');
@@ -34,6 +37,20 @@ describe('Button testing. The "move" method.', () => {
 
     expect('mousemove').toHaveBeenTriggeredOn(document);
     expect(spyEvent).toHaveBeenTriggered();
+  });
+
+  it('Calculation from the left side, if isInvert == false.', () => {
+    config.vertical = false;
+    config.invert = false;
+    view.init(config);
+    expect(view.button[0].pos.offset).toBe('left');
+  });
+
+  it('Calculation from the right side, if isInvert == true.', () => {
+    config.vertical = false;
+    config.invert = true;
+    view.init(config);
+    expect(view.button[0].pos.offset).toBe('right');
   });
 
   it('The "mousemove" event. Checking limits.', () => {

@@ -5,12 +5,10 @@ import Button from './button';
 class Label extends ElemDOM {
   Observable = new Observable();
   input: HTMLInputElement;
-  invert: Boolean;
   labelOnClick: boolean;
 
-  constructor(id: Element, labelOnClick: boolean, invert: boolean) {
+  constructor(id: Element, labelOnClick: boolean) {
     super(id, 'div', 'js-label-wrapper');
-    this.invert = invert;
     this.labelOnClick = labelOnClick;
 
     const container = document.createElement('div');
@@ -42,8 +40,7 @@ class Label extends ElemDOM {
   }
 
   setValue(value: number) {
-    if (this.invert) this.input.value = String(-value);
-    else this.input.value = String(value);
+    this.input.value = String(value);
   }
 } // class
 

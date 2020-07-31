@@ -27,6 +27,16 @@ describe('View testing.', () => {
     expect(view.textField[0].DOM).toBeDefined();
   });
 
+  it('Sets position variables, if isInvert == true.', () => {
+    config.invert = true;
+    view.init(config);
+    expect(view.pos.offset).toEqual('right');
+
+    config.vertical = true;
+    view.init(config);
+    expect(view.pos.offset).toBe('bottom');
+  });
+
   it('Element "interval" is defined, if range == true.', () => {
     config.range = true;
     view.init(config);
@@ -41,26 +51,19 @@ describe('View testing.', () => {
     expect(view.label[0].DOM).toBeDefined();
   });
 
-  it('Element "scale" is defined, if scale == true.', () => {
-    config.scale = true;
-    view.init(config);
-
-    expect(view.scale.DOM).toBeDefined();
-  });
-
-  it('Vertical pos current selected, if vertical == true.', () => {
-    config.vertical = true;
-    view.init(config);
-
-    expect(view.pos.offset).toBe('top');
-  });
-
   it('Show label on click selected, if labelOnClick == true.', () => {
     config.label = true;
     config.labelOnClick = true;
     view.init(config);
 
     expect(view.label[0].DOM).toHaveClass('js-label__hide');
+  });
+
+  it('Element "scale" is defined, if scale == true.', () => {
+    config.scale = true;
+    view.init(config);
+
+    expect(view.scale.DOM).toBeDefined();
   });
 
   it('The "updateSize" method. Updates size slider.', () => {

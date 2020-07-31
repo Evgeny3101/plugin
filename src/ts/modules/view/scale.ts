@@ -13,7 +13,7 @@ class Scale extends ElemDOM {
   short: ElemDOM[] = [];
   coord!: number;
   pos: { [key: string]: string };
-  invert: boolean;
+  isInvert: boolean;
 
   constructor(data: {
     id: Element;
@@ -24,7 +24,7 @@ class Scale extends ElemDOM {
     super(data.id, 'div', 'js-scale-range');
     const { config } = data;
     this.pos = data.pos;
-    this.invert = config.invert;
+    this.isInvert = config.invert;
 
     this.setPoints({
       points: config.points,
@@ -55,22 +55,24 @@ class Scale extends ElemDOM {
     }
   }
 
-  setValue(data: { minValue: number; maxValue: number; step: number }) {
+  setValue(data: { minValue: number; maxValue: number; step: number; invert: boolean }) {
     const rangeValues = Math.abs(data.minValue) + data.maxValue;
     const step = rangeValues / (this.points.length - 1);
 
-    let currentValue = data.minValue;
+    let currentValue: number;
+    this.isInvert = data.invert;
+
+    currentValue = this.isInvert ? data.maxValue : data.minValue;
 
     this.points.forEach((elem) => {
       const point: Point = elem;
       point.value = roundToMultiple(currentValue, data.step);
 
       if (point.textField) {
-        if (this.invert) point.textField.DOM.innerText = String(-point.value);
-        else point.textField.DOM.innerText = String(point.value);
+        point.textField.DOM.innerText = String(point.value);
       }
 
-      currentValue += step;
+      currentValue = this.isInvert ? (currentValue -= step) : (currentValue += step);
     });
   }
 

@@ -1,7 +1,9 @@
 import '../../../src/ts/main';
+import RangeSlider from '../../../src/ts/modules/RangeSlider';
 import View from '../../../src/ts/modules/view';
 import Config from '../../../src/ts/modules/interface/config';
 
+let slider: RangeSlider;
 let config: Config;
 let view: View;
 let mainDOM: Element;
@@ -18,7 +20,8 @@ describe('TextField testing.', () => {
     config = $.fn.rangeSlider.defaults;
     config.textField = ['.text-field', '.text-field2'];
 
-    view = new View(mainDOM, config);
+    slider = new RangeSlider(mainDOM, config);
+    view = slider.view;
   });
 
   it('The "setTextField" method. Throws error if not found element.', () => {
