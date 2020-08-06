@@ -1,13 +1,13 @@
 import ElemDOM from '../../util/elemDOM';
 
 class Point extends ElemDOM {
-  textField!: ElemDOM;
+  textField: ElemDOM | undefined;
   value!: number;
   coord!: number;
   line!: ElemDOM;
 
-  constructor(id: Element) {
-    super(id, 'div', 'js-scale-line');
+  constructor(parent: Element) {
+    super(parent, 'div', 'js-scale-line');
   }
 } // class
 

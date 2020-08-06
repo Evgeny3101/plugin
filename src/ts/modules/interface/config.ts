@@ -1,4 +1,4 @@
-interface Config {
+interface IConfig {
   value: number[];
   minValue: number;
   maxValue: number;
@@ -18,4 +18,4 @@ interface Config {
   longForEach: number;
 }
 
-export default Config;
+export default IConfig;

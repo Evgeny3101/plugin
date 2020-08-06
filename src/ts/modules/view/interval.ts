@@ -1,25 +1,24 @@
 import ElemDOM from '../../util/elemDOM';
-import Button from './button';
+import IPositionVars from '../interface/IVarsPosition';
 
 class Interval extends ElemDOM {
-  pos: { [key: string]: string };
+  pos: IPositionVars;
+  buttonSize: number;
 
-  constructor(id: Element, pos: { [key: string]: string }) {
-    super(id, 'div', 'js-range-interval');
+  constructor(parent: Element, pos: IPositionVars, buttonSize: number) {
+    super(parent, 'div', 'js-range-interval');
     this.pos = pos;
+    this.buttonSize = buttonSize;
   } // constructor
 
-  toPosition(btns: Button[]) {
-    const btnsCoord: number[] = [btns[0].coord, btns[1].coord];
-    const btnSize = btns[0].DOM[this.pos.offsetSize];
-
-    const begin = Math.min.apply(null, btnsCoord);
-    const end = Math.max.apply(null, btnsCoord);
-    const size = end - begin;
+  toPosition(coords: number[]) {
+    const size = coords[1] - coords[0];
 
     this.DOM.setAttribute(
       'style',
-      `${this.pos.offset} : ${begin + btnSize / 2}px; ${this.pos.size} : ${size}px;`
+      `${this.pos.offset} : ${coords[0] + this.buttonSize / 2}px; ${
+        this.pos.size
+      } : ${size}px;`
     );
   }
 }

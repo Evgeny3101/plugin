@@ -3,14 +3,16 @@ import Observable from '../../util/observable';
 class TextField {
   Observable = new Observable();
   DOM!: HTMLInputElement;
+  index: number;
 
-  constructor(id: string) {
-    this.setTextField(id);
+  constructor(field: string, index: number) {
+    this.setTextField(field);
+    this.index = index;
   }
 
   // установка text-field
-  setTextField(id: string) {
-    const elem: HTMLInputElement | null = document.querySelector(id);
+  setTextField(field: string) {
+    const elem: HTMLInputElement | null = document.querySelector(field);
     if (!elem) throw new Error('Text field not funded.'); // null
     this.DOM = elem;
   }
@@ -21,12 +23,12 @@ class TextField {
 
     this.Observable.notify({
       value: newValue,
-      elem: this,
+      index: this.index,
     });
   }
 
-  updateTextField(data: { value: number[]; id: number }) {
-    this.DOM.value = String(data.value[data.id] || 0);
+  updateTextField(value: number[]) {
+    this.DOM.value = String(value[this.index] || 0);
   }
 }
 

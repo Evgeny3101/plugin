@@ -1,4 +1,4 @@
-import Config from './modules/interface/config';
+import IConfig from './modules/interface/config';
 import RangeSlider from './modules/RangeSlider';
 
 ((jQuery) => {
@@ -8,7 +8,7 @@ import RangeSlider from './modules/RangeSlider';
   const methods: { [key: string]: Function } = {
     init(options: {}): Element {
       return this.each((index: number, elem: Element) => {
-        const config: Config = $.extend({}, $.fn.rangeSlider.defaults, options);
+        const config: IConfig = $.extend({}, $.fn.rangeSlider.defaults, options);
         const newSlider = new RangeSlider(elem, config);
         sliders.push(newSlider);
       });
@@ -49,7 +49,7 @@ import RangeSlider from './modules/RangeSlider';
     vertical: false,
     invert: false,
 
-    lable: false,
+    label: false,
     labelOnClick: false,
 
     scale: false,

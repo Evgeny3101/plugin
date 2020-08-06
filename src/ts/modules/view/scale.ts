@@ -1,9 +1,10 @@
 import Observable from '../../util/observable';
-import Point from './point';
 import ElemDOM from '../../util/elemDOM';
 import roundToMultiple from '../../util/mixins';
-import Config from '../interface/config';
+import IConfig from '../interface/config';
+import IPositionVars from '../interface/IVarsPosition';
 import Button from './button';
+import Point from './point';
 
 class Scale extends ElemDOM {
   Observable = new Observable();
@@ -12,16 +13,17 @@ class Scale extends ElemDOM {
   long: ElemDOM[] = [];
   short: ElemDOM[] = [];
   coord!: number;
-  pos: { [key: string]: string };
+  pos: IPositionVars;
   isInvert: boolean;
 
   constructor(data: {
-    id: Element;
+    parent: Element;
     size: number;
-    pos: { [key: string]: string };
-    config: Config;
+    pos: IPositionVars;
+    config: IConfig;
   }) {
-    super(data.id, 'div', 'js-scale-range');
+    super(data.parent, 'div', 'js-scale-range');
+
     const { config } = data;
     this.pos = data.pos;
     this.isInvert = config.invert;
@@ -78,6 +80,7 @@ class Scale extends ElemDOM {
 
   // определение координат полос шкалы
   determineСoordScale(rangeSize: number) {
+    // getCoordScale
     const step = rangeSize / (this.points.length - 1);
     let coord = 0;
 
@@ -89,19 +92,21 @@ class Scale extends ElemDOM {
   }
 
   // обработчик нажатия на полосу шкалы
-  pressScaleBar(buttonArr: Button[], isRange: boolean, id: number) {
+  pressScaleBar(buttonArr: Button[], isRange: boolean, isInvert: boolean, id: number) {
+    // вместо кнопок их координаты
     const scale = this.points[id].coord;
     let btnId;
     if (!isRange) {
-      buttonArr[0].toPosition(scale);
+      buttonArr[0].toPosition(scale); // переделать
       btnId = 0;
     } else {
       const btn1 = buttonArr[0].coord;
       const btn2 = buttonArr[1].coord;
       const range = Math.abs(btn2) - Math.abs(btn1);
-      const diaposon = range / 2 + Math.abs(btn1);
-      if (scale > diaposon) btnId = 1;
-      else btnId = 0;
+      const diapason = range / 2 + Math.abs(btn1);
+
+      if (scale > diapason) btnId = isInvert ? 0 : 1;
+      else btnId = isInvert ? 1 : 0;
     }
 
     this.Observable.notify({

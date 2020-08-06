@@ -32,8 +32,6 @@ slider2
 const form = document.querySelector('.tuning');
 const btn = form.querySelector('input[type="button"]');
 
-btn.addEventListener('click', sendOptions.bind(form));
-
 function stringInValue(data) {
   const result = {};
   data.forEach((elem) => {
@@ -55,3 +53,5 @@ function sendOptions() {
   const result = stringInValue(data);
   slider.rangeSlider('config', result);
 }
+
+btn.addEventListener('click', sendOptions.bind(form));

@@ -1,50 +1,47 @@
-import Observable from '../util/observable';
+import IConfig from './interface/config';
+import IPositionVars from './interface/IVarsPosition';
 import Range from './view/range';
 import Button from './view/button';
 import Interval from './view/interval';
 import Label from './view/label';
 import Scale from './view/scale';
 import TextField from './view/textField';
-import Config from './interface/config';
 
 class View {
-  Observable = new Observable();
   range: Range;
   button: Button[] = [];
   label: Label[] = [];
-  rangeSize!: number;
-  step!: number;
   textField: TextField[] = [];
-  pos: { [key: string]: string } = {};
+  pos!: IPositionVars;
   interval: Interval | undefined;
   scale: Scale | undefined;
-  isVertical!: boolean;
   isInvert!: boolean;
+  rangeSize!: number;
+  step!: number;
 
-  constructor(id: Element, config: Config) {
-    this.range = new Range(id, config.vertical);
+  constructor(parent: Element, config: IConfig) {
+    this.range = new Range(parent, config.vertical);
     this.init(config);
   }
 
-  init(config: Config) {
-    this.isInvert = config.invert;
-    this.isVertical = config.vertical;
+  init(config: IConfig) {
+    // установка переменных для вертикального или горизонтального позиционирования
+    this.setPositionVariables(config.vertical, config.invert);
+
     // удалит установленые элементы
     this.range.DOM.innerHTML = '';
-
-    // установка переменных для вертикального или горизонтального позиционирования
-    this.setPositionVariables();
 
     // установка  кнопок
     this.button = [];
     const buttonArrayLength = Number(config.range) + 1;
     for (let i = 0; i < buttonArrayLength; i += 1) {
-      this.button[i] = new Button(this.range.DOM, this.pos, this.isInvert);
+      this.button[i] = new Button(this.range.DOM, this.pos, i);
     }
 
     // установка  интервала  между кнопками
     if (config.range) {
-      this.interval = new Interval(this.range.DOM, this.pos);
+      const buttonSize = this.button[0].DOM[this.pos.offsetSize];
+      this.interval = new Interval(this.range.DOM, this.pos, buttonSize);
     }
 
     // установка лейблов над кнопками
@@ -59,11 +56,8 @@ class View {
     // установка текстовых полей
     if (config.textField) {
       config.textField.forEach((element, i) => {
-        this.textField[i] = new TextField(element);
-        this.textField[i].updateTextField({
-          value: config.value,
-          id: i,
-        });
+        this.textField[i] = new TextField(element, i);
+        this.textField[i].updateTextField(config.value);
       });
     }
 
@@ -76,7 +70,7 @@ class View {
     // установка  шкалы
     if (config.scale) {
       this.scale = new Scale({
-        id: this.range.DOM,
+        parent: this.range.DOM,
         size: this.rangeSize,
         pos: this.pos,
         config,
@@ -96,11 +90,13 @@ class View {
   }
 
   // установка переменных для вертикального или горизонтального позиционирования
-  setPositionVariables() {
-    if (this.isVertical) {
+  setPositionVariables(isVertical: boolean, isInvert: boolean) {
+    if (isVertical) {
       this.pos = {
+        isVertical,
+        isInvert,
         size: 'height',
-        offset: 'top',
+        offset: isInvert ? 'bottom' : 'top',
         clientSize: 'clientHeight',
         offsetSize: 'offsetHeight',
         page: 'pageY',
@@ -108,26 +104,20 @@ class View {
       };
     } else {
       this.pos = {
+        isVertical,
+        isInvert,
         size: 'width',
-        offset: 'left',
+        offset: isInvert ? 'right' : 'left',
         clientSize: 'clientWidth',
         offsetSize: 'offsetWidth',
         page: 'pageX',
         offsetFrom: 'offsetLeft',
       };
     }
-
-    if (this.isInvert) {
-      if (this.isVertical) {
-        this.pos.offset = 'bottom';
-      } else {
-        this.pos.offset = 'right';
-      }
-    }
   }
 
   // установка слушателей
-  setListeners(config: Config) {
+  setListeners(config: IConfig) {
     // автоматическое обновление при изменении ширины экрана
     window.addEventListener('resize', this.updateSize.bind(this, config));
 
@@ -148,18 +138,28 @@ class View {
       this.scale.points.forEach((element, i) => {
         element.DOM.addEventListener(
           'click',
-          this.scale.pressScaleBar.bind(this.scale, this.button, config.range, i)
+          this.scale.pressScaleBar.bind(
+            this.scale,
+            this.button,
+            config.range,
+            config.invert,
+            i
+          )
         );
       });
     }
 
     // показывать / скрывать лейбл при нажатии
     if (config.label && config.labelOnClick) {
-      this.label.forEach((element, i) => element.showOnClick(this.button[i]));
+      this.label.forEach((elem, i) => {
+        elem.DOM.classList.add('js-label__hide');
+        this.button[i].DOM.addEventListener('mousedown', elem.show.bind(elem));
+        document.addEventListener('mouseup', elem.hide.bind(elem));
+      });
     }
   }
 
-  updateSize(config: Config) {
+  updateSize(config: IConfig) {
     this.updateRangeSize({
       maxValue: config.maxValue,
       minValue: config.minValue,
@@ -197,7 +197,7 @@ class View {
       });
 
       // установка интервала по координатам
-      this.interval.toPosition(this.button);
+      this.interval.toPosition([this.button[0].coord, this.button[1].coord]);
     } else {
       const newCoord = this.step * (data.value[0] + Math.abs(data.minValue));
       this.button[0].toPosition(newCoord);

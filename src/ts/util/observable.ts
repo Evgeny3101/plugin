@@ -1,14 +1,15 @@
 class Observable {
+  observers: any;
   constructor() {
     this.observers = [];
   }
 
-  subscribe(f) {
+  subscribe(f: any) {
     this.observers.push(f);
   }
 
-  notify(data) {
-    this.observers.forEach((observer) => observer(data));
+  notify(data: any) {
+    this.observers.forEach((observer: any) => observer(data));
   }
 }
 

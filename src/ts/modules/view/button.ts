@@ -1,29 +1,30 @@
 import ElemDOM from '../../util/elemDOM';
 import Observable from '../../util/observable';
+import IPositionVars from '../interface/IVarsPosition';
 
 class Button extends ElemDOM {
   Observable = new Observable();
-  pos: { [key: string]: string } = {};
+  pos: IPositionVars;
   coord!: number;
-  isInvert: boolean;
+  index: number;
 
-  constructor(id: Element, pos: { [key: string]: string }, isInvert: boolean) {
-    super(id, 'div', 'js-range-btn');
-    this.isInvert = isInvert;
+  constructor(parent: Element, pos: IPositionVars, index: number) {
+    super(parent, 'div', 'js-range-btn');
     this.pos = pos;
+    this.index = index;
   } // constructor
 
-  move(evt) {
-    const btn = evt.target;
-    const parent = evt.path[1];
-    const baseShift = evt[this.pos.page];
+  move(evnt) {
+    const btn = evnt.currentTarget;
+    const parent = evnt.path[1];
+    const baseShift = evnt[this.pos.page];
     const rangeShift = btn[this.pos.offsetFrom];
     const rangeSize = parent[this.pos.clientSize] - btn[this.pos.offsetSize];
 
-    document.onmousemove = (event) => {
+    document.onmousemove = (event: MouseEvent) => {
       let coords;
 
-      if (this.isInvert) {
+      if (this.pos.isInvert) {
         coords = baseShift - event[this.pos.page] + (rangeSize - rangeShift);
       } else {
         coords = rangeShift - (baseShift - event[this.pos.page]);
@@ -38,7 +39,7 @@ class Button extends ElemDOM {
 
       this.Observable.notify({
         coord: this.coord,
-        elem: this,
+        index: this.index,
       });
     };
 

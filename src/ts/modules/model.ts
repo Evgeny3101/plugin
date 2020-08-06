@@ -1,6 +1,6 @@
 import roundToMultiple from '../util/mixins';
 import Observable from '../util/observable';
-import Config from './interface/config';
+import IConfig from './interface/config';
 
 class Model {
   Observable: Observable = new Observable();
@@ -10,11 +10,11 @@ class Model {
   step!: number;
   range!: boolean;
 
-  constructor(config: Config) {
+  constructor(config: IConfig) {
     this.settingData(config);
   } // constructor
 
-  settingData(config: Config): void {
+  settingData(config: IConfig): void {
     this.minValue = config.minValue;
     this.maxValue = config.maxValue;
     this.step = config.step;
@@ -60,11 +60,9 @@ class Model {
   }
 
   // обновить значение value по лимитам, шагу и выставить по id
-  updateValue(number: [number], id: number) {
-    let newValue: number[] = this.checkLimit(number);
-    newValue = this.putInStep(newValue);
-    if (this.range === true) this.value[id] = Number(newValue);
-    else this.value = newValue;
+  updateValue(number: [number], index: number) {
+    this.value[index] = Number(number);
+    this.setNewValues(this.value);
 
     this.Observable.notify({
       value: this.value,

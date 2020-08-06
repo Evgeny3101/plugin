@@ -1,15 +1,15 @@
 class ElemDOM {
   DOM!: HTMLElement;
 
-  constructor(id: Element, elem: string, className: string) {
-    this.setDOM(id, elem, className);
+  constructor(parent: Element, element: string, className: string) {
+    this.setDOM(parent, element, className);
   }
 
   // установка this.DOM
-  setDOM(id: Element, elem: string, className: string) {
-    this.DOM = document.createElement(elem);
+  setDOM(parent: Element, element: string, className: string) {
+    this.DOM = document.createElement(element);
     this.DOM.className = className;
-    id.appendChild(this.DOM);
+    parent.appendChild(this.DOM);
   }
 }
 

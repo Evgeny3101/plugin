@@ -1,14 +1,13 @@
 import ElemDOM from '../../util/elemDOM';
 import Observable from '../../util/observable';
-import Button from './button';
 
 class Label extends ElemDOM {
   Observable = new Observable();
   input: HTMLInputElement;
   labelOnClick: boolean;
 
-  constructor(id: Element, labelOnClick: boolean) {
-    super(id, 'div', 'js-label-wrapper');
+  constructor(parent: Element, labelOnClick: boolean) {
+    super(parent, 'div', 'js-label-wrapper');
     this.labelOnClick = labelOnClick;
 
     const container = document.createElement('div');
@@ -23,12 +22,6 @@ class Label extends ElemDOM {
 
   toPosition(coord: number, key: string) {
     this.DOM.setAttribute('style', `${key} : ${coord}px`);
-  }
-
-  showOnClick(btn: Button) {
-    this.DOM.classList.add('js-label__hide');
-    btn.DOM.addEventListener('mousedown', this.show.bind(this));
-    document.addEventListener('mouseup', this.hide.bind(this));
   }
 
   show() {
