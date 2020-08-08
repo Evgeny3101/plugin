@@ -7,7 +7,7 @@ class Point extends ElemDOM {
   line!: ElemDOM;
 
   constructor(parent: Element) {
-    super(parent, 'div', 'js-scale-line');
+    super('div', 'js-scale-line', parent);
   }
 } // class
 

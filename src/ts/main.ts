@@ -1,4 +1,4 @@
-import IConfig from './modules/interface/config';
+import IConfig from './modules/interface/IConfig';
 import RangeSlider from './modules/RangeSlider';
 
 ((jQuery) => {
@@ -19,6 +19,7 @@ import RangeSlider from './modules/RangeSlider';
         sliders.forEach((slider) => {
           if (slider.mainDOM === elem) {
             const config = $.extend({}, slider.config, options);
+
             return slider.setNewConfig(config);
           }
           return false;
@@ -35,24 +36,24 @@ import RangeSlider from './modules/RangeSlider';
       const data = method;
       return methods.init.apply(this, [data]);
     }
-    return $.error(`Метод с именем ${method} не существует для jQuery.rangeSlider`);
+    return $.error(`Method named ${method} does not exist for jQuery.rangeSlider`);
   };
 
   $.fn.rangeSlider.defaults = {
-    value: [-25, 25],
+    sliderValues: [-25, 25],
     minValue: -100,
     maxValue: 100,
     step: 0.1,
     textField: [],
 
-    range: false,
-    vertical: false,
-    invert: false,
+    isRange: false,
+    isVertical: false,
+    isInvert: false,
 
-    label: false,
-    labelOnClick: false,
+    isLabel: false,
+    isLabelOnClick: false,
 
-    scale: false,
+    isScale: false,
     points: 13,
     numberForEach: 4,
     longForEach: 2,

@@ -10,15 +10,14 @@ class TextField {
     this.index = index;
   }
 
-  // установка text-field
   setTextField(field: string) {
     const elem: HTMLInputElement | null = document.querySelector(field);
     if (!elem) throw new Error('Text field not funded.'); // null
     this.DOM = elem;
   }
 
-  // установка значений из text-field
-  toInputValues() {
+  // gets values from the text field
+  getEnteredValues() {
     const newValue = [Number(this.DOM.value) || 0];
 
     this.Observable.notify({
@@ -27,7 +26,8 @@ class TextField {
     });
   }
 
-  updateTextField(value: number[]) {
+  // sets values into the text field
+  setValue(value: number[]) {
     this.DOM.value = String(value[this.index] || 0);
   }
 }

@@ -7,7 +7,7 @@ class Label extends ElemDOM {
   labelOnClick: boolean;
 
   constructor(parent: Element, labelOnClick: boolean) {
-    super(parent, 'div', 'js-label-wrapper');
+    super('div', 'js-label-wrapper', parent);
     this.labelOnClick = labelOnClick;
 
     const container = document.createElement('div');

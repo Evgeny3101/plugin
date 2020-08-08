@@ -1,7 +1,7 @@
 import '../../../src/ts/main';
 import RangeSlider from '../../../src/ts/modules/RangeSlider';
 import View from '../../../src/ts/modules/view';
-import Config from '../../../src/ts/modules/interface/config';
+import Config from '../../../src/ts/modules/interface/IConfig';
 
 let slider: RangeSlider;
 let config: Config;
@@ -40,15 +40,15 @@ describe('Button testing. The "move" method.', () => {
   });
 
   it('Calculation from the left side, if isInvert == false.', () => {
-    config.vertical = false;
-    config.invert = false;
+    config.isVertical = false;
+    config.isInvert = false;
     view.init(config);
     expect(view.button[0].pos.offset).toBe('left');
   });
 
   it('Calculation from the right side, if isInvert == true.', () => {
-    config.vertical = false;
-    config.invert = true;
+    config.isVertical = false;
+    config.isInvert = true;
     view.init(config);
     expect(view.button[0].pos.offset).toBe('right');
   });

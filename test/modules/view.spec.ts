@@ -1,6 +1,6 @@
 import '../../src/ts/main';
 import View from '../../src/ts/modules/view';
-import Config from '../../src/ts/modules/interface/config';
+import Config from '../../src/ts/modules/interface/IConfig';
 
 let config: Config;
 let view: View;
@@ -28,39 +28,39 @@ describe('View testing.', () => {
   });
 
   it('Sets position variables, if isInvert == true.', () => {
-    config.invert = true;
+    config.isInvert = true;
     view.init(config);
     expect(view.pos.offset).toEqual('right');
 
-    config.vertical = true;
+    config.isVertical = true;
     view.init(config);
     expect(view.pos.offset).toBe('bottom');
   });
 
   it('Element "interval" is defined, if range == true.', () => {
-    config.range = true;
+    config.isRange = true;
     view.init(config);
 
     expect(view.interval.DOM).toBeDefined();
   });
 
   it('Element "label" is defined, if label == true.', () => {
-    config.label = true;
+    config.isLabel = true;
     view.init(config);
 
     expect(view.label[0].DOM).toBeDefined();
   });
 
   it('Show label on click selected, if labelOnClick == true.', () => {
-    config.label = true;
-    config.labelOnClick = true;
+    config.isLabel = true;
+    config.isLabelOnClick = true;
     view.init(config);
 
     expect(view.label[0].DOM).toHaveClass('js-label__hide');
   });
 
   it('Element "scale" is defined, if scale == true.', () => {
-    config.scale = true;
+    config.isScale = true;
     view.init(config);
 
     expect(view.scale.DOM).toBeDefined();

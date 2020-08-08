@@ -1,12 +1,11 @@
 import ElemDOM from '../../util/elemDOM';
 
 class Range extends ElemDOM {
-  constructor(parent: Element, isVertical: boolean) {
-    super(parent, 'div', 'js-range-slider');
-    this.setClassPosition(isVertical);
+  constructor() {
+    super('div', 'js-range-slider');
   }
 
-  //  устанавливает класс(CSS), ответственный за положение диапазона
+  // sets the class (CSS) responsible for the position of the range
   setClassPosition(isVertical: boolean) {
     if (isVertical) this.DOM.classList.add('js-range-slider__vertical');
     else this.DOM.classList.add('js-range-slider__horizontal');

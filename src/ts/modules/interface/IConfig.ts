@@ -1,18 +1,18 @@
 interface IConfig {
-  value: number[];
+  sliderValues: number[];
   minValue: number;
   maxValue: number;
   step: number;
   textField: string[];
 
-  range: boolean;
-  vertical: boolean;
-  invert: boolean;
+  isRange: boolean;
+  isVertical: boolean;
+  isInvert: boolean;
 
-  label: boolean;
-  labelOnClick: boolean;
+  isLabel: boolean;
+  isLabelOnClick: boolean;
 
-  scale: boolean;
+  isScale: boolean;
   points: number;
   numberForEach: number;
   longForEach: number;

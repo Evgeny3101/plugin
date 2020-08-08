@@ -1,5 +1,5 @@
 /* eslint-disable class-methods-use-this */
-import IConfig from './interface/config';
+import IConfig from './interface/IConfig';
 import Model from './model';
 import View from './view';
 
@@ -9,47 +9,48 @@ class Controller {
   }
 
   installSubscribes(model: Model, view: View, config: IConfig) {
-    /// / notify Model ////
-    // при изменении model.value
-    // методами model.convertCoords или model.updateValue
+    ///  notify Model  ///
+    // methods model.convertCoords или model.updateValue
+    // when the model.value changes
     model.Observable.subscribe((data: { value: number[] }) => {
       view.updateCoords({
-        value: data.value,
+        isRange: model.isRange,
+        isLabel: config.isLabel,
         minValue: model.minValue,
-        range: model.range,
-        label: config.label,
+        sliderValues: data.value,
       });
 
       view.textField.forEach((element) => {
-        element.updateTextField(data.value);
+        element.setValue(data.value);
       });
     });
 
-    /// / notify View ////
-
-    // установка значений из text-field
+    ///  notify View ///
+    // method textField[].toInputValues
+    // entering values into a text field
     view.textField.forEach((elem) => {
       elem.Observable.subscribe((data: { value: [number]; index: number }) => {
         model.updateValue(data.value, data.index);
       });
     });
 
-    // по движению кнопки. методом move
+    // method button[].move
+    // buttons move handler
     view.button.forEach((elem) => {
       elem.Observable.subscribe((data: { coord: number; index: number }) => {
         model.convertCoords({
           coord: data.coord,
-          step: view.step,
-          id: data.index,
+          stepInCoord: view.step,
+          index: data.index,
         });
       });
     });
 
-    // при клике на число или деление шкалы
-    // методом pressScaleBar
+    // method  scale.pressScaleBar
+    // handler for click on points
     if (view.scale) {
-      view.scale.Observable.subscribe((data: { value: number; id: number }) => {
-        model.updateValue([data.value], data.id);
+      view.scale.Observable.subscribe((data: { value: number; index: number }) => {
+        model.updateValue([data.value], data.index);
       });
     }
   } // installSubscribes

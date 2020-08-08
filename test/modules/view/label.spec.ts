@@ -1,6 +1,6 @@
 import '../../../src/ts/main';
 import View from '../../../src/ts/modules/view';
-import Config from '../../../src/ts/modules/interface/config';
+import Config from '../../../src/ts/modules/interface/IConfig';
 
 let config: Config;
 let view: View;
@@ -22,7 +22,7 @@ describe('Label testing.', () => {
   });
 
   it('The "show/hide" method. Show label on click.', () => {
-    config.label = true;
+    config.isLabel = true;
     view.init(config);
 
     view.label[0].hide();
@@ -31,13 +31,4 @@ describe('Label testing.', () => {
     view.label[0].show();
     expect(view.label[0].DOM).not.toHaveClass('js-label__hide');
   });
-
-  // it('The "setValue" method. Sets value in label.', () => { // переделать invert
-  //   config.value = [100];
-  //   config.label = true;
-  //   config.invert = true;
-  //   view.init(config);
-
-  //   expect(view.label[0].input.value).toBe('100');
-  // });
 });

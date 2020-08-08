@@ -1,12 +1,12 @@
-// округляет по числу и убирает лишние знаки
+// rounds by number and removes unnecessary signs
 function roundToMultiple(num: number, multiple: number) {
-  // округление
+  // rounding
   let result: number = Math.round(num / multiple) * multiple;
-  // расчет знаков после запятой
+  // decimal places calculation
   const decimalPlaces = multiple.toString().includes('.')
     ? multiple.toString().split('.').pop().length
     : 0;
-  // обрезает лишние знаки после запятой
+  // trims extra decimal places
   result = Number(result.toFixed(decimalPlaces));
   return result;
 }

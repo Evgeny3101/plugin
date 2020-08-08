@@ -9,7 +9,7 @@ class Button extends ElemDOM {
   index: number;
 
   constructor(parent: Element, pos: IPositionVars, index: number) {
-    super(parent, 'div', 'js-range-btn');
+    super('div', 'js-range-btn', parent);
     this.pos = pos;
     this.index = index;
   } // constructor

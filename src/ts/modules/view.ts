@@ -1,4 +1,4 @@
-import IConfig from './interface/config';
+import IConfig from './interface/IConfig';
 import IPositionVars from './interface/IVarsPosition';
 import Range from './view/range';
 import Button from './view/button';
@@ -8,88 +8,90 @@ import Scale from './view/scale';
 import TextField from './view/textField';
 
 class View {
-  range: Range;
   button: Button[] = [];
   label: Label[] = [];
   textField: TextField[] = [];
   pos!: IPositionVars;
-  interval: Interval | undefined;
-  scale: Scale | undefined;
-  isInvert!: boolean;
+  interval: Interval;
+  scale: Scale;
+  range: Range;
   rangeSize!: number;
   step!: number;
+  mainDOM: Element;
 
   constructor(parent: Element, config: IConfig) {
-    this.range = new Range(parent, config.vertical);
-    this.init(config);
+    this.mainDOM = parent;
+
+    this.setPositionVariables(config.isVertical, config.isInvert);
+    this.createDOM(config);
+    this.setValues(config);
+    this.setListeners(config);
   }
 
-  init(config: IConfig) {
-    // установка переменных для вертикального или горизонтального позиционирования
-    this.setPositionVariables(config.vertical, config.invert);
+  // creates elements DOM
+  createDOM(config: IConfig) {
+    this.range = new Range();
+    this.range.setClassPosition(config.isVertical);
 
-    // удалит установленые элементы
-    this.range.DOM.innerHTML = '';
-
-    // установка  кнопок
+    // creates buttons
     this.button = [];
-    const buttonArrayLength = Number(config.range) + 1;
+    const buttonArrayLength = Number(config.isRange) + 1;
     for (let i = 0; i < buttonArrayLength; i += 1) {
       this.button[i] = new Button(this.range.DOM, this.pos, i);
     }
 
-    // установка  интервала  между кнопками
-    if (config.range) {
-      const buttonSize = this.button[0].DOM[this.pos.offsetSize];
-      this.interval = new Interval(this.range.DOM, this.pos, buttonSize);
+    // creates spacing between buttons
+    if (config.isRange) {
+      this.interval = new Interval(this.range.DOM);
     }
 
-    // установка лейблов над кнопками
-    if (config.label) {
+    // creates labels above buttons
+    if (config.isLabel) {
       this.label = [];
       this.button.forEach((element, i) => {
-        this.label[i] = new Label(this.range.DOM, config.labelOnClick);
-        this.label[i].input.value = String(config.value[i]);
+        this.label[i] = new Label(this.range.DOM, config.isLabelOnClick);
+        this.label[i].input.value = String(config.sliderValues[i]);
       });
     }
 
-    // установка текстовых полей
+    // creates scale
+    if (config.isScale) {
+      this.scale = new Scale(this.range.DOM, config);
+    }
+
+    this.range.appendInDOM(this.mainDOM);
+  }
+
+  // sets element values
+  setValues(config: IConfig) {
+    if (config.isRange) {
+      const buttonSize = this.button[0].DOM[this.pos.offsetSize];
+      this.interval.setInterval(buttonSize, this.pos);
+    }
+
     if (config.textField) {
       config.textField.forEach((element, i) => {
         this.textField[i] = new TextField(element, i);
-        this.textField[i].updateTextField(config.value);
+        this.textField[i].setValue(config.sliderValues);
       });
     }
 
-    // установит значения this.rangeSize и this.step
-    this.updateRangeSize({
-      maxValue: config.maxValue,
-      minValue: config.minValue,
-    });
+    // require  this.rangeSize for setScale values
+    this.updateRangeSize(config.maxValue, config.minValue);
 
-    // установка  шкалы
-    if (config.scale) {
-      this.scale = new Scale({
-        parent: this.range.DOM,
-        size: this.rangeSize,
-        pos: this.pos,
-        config,
-      });
+    if (config.isScale) {
+      this.scale.setScale(this.rangeSize, config);
     }
 
-    // обновление координат и установка элементов
     this.updateCoords({
-      range: config.range,
-      label: config.label,
+      isRange: config.isRange,
+      isLabel: config.isLabel,
       minValue: config.minValue,
-      value: config.value,
+      sliderValues: config.sliderValues,
     });
-
-    // установка слушателей
-    this.setListeners(config);
   }
 
-  // установка переменных для вертикального или горизонтального позиционирования
+  // sets variables for vertical or horizontal positioning
   setPositionVariables(isVertical: boolean, isInvert: boolean) {
     if (isVertical) {
       this.pos = {
@@ -116,106 +118,100 @@ class View {
     }
   }
 
-  // установка слушателей
   setListeners(config: IConfig) {
-    // автоматическое обновление при изменении ширины экрана
+    // auto update when the screen width changes
     window.addEventListener('resize', this.updateSize.bind(this, config));
 
-    // перемещение бегунка
+    // buttons move handler
     this.button.forEach((btn) =>
       btn.DOM.addEventListener('mousedown', btn.move.bind(btn))
     );
 
-    // при вводе значений в text-field
+    // entering values into a text field
     this.textField.forEach((elem) => {
       if (elem.DOM) {
-        elem.DOM.addEventListener('blur', elem.toInputValues.bind(elem));
+        elem.DOM.addEventListener('blur', elem.getEnteredValues.bind(elem));
       }
     });
 
-    // клик на деление шкалы
+    // handler for click on points
     if (this.scale) {
       this.scale.points.forEach((element, i) => {
+        const buttonsCoords = this.button.map((button) => button.coord);
+
         element.DOM.addEventListener(
           'click',
-          this.scale.pressScaleBar.bind(
-            this.scale,
-            this.button,
-            config.range,
-            config.invert,
-            i
-          )
+          this.scale.pressScaleBar.bind(this.scale, buttonsCoords, i)
         );
       });
     }
 
-    // показывать / скрывать лейбл при нажатии
-    if (config.label && config.labelOnClick) {
+    // show/hide label on click
+    if (config.isLabel && config.isLabelOnClick) {
       this.label.forEach((elem, i) => {
-        elem.DOM.classList.add('js-label__hide');
+        elem.hide();
         this.button[i].DOM.addEventListener('mousedown', elem.show.bind(elem));
         document.addEventListener('mouseup', elem.hide.bind(elem));
       });
     }
   }
 
-  updateSize(config: IConfig) {
-    this.updateRangeSize({
-      maxValue: config.maxValue,
-      minValue: config.minValue,
-    });
-
-    this.updateCoords({
-      range: config.range,
-      label: config.label,
-      minValue: config.minValue,
-      value: config.value,
-    });
-  }
-
-  // установит значения this.rangeSize и this.step
-  updateRangeSize(data: { minValue: number; maxValue: number }) {
+  // sets values for this.rangeSize и this.step
+  updateRangeSize(minValue: number, maxValue: number) {
     const btn = this.button[0];
-
     this.rangeSize = this.range.DOM[this.pos.clientSize] - btn.DOM[this.pos.offsetSize];
-    const valueRange = Math.abs(data.maxValue - data.minValue);
 
+    const valueRange = Math.abs(maxValue - minValue);
     this.step = this.rangeSize / valueRange;
   }
 
-  // обновление координат и установка элементов
-  updateCoords(data: {
-    range: boolean;
-    label: boolean;
+  // updates coordinates and set items to position
+  updateCoords(options: {
+    isRange: boolean;
+    isLabel: boolean;
     minValue: number;
-    value: number[];
+    sliderValues: number[];
   }) {
-    if (data.range === true) {
-      data.value.forEach((value, i) => {
-        const newCoord = this.step * (value + Math.abs(data.minValue));
+    const { isRange, isLabel, minValue, sliderValues } = options;
+    if (isRange === true) {
+      sliderValues.forEach((num, i) => {
+        const newCoord = this.step * (num + Math.abs(minValue));
         this.button[i].toPosition(newCoord);
       });
 
-      // установка интервала по координатам
+      // sets interval to position
       this.interval.toPosition([this.button[0].coord, this.button[1].coord]);
     } else {
-      const newCoord = this.step * (data.value[0] + Math.abs(data.minValue));
+      const newCoord = this.step * (sliderValues[0] + Math.abs(minValue));
       this.button[0].toPosition(newCoord);
     }
 
-    // для установка Label по координатам
-    if (data.label) {
+    // sets label to position
+    if (isLabel) {
       this.label.forEach((element, i) => {
         let coord: number;
 
-        if (this.isInvert)
+        if (this.pos.isInvert) {
           coord = this.button[i].coord + this.button[i].DOM[this.pos.offsetSize];
-        else coord = this.button[i].coord;
+        } else coord = this.button[i].coord;
 
         element.toPosition(coord, this.pos.offset);
-        element.setValue(data.value[i]);
+        element.setValue(sliderValues[i]);
       });
     }
+  }
+
+  // update range size and set items to position (this.updateRangeSize, this.updateCoords)
+  updateSize(config: IConfig) {
+    const { maxValue, minValue, range, label, value } = config;
+    this.updateRangeSize(config.maxValue, config.minValue);
+
+    this.updateCoords({
+      isRange: config.isRange,
+      isLabel: config.isLabel,
+      minValue: config.minValue,
+      sliderValues: config.sliderValues,
+    });
   }
 } // class View
 

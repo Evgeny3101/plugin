@@ -1,6 +1,6 @@
 import roundToMultiple from '../util/mixins';
 import Observable from '../util/observable';
-import IConfig from './interface/config';
+import IConfig from './interface/IConfig';
 
 class Model {
   Observable: Observable = new Observable();
@@ -8,7 +8,7 @@ class Model {
   minValue!: number;
   maxValue!: number;
   step!: number;
-  range!: boolean;
+  isRange!: boolean;
 
   constructor(config: IConfig) {
     this.settingData(config);
@@ -18,27 +18,27 @@ class Model {
     this.minValue = config.minValue;
     this.maxValue = config.maxValue;
     this.step = config.step;
-    this.range = config.range;
+    this.isRange = config.isRange;
 
-    // обработка введеных значений для слайдера
-    this.setNewValues(config.value);
+    // processes entered values
+    this.setNewValues(config.sliderValues);
   }
 
-  // установка значений value по лимитам и шагу
+  // sets new values and processes the entered values by limits and step
   setNewValues(numbersArr: number[]) {
     let newValue: number[] = numbersArr;
     newValue = this.checkLimit(newValue);
     newValue = this.putInStep(newValue);
 
     let result: number[] = [];
-    if (this.range === true) {
+    if (this.isRange === true) {
       result.push(Math.min.apply(null, newValue));
       result.push(Math.max.apply(null, newValue));
     } else result = newValue;
     this.value = result;
   }
 
-  // проверить значения по  min max
+  // checks by limits
   checkLimit(numbersArr: number[]): number[] {
     const result: number[] = [];
     numbersArr.forEach((number) => {
@@ -49,7 +49,7 @@ class Model {
     return result;
   }
 
-  // выставляет на ближайший step и обрезает знаки после запятой
+  // put on the nearest step and round to multiple
   putInStep(numbersArr: number[]): number[] {
     const result: number[] = [];
     numbersArr.forEach((number) => {
@@ -59,7 +59,7 @@ class Model {
     return result;
   }
 
-  // обновить значение value по лимитам, шагу и выставить по id
+  // update value by id. check by limits and step
   updateValue(number: [number], index: number) {
     this.value[index] = Number(number);
     this.setNewValues(this.value);
@@ -69,15 +69,15 @@ class Model {
     });
   }
 
-  // для преобразования координат в значения
-  convertCoords(data: { coord: number; step: number; id: number }) {
-    const newValue = roundToMultiple(data.coord / data.step, this.step) + this.minValue;
-    const newArrValue = this.value;
+  // convert coords into value and sets by id
+  convertCoords(data: { coord: number; stepInCoord: number; index: number }) {
+    const { coord, stepInCoord, index } = data;
+    const newValue = roundToMultiple(coord / stepInCoord, this.step) + this.minValue;
 
-    if (this.range === true) {
-      newArrValue[data.id] = newValue;
-      this.setNewValues(newArrValue);
-    } else this.value[0] = newValue;
+    if (this.isRange === true) {
+      this.value[index] = newValue;
+      this.setNewValues(this.value);
+    } else this.setNewValues([newValue]);
 
     this.Observable.notify({
       value: this.value,

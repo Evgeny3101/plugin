@@ -4,29 +4,29 @@ import './ts/main';
 
 const slider = $('.rangeSlider');
 slider.rangeSlider({
-  value: [-22, 43],
+  sliderValues: [-22, 43],
   minValue: -100,
-
   textField: ['.text-field', '.text-field2'],
 
-  range: true,
-  label: true,
-  scale: true,
-  invert: true,
+  isRange: true,
+  isLabel: true,
+  isScale: true,
+  isInvert: true,
 });
 
 const slider2 = $('.rangeSlider2');
 slider2
   .rangeSlider({
-    range: false,
+    isRange: false,
   })
   .rangeSlider('config', {
-    value: [-22, 33],
-    range: true,
-    vertical: true,
-    scale: true,
-    label: true,
+    sliderValues: [-22, 33],
     textField: ['.text-field3', '.text-field4'],
+
+    isRange: true,
+    isVertical: true,
+    isScale: true,
+    isLabel: true,
   });
 
 const form = document.querySelector('.tuning');
@@ -43,8 +43,8 @@ function stringInValue(data) {
     } else result[elem.name] = Number(elem.value);
   });
 
-  result.value = [result.value, result.value2];
-  delete result.value2;
+  result.sliderValues = [result.sliderValues, result.sliderValues2];
+  delete result.sliderValues2;
   return result;
 }
 

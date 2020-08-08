@@ -2,14 +2,17 @@ import ElemDOM from '../../util/elemDOM';
 import IPositionVars from '../interface/IVarsPosition';
 
 class Interval extends ElemDOM {
-  pos: IPositionVars;
-  buttonSize: number;
+  pos!: IPositionVars;
+  buttonSize!: number;
 
-  constructor(parent: Element, pos: IPositionVars, buttonSize: number) {
-    super(parent, 'div', 'js-range-interval');
+  constructor(parent?: Element) {
+    super('div', 'js-range-interval', parent);
+  } // constructor
+
+  setInterval(buttonSize: number, pos: IPositionVars) {
     this.pos = pos;
     this.buttonSize = buttonSize;
-  } // constructor
+  }
 
   toPosition(coords: number[]) {
     const size = coords[1] - coords[0];
