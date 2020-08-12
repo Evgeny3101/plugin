@@ -5,9 +5,6 @@ interface IPositionVars {
   offsetSize: string;
   page: string;
   offsetFrom: string;
-
-  isVertical: boolean;
-  isInvert: boolean;
 }
 
 export default IPositionVars;

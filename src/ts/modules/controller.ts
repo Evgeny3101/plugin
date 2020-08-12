@@ -1,27 +1,23 @@
 /* eslint-disable class-methods-use-this */
-import IConfig from './interface/IConfig';
 import Model from './model';
 import View from './view';
 
 class Controller {
-  constructor(model: Model, view: View, config: IConfig) {
-    this.installSubscribes(model, view, config);
+  constructor(model: Model, view: View) {
+    this.installSubscribes(model, view);
   }
 
-  installSubscribes(model: Model, view: View, config: IConfig) {
+  installSubscribes(model: Model, view: View) {
     ///  notify Model  ///
     // methods model.convertCoords или model.updateValue
     // when the model.value changes
-    model.Observable.subscribe((data: { value: number[] }) => {
-      view.updateCoords({
-        isRange: model.isRange,
-        isLabel: config.isLabel,
-        minValue: model.minValue,
-        sliderValues: data.value,
-      });
+    model.Observable.subscribe((options: { value: number[] }) => {
+      const { value } = options;
+
+      view.updateCoords(model.minValue, value);
 
       view.textField.forEach((element) => {
-        element.setValue(data.value);
+        element.setValue(value);
       });
     });
 
@@ -29,19 +25,23 @@ class Controller {
     // method textField[].toInputValues
     // entering values into a text field
     view.textField.forEach((elem) => {
-      elem.Observable.subscribe((data: { value: [number]; index: number }) => {
-        model.updateValue(data.value, data.index);
+      elem.Observable.subscribe((options: { value: number; index: number }) => {
+        const { value, index } = options;
+
+        model.updateValue(value, index);
       });
     });
 
     // method button[].move
     // buttons move handler
     view.button.forEach((elem) => {
-      elem.Observable.subscribe((data: { coord: number; index: number }) => {
+      elem.Observable.subscribe((options: { coord: number; index: number }) => {
+        const { coord, index } = options;
+
         model.convertCoords({
-          coord: data.coord,
+          coord,
+          index,
           stepInCoord: view.step,
-          index: data.index,
         });
       });
     });
@@ -49,8 +49,9 @@ class Controller {
     // method  scale.pressScaleBar
     // handler for click on points
     if (view.scale) {
-      view.scale.Observable.subscribe((data: { value: number; index: number }) => {
-        model.updateValue([data.value], data.index);
+      view.scale.Observable.subscribe((options: { value: number; index: number }) => {
+        const { value, index } = options;
+        model.updateValue(value, index);
       });
     }
   } // installSubscribes

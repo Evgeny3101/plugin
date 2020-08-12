@@ -1,16 +1,15 @@
-import ElemDOM from '../../util/elemDOM';
 import IPositionVars from '../interface/IVarsPosition';
+import { createHTML } from '../../util/mixins';
 
-class Interval extends ElemDOM {
-  pos!: IPositionVars;
-  buttonSize!: number;
+class Interval {
+  buttonSize: number = 0;
+  DOM: Element;
 
-  constructor(parent?: Element) {
-    super('div', 'js-range-interval', parent);
-  } // constructor
+  constructor(parent: Element, public pos: IPositionVars) {
+    this.DOM = createHTML('<div class="js-range-interval"></div>', parent);
+  }
 
-  setInterval(buttonSize: number, pos: IPositionVars) {
-    this.pos = pos;
+  setButtonSize(buttonSize: number) {
     this.buttonSize = buttonSize;
   }
 

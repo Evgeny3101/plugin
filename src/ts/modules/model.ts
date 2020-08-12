@@ -1,4 +1,4 @@
-import roundToMultiple from '../util/mixins';
+import { roundToMultiple } from '../util/mixins';
 import Observable from '../util/observable';
 import IConfig from './interface/IConfig';
 
@@ -14,14 +14,16 @@ class Model {
     this.settingData(config);
   } // constructor
 
-  settingData(config: IConfig): void {
-    this.minValue = config.minValue;
-    this.maxValue = config.maxValue;
-    this.step = config.step;
-    this.isRange = config.isRange;
+  settingData(config: IConfig) {
+    const { minValue, maxValue, step, isRange, sliderValues } = config;
+
+    this.minValue = minValue;
+    this.maxValue = maxValue;
+    this.step = step;
+    this.isRange = isRange;
 
     // processes entered values
-    this.setNewValues(config.sliderValues);
+    this.setNewValues(sliderValues);
   }
 
   // sets new values and processes the entered values by limits and step
@@ -60,18 +62,20 @@ class Model {
   }
 
   // update value by id. check by limits and step
-  updateValue(number: [number], index: number) {
-    this.value[index] = Number(number);
+  updateValue(number: number, index: number) {
+    this.value[index] = number;
     this.setNewValues(this.value);
+    const { value } = this;
 
     this.Observable.notify({
-      value: this.value,
+      value,
+      minValue: this.minValue,
     });
   }
 
   // convert coords into value and sets by id
-  convertCoords(data: { coord: number; stepInCoord: number; index: number }) {
-    const { coord, stepInCoord, index } = data;
+  convertCoords(options: { coord: number; stepInCoord: number; index: number }) {
+    const { coord, stepInCoord, index } = options;
     const newValue = roundToMultiple(coord / stepInCoord, this.step) + this.minValue;
 
     if (this.isRange === true) {

@@ -1,49 +1,46 @@
 import Observable from '../../util/observable';
-import ElemDOM from '../../util/elemDOM';
-import roundToMultiple from '../../util/mixins';
+import { roundToMultiple, createHTML } from '../../util/mixins';
 import IConfig from '../interface/IConfig';
 import Point from './point';
 
-class Scale extends ElemDOM {
+class Scale {
   Observable = new Observable();
   points: Point[] = [];
   isInvert!: boolean;
   isRange!: boolean;
+  DOM: Element;
 
-  constructor(parent: Element, config: IConfig) {
-    super('div', 'js-scale-range', parent);
+  constructor(
+    parent: Element,
+    options: { points: number; numberForEach: number; longForEach: number }
+  ) {
+    this.DOM = createHTML('<div class="js-scale-range"></div>', parent);
+    const { points, numberForEach, longForEach } = options;
 
-    this.setPoints({
-      points: config.points,
-      numberForEach: config.numberForEach,
-      longForEach: config.longForEach,
-    });
+    this.createPoints(points, numberForEach, longForEach);
   } // constructor end
 
-  setScale(size: number, config: IConfig) {
-    this.isInvert = config.isInvert;
-    this.isRange = config.isRange;
+  // create scale points
+  createPoints(points: number, numberForEach: number, longForEach: number) {
+    for (let i = 0; i < points; i += 1) {
+      let isNumber = false;
+      let isLong = false;
 
-    this.setValue(config.minValue, config.maxValue, config.step);
-    this.determineСoordScale(size);
+      if (i % numberForEach === 0) isNumber = true;
+      if (i % longForEach === 0) isLong = true;
+
+      this.points[i] = new Point(this.DOM, isNumber, isLong);
+    }
   }
 
-  // sets scale points
-  setPoints(data: { points: number; numberForEach: number; longForEach: number }) {
-    for (let i = 0; i < data.points; i += 1) {
-      this.points[i] = new Point(this.DOM);
-      const point = this.points[i];
+  // sets scale according to parameters
+  setScale(size: number, config: IConfig) {
+    const { isInvert, isRange, minValue, maxValue, step } = config;
+    this.isInvert = isInvert;
+    this.isRange = isRange;
 
-      if (i % data.numberForEach === 0) {
-        point.textField = new ElemDOM('div', 'js-scale-line__number', point.DOM);
-      }
-
-      if (i % data.longForEach === 0) {
-        point.line = new ElemDOM('div', 'js-scale-line__long', point.DOM);
-      } else {
-        point.line = new ElemDOM('div', 'js-scale-line__short', point.DOM);
-      }
-    }
+    this.setValue(minValue, maxValue, step);
+    this.determineСoordScale(size);
   }
 
   // sets scale values
@@ -58,8 +55,8 @@ class Scale extends ElemDOM {
       const point: Point = elem;
       point.value = roundToMultiple(currentValue, sliderStep);
 
-      if (point.textField) {
-        point.textField.DOM.innerText = String(point.value);
+      if (point.numberDOM) {
+        point.numberDOM.innerText = String(point.value);
       }
 
       currentValue = this.isInvert ? (currentValue -= step) : (currentValue += step);
@@ -72,7 +69,7 @@ class Scale extends ElemDOM {
     let coord = this.isInvert ? rangeSize : 0;
 
     this.points.forEach((elem) => {
-      const point: Point = elem;
+      const point = elem;
       point.coord = coord;
       coord = this.isInvert ? (coord -= step) : (coord += step);
     });

@@ -1,0 +1,112 @@
+
+doctype html
+html
+  head
+    title range plugin
+
+body.page
+  .wrapper
+    form.tuning
+      .tuning__container
+        h3 values
+        input(name="sliderValues" placeholder="number" value="-50").field-style
+        input(name="sliderValues2" placeholder="number" value="50").field-style
+
+      .tuning__container
+        h3 min max values
+        input(name="minValue" placeholder="min" value="-100").field-style
+        input(name="maxValue" placeholder="max" value="100" ).field-style
+
+      .tuning__container
+        h3 range
+        label true
+          input(type="radio" name="isRange" value="true" checked)
+
+        label false
+          input(type="radio" name="isRange" value="false")
+
+      .tuning__container
+        h3 vertical
+        label true
+          input(type="radio" name="isVertical" value="true" checked)
+
+        label false
+          input(type="radio" name="isVertical" value="false")
+
+      .tuning__container
+        h3 invert
+        label true
+          input(type="radio" name="isInvert" value="true" checked)
+
+        label false
+          input(type="radio" name="isInvert" value="false")
+
+      .tuning__container
+        h3 step
+        input(name="step" placeholder="number" value="1").field-style
+
+      .tuning__container
+        h3 label
+        label true
+          input(type="radio" name="isLabel" value="true" checked)
+
+        label false
+          input(type="radio" name="isLabel" value="false")
+
+      .tuning__container
+        h3 onClick
+        label true
+          input(type="radio" name="isLabelOnClick" value="true" checked)
+
+        label false
+          input(type="radio" name="isLabelOnClick" value="false")
+
+      hr
+
+      .tuning__container
+        h3 scale
+        label true
+          input(type="radio" name="isScale" value="true" checked)
+
+        label false
+          input(type="radio" name="isScale" value="false")
+
+      .tuning__container
+        h3 points
+        input(name="points" placeholder="number" value="13").field-style
+
+      .tuning__container
+        h3 numberForEach
+        input(name="numberForEach" placeholder="number" value="4").field-style
+
+      .tuning__container
+        h3 longForEach
+        input(name="longForEach" placeholder="number" value="2").field-style
+
+      input(type="button" value="accept")
+
+    .container
+      .container-field
+        input.field-style.text-field
+        input.field-style.text-field2
+      .plugin.rangeSlider
+
+  .wrapper
+    .tuning
+    .container
+      .container-field
+        input.field-style.text-field3
+        input.field-style.text-field4
+      .plugin.rangeSlider2
+
+
+
+
+
+
+
+
+
+
+
+

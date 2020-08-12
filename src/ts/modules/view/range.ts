@@ -1,8 +1,9 @@
-import ElemDOM from '../../util/elemDOM';
+import { createHTML } from '../../util/mixins';
 
-class Range extends ElemDOM {
+class Range {
+  DOM: Element;
   constructor() {
-    super('div', 'js-range-slider');
+    this.DOM = createHTML('<div class="js-range-slider"></div>');
   }
 
   // sets the class (CSS) responsible for the position of the range

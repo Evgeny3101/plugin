@@ -1,35 +1,37 @@
-import ElemDOM from '../../util/elemDOM';
 import Observable from '../../util/observable';
+import { createHTML } from '../../util/mixins';
 
-class Label extends ElemDOM {
+class Label {
   Observable = new Observable();
-  input: HTMLInputElement;
-  labelOnClick: boolean;
+  input!: HTMLInputElement;
+  DOM!: Element;
 
-  constructor(parent: Element, labelOnClick: boolean) {
-    super('div', 'js-label-wrapper', parent);
-    this.labelOnClick = labelOnClick;
-
-    const container = document.createElement('div');
-    container.className = 'js-label-container';
-    this.DOM.appendChild(container);
-
-    this.input = document.createElement('input');
-    this.input.className = 'js-label-input';
-    this.input.setAttribute('readonly', 'readonly');
-    container.appendChild(this.input);
+  constructor(parent: Element, public labelOnClick: boolean) {
+    this.createElements(parent);
   } // constructor
+
+  createElements(parent: Element) {
+    this.DOM = createHTML(
+      `<div class="js-button-label">
+        <div class="js-button-label__container">
+          <input class="js-button-label__input" readonly> </input>
+        </div>
+      </div>`,
+      parent
+    );
+    this.input = this.DOM.querySelector('input')!;
+  }
 
   toPosition(coord: number, key: string) {
     this.DOM.setAttribute('style', `${key} : ${coord}px`);
   }
 
   show() {
-    this.DOM.classList.remove('js-label__hide');
+    this.DOM.classList.remove('js-button-label__hide');
   }
 
   hide() {
-    this.DOM.classList.add('js-label__hide');
+    this.DOM.classList.add('js-button-label__hide');
   }
 
   setValue(value: number) {

@@ -30,6 +30,10 @@ module.exports = {
   module: {
     rules: [
       {
+        test: /\.pug$/,
+        loader: 'pug-loader',
+      },
+      {
         test: /\.css$/,
         use: [
           {
@@ -93,7 +97,8 @@ module.exports = {
 
   plugins: [
     new HTMLWebpackPlugin({
-      template: './index.html',
+      filename: 'index.html',
+      template: './index.pug',
       // сжимать файл HTML
       minify: {
         collapseWhitespace: isProd,

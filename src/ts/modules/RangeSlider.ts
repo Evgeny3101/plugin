@@ -4,28 +4,25 @@ import Model from './model';
 import View from './view';
 
 class RangeSlider {
-  mainDOM: Element;
-  config!: IConfig;
   model!: Model;
   view!: View;
   controller!: Controller;
 
-  constructor(mainElement: Element, config: IConfig) {
-    this.mainDOM = mainElement;
-    this.init(config);
+  constructor(public mainDOM: Element, public config: IConfig) {
+    this.init();
   } // constructor
 
-  init(config: IConfig) {
-    this.config = config;
+  init() {
     this.model = new Model(this.config);
     this.config.sliderValues = this.model.value;
     this.view = new View(this.mainDOM, this.config);
-    this.controller = new Controller(this.model, this.view, this.config);
+    this.controller = new Controller(this.model, this.view);
   }
 
   setNewConfig(config: IConfig) {
+    this.config = config;
     this.mainDOM.innerHTML = '';
-    this.init(config);
+    this.init();
   }
 } // class
 

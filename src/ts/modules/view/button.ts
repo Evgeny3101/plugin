@@ -1,17 +1,19 @@
-import ElemDOM from '../../util/elemDOM';
 import Observable from '../../util/observable';
+import { createHTML } from '../../util/mixins';
 import IPositionVars from '../interface/IVarsPosition';
 
-class Button extends ElemDOM {
+class Button {
   Observable = new Observable();
-  pos: IPositionVars;
   coord!: number;
-  index: number;
+  DOM: Element;
 
-  constructor(parent: Element, pos: IPositionVars, index: number) {
-    super('div', 'js-range-btn', parent);
-    this.pos = pos;
-    this.index = index;
+  constructor(
+    public parent: Element,
+    public pos: IPositionVars,
+    public index: number,
+    public isInvert: boolean
+  ) {
+    this.DOM = createHTML('<div class="js-slider-button"></div>', parent);
   } // constructor
 
   move(evnt) {
@@ -24,7 +26,7 @@ class Button extends ElemDOM {
     document.onmousemove = (event: MouseEvent) => {
       let coords;
 
-      if (this.pos.isInvert) {
+      if (this.isInvert) {
         coords = baseShift - event[this.pos.page] + (rangeSize - rangeShift);
       } else {
         coords = rangeShift - (baseShift - event[this.pos.page]);

@@ -3,11 +3,9 @@ import Observable from '../../util/observable';
 class TextField {
   Observable = new Observable();
   DOM!: HTMLInputElement;
-  index: number;
 
-  constructor(field: string, index: number) {
+  constructor(field: string, public index: number) {
     this.setTextField(field);
-    this.index = index;
   }
 
   setTextField(field: string) {
@@ -17,7 +15,7 @@ class TextField {
   }
 
   // gets values from the text field
-  getEnteredValues() {
+  getFieldValues() {
     const newValue = [Number(this.DOM.value) || 0];
 
     this.Observable.notify({

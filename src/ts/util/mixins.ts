@@ -11,4 +11,16 @@ function roundToMultiple(num: number, multiple: number) {
   return result;
 }
 
-export default roundToMultiple;
+// creates html from string.
+// if parent is specified inserts into it
+function createHTML(html: string, parent?: Element): any {
+  const wrapper = document.createElement('div');
+  wrapper.innerHTML = html;
+
+  const content = wrapper.firstElementChild!;
+  if (parent) parent.append(content);
+
+  return content;
+}
+
+export { roundToMultiple, createHTML };

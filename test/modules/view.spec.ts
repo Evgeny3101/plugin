@@ -68,7 +68,7 @@ describe('View testing.', () => {
 
   it('The "updateSize" method. Updates size slider.', () => {
     view.range.DOM.classList.add('js-test-size');
-    view.updateSize(config);
+    view.updateSize(config); // maxValue, minValue, sliderValues
     view.range.DOM.classList.remove('js-test-size');
 
     expect(view.rangeSize).toBe(110);

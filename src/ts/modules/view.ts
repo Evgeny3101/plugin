@@ -8,21 +8,34 @@ import Scale from './view/scale';
 import TextField from './view/textField';
 
 class View {
+  range!: Range;
   button: Button[] = [];
-  label: Label[] = [];
   textField: TextField[] = [];
+  label: Label[] = [];
+  interval?: Interval;
+  scale?: Scale;
   pos!: IPositionVars;
-  interval: Interval;
-  scale: Scale;
-  range: Range;
   rangeSize!: number;
   step!: number;
-  mainDOM: Element;
 
-  constructor(parent: Element, config: IConfig) {
-    this.mainDOM = parent;
+  isRange: boolean;
+  isInvert: boolean;
+  isVertical: boolean;
+  isScale: boolean;
+  isLabel: boolean;
+  isLabelOnClick: boolean;
 
-    this.setPositionVariables(config.isVertical, config.isInvert);
+  constructor(public parent: Element, config: IConfig) {
+    const { isRange, isInvert, isVertical, isScale, isLabel, isLabelOnClick } = config;
+
+    this.isRange = isRange;
+    this.isInvert = isInvert;
+    this.isVertical = isVertical;
+    this.isScale = isScale;
+    this.isLabel = isLabel;
+    this.isLabelOnClick = isLabelOnClick;
+
+    this.setPositionVariables();
     this.createDOM(config);
     this.setValues(config);
     this.setListeners(config);
@@ -30,75 +43,76 @@ class View {
 
   // creates elements DOM
   createDOM(config: IConfig) {
+    const { sliderValues, points, numberForEach, longForEach } = config;
     this.range = new Range();
-    this.range.setClassPosition(config.isVertical);
+    this.range.setClassPosition(this.isVertical);
 
     // creates buttons
     this.button = [];
-    const buttonArrayLength = Number(config.isRange) + 1;
+    const buttonArrayLength = Number(this.isRange) + 1;
     for (let i = 0; i < buttonArrayLength; i += 1) {
-      this.button[i] = new Button(this.range.DOM, this.pos, i);
+      this.button[i] = new Button(this.range.DOM, this.pos, i, this.isInvert);
     }
 
     // creates spacing between buttons
-    if (config.isRange) {
-      this.interval = new Interval(this.range.DOM);
+    if (this.isRange) {
+      this.interval = new Interval(this.range.DOM, this.pos);
     }
 
     // creates labels above buttons
-    if (config.isLabel) {
+    if (this.isLabel) {
       this.label = [];
       this.button.forEach((element, i) => {
-        this.label[i] = new Label(this.range.DOM, config.isLabelOnClick);
-        this.label[i].input.value = String(config.sliderValues[i]);
+        this.label[i] = new Label(this.range.DOM, this.isLabelOnClick);
+        this.label[i].input.value = String(sliderValues[i]);
       });
     }
 
     // creates scale
-    if (config.isScale) {
-      this.scale = new Scale(this.range.DOM, config);
+    if (this.isScale) {
+      this.scale = new Scale(this.range.DOM, {
+        points,
+        numberForEach,
+        longForEach,
+      });
     }
 
-    this.range.appendInDOM(this.mainDOM);
+    this.parent.append(this.range.DOM);
   }
 
   // sets element values
   setValues(config: IConfig) {
-    if (config.isRange) {
+    const { sliderValues, minValue, maxValue, textField } = config;
+    //
+
+    if (this.interval) {
       const buttonSize = this.button[0].DOM[this.pos.offsetSize];
-      this.interval.setInterval(buttonSize, this.pos);
+      this.interval.setButtonSize(buttonSize);
     }
 
-    if (config.textField) {
-      config.textField.forEach((element, i) => {
+    if (textField) {
+      textField.forEach((element, i) => {
         this.textField[i] = new TextField(element, i);
-        this.textField[i].setValue(config.sliderValues);
+        this.textField[i].setValue(sliderValues);
       });
     }
 
     // require  this.rangeSize for setScale values
-    this.updateRangeSize(config.maxValue, config.minValue);
+    this.updateRangeSize(maxValue, minValue);
 
-    if (config.isScale) {
+    if (this.scale) {
       this.scale.setScale(this.rangeSize, config);
     }
 
-    this.updateCoords({
-      isRange: config.isRange,
-      isLabel: config.isLabel,
-      minValue: config.minValue,
-      sliderValues: config.sliderValues,
-    });
+    this.updateCoords(minValue, sliderValues);
   }
 
   // sets variables for vertical or horizontal positioning
-  setPositionVariables(isVertical: boolean, isInvert: boolean) {
-    if (isVertical) {
+  setPositionVariables() {
+    if (this.isVertical) {
       this.pos = {
-        isVertical,
-        isInvert,
         size: 'height',
-        offset: isInvert ? 'bottom' : 'top',
+        offset: this.isInvert ? 'bottom' : 'top',
         clientSize: 'clientHeight',
         offsetSize: 'offsetHeight',
         page: 'pageY',
@@ -106,10 +120,8 @@ class View {
       };
     } else {
       this.pos = {
-        isVertical,
-        isInvert,
         size: 'width',
-        offset: isInvert ? 'right' : 'left',
+        offset: this.isInvert ? 'right' : 'left',
         clientSize: 'clientWidth',
         offsetSize: 'offsetWidth',
         page: 'pageX',
@@ -119,8 +131,14 @@ class View {
   }
 
   setListeners(config: IConfig) {
+    const { maxValue, minValue, sliderValues } = config;
+    //
+
     // auto update when the screen width changes
-    window.addEventListener('resize', this.updateSize.bind(this, config));
+    window.addEventListener(
+      'resize',
+      this.updateSize.bind(this, maxValue, minValue, sliderValues)
+    );
 
     // buttons move handler
     this.button.forEach((btn) =>
@@ -130,15 +148,15 @@ class View {
     // entering values into a text field
     this.textField.forEach((elem) => {
       if (elem.DOM) {
-        elem.DOM.addEventListener('blur', elem.getEnteredValues.bind(elem));
+        elem.DOM.addEventListener('blur', elem.getFieldValues.bind(elem));
       }
     });
 
     // handler for click on points
     if (this.scale) {
-      this.scale.points.forEach((element, i) => {
-        const buttonsCoords = this.button.map((button) => button.coord);
+      const buttonsCoords = this.button.map((button) => button.coord);
 
+      this.scale.points.forEach((element, i) => {
         element.DOM.addEventListener(
           'click',
           this.scale.pressScaleBar.bind(this.scale, buttonsCoords, i)
@@ -147,7 +165,7 @@ class View {
     }
 
     // show/hide label on click
-    if (config.isLabel && config.isLabelOnClick) {
+    if (this.isLabel && this.isLabelOnClick) {
       this.label.forEach((elem, i) => {
         elem.hide();
         this.button[i].DOM.addEventListener('mousedown', elem.show.bind(elem));
@@ -166,32 +184,27 @@ class View {
   }
 
   // updates coordinates and set items to position
-  updateCoords(options: {
-    isRange: boolean;
-    isLabel: boolean;
-    minValue: number;
-    sliderValues: number[];
-  }) {
-    const { isRange, isLabel, minValue, sliderValues } = options;
-    if (isRange === true) {
+  updateCoords(minValue: number, sliderValues: number[]) {
+    if (this.isRange === true) {
       sliderValues.forEach((num, i) => {
         const newCoord = this.step * (num + Math.abs(minValue));
         this.button[i].toPosition(newCoord);
       });
 
       // sets interval to position
-      this.interval.toPosition([this.button[0].coord, this.button[1].coord]);
+      if (this.interval)
+        this.interval.toPosition([this.button[0].coord, this.button[1].coord]);
     } else {
       const newCoord = this.step * (sliderValues[0] + Math.abs(minValue));
       this.button[0].toPosition(newCoord);
     }
 
     // sets label to position
-    if (isLabel) {
+    if (this.isLabel) {
       this.label.forEach((element, i) => {
         let coord: number;
 
-        if (this.pos.isInvert) {
+        if (this.isInvert) {
           coord = this.button[i].coord + this.button[i].DOM[this.pos.offsetSize];
         } else coord = this.button[i].coord;
 
@@ -202,16 +215,9 @@ class View {
   }
 
   // update range size and set items to position (this.updateRangeSize, this.updateCoords)
-  updateSize(config: IConfig) {
-    const { maxValue, minValue, range, label, value } = config;
-    this.updateRangeSize(config.maxValue, config.minValue);
-
-    this.updateCoords({
-      isRange: config.isRange,
-      isLabel: config.isLabel,
-      minValue: config.minValue,
-      sliderValues: config.sliderValues,
-    });
+  updateSize(maxValue: number, minValue: number, sliderValues: number[]) {
+    this.updateRangeSize(maxValue, minValue);
+    this.updateCoords(minValue, sliderValues);
   }
 } // class View
 
