@@ -1,5 +1,5 @@
-import { roundToMultiple } from '../util/mixins';
-import Observable from '../util/observable';
+import { roundToMultiple } from '../ts/mixins';
+import Observable from '../ts/observable';
 import IConfig from './interface/IConfig';
 
 class Model {
@@ -76,7 +76,8 @@ class Model {
   // convert coords into value and sets by id
   convertCoords(options: { coord: number; stepInCoord: number; index: number }) {
     const { coord, stepInCoord, index } = options;
-    const newValue = roundToMultiple(coord / stepInCoord, this.step) + this.minValue;
+    const valueFromCoord = coord / stepInCoord;
+    const newValue = roundToMultiple(valueFromCoord, this.step) + this.minValue;
 
     if (this.isRange === true) {
       this.value[index] = newValue;

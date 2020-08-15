@@ -1,22 +1,21 @@
-/* eslint-disable class-methods-use-this */
 import Model from './model';
-import View from './view';
+import View from './view/view';
 
 class Controller {
-  constructor(model: Model, view: View) {
-    this.installSubscribes(model, view);
+  constructor(public model: Model, public view: View) {
+    this.installSubscribes();
   }
 
-  installSubscribes(model: Model, view: View) {
+  installSubscribes() {
     ///  notify Model  ///
-    // methods model.convertCoords или model.updateValue
+    // methods model.convertCoords or model.updateValue
     // when the model.value changes
-    model.Observable.subscribe((options: { value: number[] }) => {
+    this.model.Observable.subscribe((options: { value: number[] }) => {
       const { value } = options;
 
-      view.updateCoords(model.minValue, value);
+      this.view.updateCoords(this.model.minValue, value);
 
-      view.textField.forEach((element) => {
+      this.view.textField.forEach((element) => {
         element.setValue(value);
       });
     });
@@ -24,34 +23,34 @@ class Controller {
     ///  notify View ///
     // method textField[].toInputValues
     // entering values into a text field
-    view.textField.forEach((elem) => {
+    this.view.textField.forEach((elem) => {
       elem.Observable.subscribe((options: { value: number; index: number }) => {
         const { value, index } = options;
 
-        model.updateValue(value, index);
+        this.model.updateValue(value, index);
       });
     });
 
     // method button[].move
     // buttons move handler
-    view.button.forEach((elem) => {
+    this.view.button.forEach((elem) => {
       elem.Observable.subscribe((options: { coord: number; index: number }) => {
         const { coord, index } = options;
 
-        model.convertCoords({
+        this.model.convertCoords({
           coord,
           index,
-          stepInCoord: view.step,
+          stepInCoord: this.view.step,
         });
       });
     });
 
     // method  scale.pressScaleBar
     // handler for click on points
-    if (view.scale) {
-      view.scale.Observable.subscribe((options: { value: number; index: number }) => {
+    if (this.view.scale) {
+      this.view.scale.Observable.subscribe((options: { value: number; index: number }) => {
         const { value, index } = options;
-        model.updateValue(value, index);
+        this.model.updateValue(value, index);
       });
     }
   } // installSubscribes

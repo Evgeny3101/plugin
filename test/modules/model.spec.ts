@@ -1,5 +1,5 @@
-import '../../src/ts/main';
-import Model from '../../src/ts/modules/model';
+import '../../src/jquery-wrapper';
+import Model from '../../src/components/model';
 
 let model: Model;
 

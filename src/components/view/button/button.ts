@@ -1,6 +1,6 @@
-import Observable from '../../util/observable';
-import { createHTML } from '../../util/mixins';
-import IPositionVars from '../interface/IVarsPosition';
+import { createHTML } from '../../../ts/mixins';
+import Observable from '../../../ts/observable';
+import IPositionVars from '../../interface/IVarsPosition';
 
 class Button {
   Observable = new Observable();
@@ -16,20 +16,21 @@ class Button {
     this.DOM = createHTML('<div class="js-slider-button"></div>', parent);
   } // constructor
 
-  move(evnt) {
-    const btn = evnt.currentTarget;
-    const parent = evnt.path[1];
-    const baseShift = evnt[this.pos.page];
+  handleButtonMousedown(evt) {
+    const btn = evt.target;
+    const parent = evt.path[1];
+    const basePositionMouse = evt[this.pos.page];
     const rangeShift = btn[this.pos.offsetFrom];
     const rangeSize = parent[this.pos.clientSize] - btn[this.pos.offsetSize];
 
     document.onmousemove = (event: MouseEvent) => {
       let coords;
+      const currentPositionMouse = event[this.pos.page];
 
       if (this.isInvert) {
-        coords = baseShift - event[this.pos.page] + (rangeSize - rangeShift);
+        coords = basePositionMouse - currentPositionMouse + (rangeSize - rangeShift);
       } else {
-        coords = rangeShift - (baseShift - event[this.pos.page]);
+        coords = rangeShift - (basePositionMouse - currentPositionMouse);
       }
 
       // limit coords
@@ -37,7 +38,6 @@ class Button {
       if (coords > rangeSize) coords = rangeSize;
 
       this.coord = coords;
-      this.toPosition(this.coord);
 
       this.Observable.notify({
         coord: this.coord,
@@ -46,7 +46,6 @@ class Button {
     };
 
     document.onmouseup = () => {
-      this.toPosition(this.coord);
       document.onmousemove = null;
       document.onmouseup = null;
     };

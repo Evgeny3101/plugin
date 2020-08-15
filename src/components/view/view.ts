@@ -1,11 +1,11 @@
-import IConfig from './interface/IConfig';
-import IPositionVars from './interface/IVarsPosition';
-import Range from './view/range';
-import Button from './view/button';
-import Interval from './view/interval';
-import Label from './view/label';
-import Scale from './view/scale';
-import TextField from './view/textField';
+import IConfig from '../interface/IConfig';
+import IPositionVars from '../interface/IVarsPosition';
+import Range from './range/range';
+import Button from './button/button';
+import Interval from './interval/interval';
+import Label from './label/label';
+import Scale from './scale/scale';
+import TextField from './textField';
 
 class View {
   range!: Range;
@@ -14,6 +14,7 @@ class View {
   label: Label[] = [];
   interval?: Interval;
   scale?: Scale;
+
   pos!: IPositionVars;
   rangeSize!: number;
   step!: number;
@@ -39,6 +40,15 @@ class View {
     this.createDOM(config);
     this.setValues(config);
     this.setListeners(config);
+
+
+    this.button.forEach((elem) => {
+      elem.Observable.subscribe((options: { coord: number; index: number }) => {
+        const { coord, index } = options;
+
+        console.log(coord, index);
+      });
+    });
   }
 
   // creates elements DOM
@@ -105,6 +115,7 @@ class View {
     }
 
     this.updateCoords(minValue, sliderValues);
+    this.button.forEach(elem => elem.toPosition(elem.coord));
   }
 
   // sets variables for vertical or horizontal positioning
@@ -137,29 +148,28 @@ class View {
     // auto update when the screen width changes
     window.addEventListener(
       'resize',
-      this.updateSize.bind(this, maxValue, minValue, sliderValues)
+      this.handleWindowResize.bind(this, maxValue, minValue, sliderValues)
     );
 
     // buttons move handler
-    this.button.forEach((btn) =>
-      btn.DOM.addEventListener('mousedown', btn.move.bind(btn))
-    );
+    this.button.forEach((btn) => {
+      btn.DOM.addEventListener('mousedown', btn.handleButtonMousedown.bind(btn));
+    });
 
     // entering values into a text field
     this.textField.forEach((elem) => {
       if (elem.DOM) {
-        elem.DOM.addEventListener('blur', elem.getFieldValues.bind(elem));
+        elem.DOM.addEventListener('blur', elem.handleTextFieldBlur.bind(elem));
       }
     });
 
     // handler for click on points
     if (this.scale) {
-      const buttonsCoords = this.button.map((button) => button.coord);
 
       this.scale.points.forEach((element, i) => {
         element.DOM.addEventListener(
           'click',
-          this.scale.pressScaleBar.bind(this.scale, buttonsCoords, i)
+          this.scale.handleScalePointClick.bind(this.scale, this.button , i)
         );
       });
     }
@@ -215,7 +225,7 @@ class View {
   }
 
   // update range size and set items to position (this.updateRangeSize, this.updateCoords)
-  updateSize(maxValue: number, minValue: number, sliderValues: number[]) {
+  handleWindowResize(maxValue: number, minValue: number, sliderValues: number[]) {
     this.updateRangeSize(maxValue, minValue);
     this.updateCoords(minValue, sliderValues);
   }

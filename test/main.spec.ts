@@ -1,4 +1,4 @@
-import '../src/ts/main';
+import '../src/jquery-wrapper';
 
 let elem: JQuery<HTMLElement>;
 let input: JQuery<HTMLElement>;

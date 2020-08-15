@@ -98,7 +98,7 @@ module.exports = {
   plugins: [
     new HTMLWebpackPlugin({
       filename: 'index.html',
-      template: './index.pug',
+      template: './page/index.pug',
       // сжимать файл HTML
       minify: {
         collapseWhitespace: isProd,

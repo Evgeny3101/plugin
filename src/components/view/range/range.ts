@@ -1,4 +1,4 @@
-import { createHTML } from '../../util/mixins';
+import { createHTML } from '../../../ts/mixins';
 
 class Range {
   DOM: Element;
@@ -8,8 +8,8 @@ class Range {
 
   // sets the class (CSS) responsible for the position of the range
   setClassPosition(isVertical: boolean) {
-    if (isVertical) this.DOM.classList.add('js-range-slider__vertical');
-    else this.DOM.classList.add('js-range-slider__horizontal');
+    if (isVertical) this.DOM.classList.add('js-range-slider_vertical');
+    else this.DOM.classList.add('js-range-slider_horizontal');
   }
 }
 

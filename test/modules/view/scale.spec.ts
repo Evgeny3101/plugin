@@ -1,4 +1,4 @@
-import '../../../src/ts/main';
+import '../../../src/jquery-wrapper';
 
 jasmine.getFixtures().fixturesPath = 'base/test/fixtures';
 jasmine.getStyleFixtures().fixturesPath = 'base/test/fixtures';

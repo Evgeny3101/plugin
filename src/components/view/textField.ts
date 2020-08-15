@@ -1,4 +1,4 @@
-import Observable from '../../util/observable';
+import Observable from '../../ts/observable';
 
 class TextField {
   Observable = new Observable();
@@ -15,7 +15,8 @@ class TextField {
   }
 
   // gets values from the text field
-  getFieldValues() {
+  // old getFieldValues
+  handleTextFieldBlur() {
     const newValue = [Number(this.DOM.value) || 0];
 
     this.Observable.notify({
@@ -26,7 +27,7 @@ class TextField {
 
   // sets values into the text field
   setValue(value: number[]) {
-    this.DOM.value = String(value[this.index] || 0);
+    this.DOM.value = String(value[this.index]);
   }
 }
 

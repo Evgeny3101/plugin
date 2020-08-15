@@ -1,4 +1,3 @@
-
 doctype html
 html
   head
@@ -18,58 +17,71 @@ body.page
         input(name="maxValue" placeholder="max" value="100" ).field-style
 
       .tuning__container
-        h3 range
-        label true
-          input(type="radio" name="isRange" value="true" checked)
-
-        label false
-          input(type="radio" name="isRange" value="false")
-
-      .tuning__container
-        h3 vertical
-        label true
-          input(type="radio" name="isVertical" value="true" checked)
-
-        label false
-          input(type="radio" name="isVertical" value="false")
-
-      .tuning__container
-        h3 invert
-        label true
-          input(type="radio" name="isInvert" value="true" checked)
-
-        label false
-          input(type="radio" name="isInvert" value="false")
-
-      .tuning__container
         h3 step
         input(name="step" placeholder="number" value="1").field-style
 
       .tuning__container
-        h3 label
-        label true
-          input(type="radio" name="isLabel" value="true" checked)
+        h3 range
+        label
+          input(type="radio" name="isRange" value="true" checked)
+          |true
+        label
+          input(type="radio" name="isRange" value="false")
+          |false
 
-        label false
+      .tuning__container
+        h3 vertical
+        label
+          input(type="radio" name="isVertical" value="true" checked)
+          |true
+
+        label
+          input(type="radio" name="isVertical" value="false")
+          |false
+
+      .tuning__container
+        h3 invert
+        label
+          input(type="radio" name="isInvert" value="true" checked)
+          |true
+
+        label
+          input(type="radio" name="isInvert" value="false")
+          |false
+
+      hr
+
+      .tuning__container
+        h3 label
+        label
+          input(type="radio" name="isLabel" value="true" checked)
+          |true
+
+        label
           input(type="radio" name="isLabel" value="false")
+          |false
 
       .tuning__container
         h3 onClick
-        label true
+        label
           input(type="radio" name="isLabelOnClick" value="true" checked)
+          |true
 
-        label false
+        label
           input(type="radio" name="isLabelOnClick" value="false")
+          |false
 
       hr
 
       .tuning__container
         h3 scale
-        label true
+        label
           input(type="radio" name="isScale" value="true" checked)
+          |true
 
-        label false
+        label
           input(type="radio" name="isScale" value="false")
+          |false
 
       .tuning__container
         h3 points

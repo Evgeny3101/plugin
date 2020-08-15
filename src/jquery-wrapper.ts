@@ -1,5 +1,5 @@
-import IConfig from './modules/interface/IConfig';
-import RangeSlider from './modules/RangeSlider';
+import IConfig from './components/interface/IConfig';
+import RangeSlider from './plugin-api';
 
 ((jQuery) => {
   const $ = jQuery;

@@ -1,7 +1,7 @@
-import '../../../src/ts/main';
-import RangeSlider from '../../../src/ts/modules/RangeSlider';
-import View from '../../../src/ts/modules/view';
-import Config from '../../../src/ts/modules/interface/IConfig';
+import '../../../src/jquery-wrapper';
+import RangeSlider from '../../../src/ts/layers/rangeSliderAPI';
+import View from '../../../src/ts/layers/view/view';
+import Config from '../../../src/components/interface/IConfig';
 
 let slider: RangeSlider;
 let config: Config;

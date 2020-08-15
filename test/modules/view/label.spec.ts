@@ -1,6 +1,6 @@
-import '../../../src/ts/main';
-import View from '../../../src/ts/modules/view';
-import Config from '../../../src/ts/modules/interface/IConfig';
+import '../../../src/jquery-wrapper';
+import View from '../../../src/ts/layers/view/view';
+import Config from '../../../src/components/interface/IConfig';
 
 let config: Config;
 let view: View;

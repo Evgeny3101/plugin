@@ -1,10 +1,11 @@
-import Observable from '../../util/observable';
-import { createHTML } from '../../util/mixins';
+import { createHTML } from '../../../ts/mixins';
+import Observable from '../../../ts/observable';
 
 class Label {
   Observable = new Observable();
   input!: HTMLInputElement;
   DOM!: Element;
+  buttonSize: number = 0;
 
   constructor(parent: Element, public labelOnClick: boolean) {
     this.createElements(parent);
@@ -12,8 +13,8 @@ class Label {
 
   createElements(parent: Element) {
     this.DOM = createHTML(
-      `<div class="js-button-label">
-        <div class="js-button-label__container">
+      `<div class="js-range-slider__container-label">
+        <div class="js-button-label">
           <input class="js-button-label__input" readonly> </input>
         </div>
       </div>`,
@@ -27,11 +28,11 @@ class Label {
   }
 
   show() {
-    this.DOM.classList.remove('js-button-label__hide');
+    this.DOM.children[0].classList.remove('js-button-label__hide');
   }
 
   hide() {
-    this.DOM.classList.add('js-button-label__hide');
+    this.DOM.children[0].classList.add('js-button-label__hide');
   }
 
   setValue(value: number) {

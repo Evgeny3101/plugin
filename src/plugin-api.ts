@@ -1,7 +1,7 @@
-import IConfig from './interface/IConfig';
-import Controller from './controller';
-import Model from './model';
-import View from './view';
+import IConfig from './components/interface/IConfig';
+import Controller from './components/controller';
+import Model from './components/model';
+import View from './components/view/view';
 
 class RangeSlider {
   model!: Model;
