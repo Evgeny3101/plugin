@@ -3,9 +3,9 @@ import { createHTML } from '../../../ts/mixins';
 class Point {
   value!: number;
   coord!: number;
-  lineDOM: Element;
-  DOM: Element;
-  numberDOM?: Element;
+  lineDOM: HTMLElement;
+  DOM: HTMLElement;
+  numberDOM?: HTMLElement;
 
   constructor(parent: Element, isNumber: boolean, isLong: boolean) {
     this.DOM = createHTML('<div class="js-scale-point"></div>', parent);
@@ -15,8 +15,15 @@ class Point {
     }
 
     if (isLong)
-      this.lineDOM = createHTML('<div class="js-scale-point__long-line"></div>', this.DOM);
-    else this.lineDOM = createHTML('<div class="js-scale-point__short-line"></div>', this.DOM);
+      this.lineDOM = createHTML(
+        '<div class="js-scale-point__long-line"></div>',
+        this.DOM
+      );
+    else
+      this.lineDOM = createHTML(
+        '<div class="js-scale-point__short-line"></div>',
+        this.DOM
+      );
   }
 } // class
 

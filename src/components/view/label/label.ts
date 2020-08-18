@@ -4,10 +4,15 @@ import Observable from '../../../ts/observable';
 class Label {
   Observable = new Observable();
   input!: HTMLInputElement;
-  DOM!: Element;
+  DOM!: HTMLInputElement;
   buttonSize: number = 0;
+  coord!: number;
 
-  constructor(parent: Element, public labelOnClick: boolean) {
+  constructor(
+    parent: Element,
+    public labelOnClick: boolean,
+    public positionName: string
+  ) {
     this.createElements(parent);
   } // constructor
 
@@ -23,16 +28,20 @@ class Label {
     this.input = this.DOM.querySelector('input')!;
   }
 
-  toPosition(coord: number, key: string) {
-    this.DOM.setAttribute('style', `${key} : ${coord}px`);
+  setCoord(coord: number) {
+    this.coord = coord;
+  }
+
+  toPosition() {
+    this.DOM.setAttribute('style', `${this.positionName} : ${this.coord}px`);
   }
 
   show() {
-    this.DOM.children[0].classList.remove('js-button-label__hide');
+    this.DOM.children[0].classList.remove('js-button-label_hide');
   }
 
   hide() {
-    this.DOM.children[0].classList.add('js-button-label__hide');
+    this.DOM.children[0].classList.add('js-button-label_hide');
   }
 
   setValue(value: number) {

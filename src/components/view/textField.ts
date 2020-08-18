@@ -26,8 +26,8 @@ class TextField {
   }
 
   // sets values into the text field
-  setValue(value: number[]) {
-    this.DOM.value = String(value[this.index]);
+  setValue(value: number) {
+    this.DOM.value = String(value);
   }
 }
 

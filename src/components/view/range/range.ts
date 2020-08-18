@@ -1,7 +1,7 @@
 import { createHTML } from '../../../ts/mixins';
 
 class Range {
-  DOM: Element;
+  DOM: HTMLElement;
   constructor() {
     this.DOM = createHTML('<div class="js-range-slider"></div>');
   }

@@ -13,10 +13,14 @@ class Controller {
     this.model.Observable.subscribe((options: { value: number[] }) => {
       const { value } = options;
 
-      this.view.updateCoords(this.model.minValue, value);
+      this.view.convertValues(value);
 
-      this.view.textField.forEach((element) => {
-        element.setValue(value);
+      this.view.textField.forEach((element, i) => {
+        element.setValue(value[i]);
+      });
+
+      this.view.label.forEach((element, i) => {
+        element.setValue(value[i]);
       });
     });
 
@@ -48,10 +52,12 @@ class Controller {
     // method  scale.pressScaleBar
     // handler for click on points
     if (this.view.scale) {
-      this.view.scale.Observable.subscribe((options: { value: number; index: number }) => {
-        const { value, index } = options;
-        this.model.updateValue(value, index);
-      });
+      this.view.scale.Observable.subscribe(
+        (options: { value: number; index: number }) => {
+          const { value, index } = options;
+          this.model.updateValue(value, index);
+        }
+      );
     }
   } // installSubscribes
 } // class

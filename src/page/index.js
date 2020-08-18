@@ -1,5 +1,6 @@
 import '../jquery-wrapper';
 
+// slider 1
 const slider = $('.rangeSlider');
 slider.rangeSlider({
   sliderValues: [-22, 43],
@@ -12,6 +13,7 @@ slider.rangeSlider({
   // isInvert: true,
 });
 
+// slider 2
 const slider2 = $('.rangeSlider2');
 slider2
   .rangeSlider({
@@ -27,18 +29,22 @@ slider2
     isLabel: true,
   });
 
+
+//  tuning rangeSlider
 const form = document.querySelector('.tuning');
 const btn = form.querySelector('input[type="button"]');
 
-function stringInValue(data) {
+
+// function
+function convertStringsInValue(data) {
   const result = {};
-  data.forEach((elem) => {
-    const itemIsBoolean = Number.isNaN(Number(elem.value));
+  data.forEach((item) => {
+    const itemIsBoolean = Number.isNaN(Number(item.value));
 
     if (itemIsBoolean) {
-      if (elem.value === 'true') result[elem.name] = true;
-      else result[elem.name] = false;
-    } else result[elem.name] = Number(elem.value);
+      if (item.value === 'true') result[item.name] = true;
+      else result[item.name] = false;
+    } else result[item.name] = Number(item.value);
   });
 
   result.sliderValues = [result.sliderValues, result.sliderValues2];
@@ -46,10 +52,12 @@ function stringInValue(data) {
   return result;
 }
 
-function sendOptions() {
+function handleButtonClick() {
   const data = $(form).serializeArray();
-  const result = stringInValue(data);
-  slider.rangeSlider('config', result);
+  const options = convertStringsInValue(data);
+  slider.rangeSlider('config', options);
 }
 
-btn.addEventListener('click', sendOptions.bind(form));
+
+// event
+btn.addEventListener('click', handleButtonClick.bind(form));

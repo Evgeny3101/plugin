@@ -7,87 +7,85 @@ import Button from '../button/button';
 class Scale {
   Observable = new Observable();
   points: Point[] = [];
-  isInvert!: boolean;
-  isRange!: boolean;
-  DOM: Element;
+  DOM: HTMLElement;
 
-  constructor(
-    parent: Element,
-    options: { points: number; numberForEach: number; longForEach: number }
-  ) {
+  constructor(parent: HTMLElement, public defaultConfig: IConfig) {
     this.DOM = createHTML('<div class="js-scale-range"></div>', parent);
-    const { points, numberForEach, longForEach } = options;
-    this.createPoints(points, numberForEach, longForEach);
+    this.createPoints();
   } // constructor end
 
   // create scale points
-  createPoints(points: number, numberForEach: number, longForEach: number) {
+  createPoints() {
+    const { points, numberForEach, longForEach } = this.defaultConfig;
+
     for (let i = 0; i < points; i += 1) {
       const isNumber = i % numberForEach === 0;
-      const isLong   = i % longForEach === 0;
+      const isLong = i % longForEach === 0;
 
       this.points[i] = new Point(this.DOM, isNumber, isLong);
     }
   }
 
   // sets scale according to parameters
-  setScale(size: number, config: IConfig) {
-    const { isInvert, isRange, minValue, maxValue, step } = config;
-    this.isInvert = isInvert;
-    this.isRange = isRange;
-
-    this.setValue(minValue, maxValue, step);
+  setScale(size: number) {
+    this.setValue();
     this.determineСoordScale(size);
   }
 
   // sets scale values
-  setValue(minValue: number, maxValue: number, sliderStep: number) {
+  setValue() {
+    const { minValue, maxValue, step, isInvert } = this.defaultConfig;
+
     const rangeValues = Math.abs(minValue) + maxValue;
-    const step = rangeValues / (this.points.length - 1);
+    const stepBetween = rangeValues / (this.points.length - 1);
 
     let currentValue: number;
-    currentValue = this.isInvert ? maxValue : minValue;
+    currentValue = isInvert ? maxValue : minValue;
 
     this.points.forEach((elem) => {
       const point: Point = elem;
-      point.value = roundToMultiple(currentValue, sliderStep);
+      point.value = roundToMultiple(currentValue, step);
 
       if (point.numberDOM) {
         point.numberDOM.innerText = String(point.value);
       }
 
-      currentValue = this.isInvert ? (currentValue - step) : (currentValue + step);
+      currentValue = isInvert ? currentValue - stepBetween : currentValue + stepBetween;
     });
   }
 
   // determination coordinates of the points on scale
   determineСoordScale(rangeSize: number) {
-    const step = rangeSize / this.points.length;
-    let coord = this.isInvert ? rangeSize : 0;
+    const { isInvert } = this.defaultConfig;
+
+    const step = rangeSize / (this.points.length - 1);
+    let coord = isInvert ? rangeSize : 0;
 
     this.points.forEach((elem) => {
       const point = elem;
       point.coord = coord;
-      coord = this.isInvert ? (coord - step) : (coord + step);
+      coord = isInvert ? (coord -= step) : (coord += step);
     });
   }
 
   // click handler on the points
   handleScalePointClick(buttons: Button[], index: number) {
+    const { isRange } = this.defaultConfig;
     const point = this.points[index].coord;
 
     let btnIndex;
-    if (!this.isRange) {
+    if (!isRange) {
       btnIndex = 0;
     } else {
-      // getting from buttons actually coord
+      // initial number of buttons is undefined
+      // get the current coordinates of the buttons
       const btn1 = buttons[0].coord;
       const btn2 = buttons[1].coord;
 
       const range = btn2 - btn1;
-      const diapason = range / 2 + btn1;
+      const btn1Diapason = range / 2 + btn1;
 
-      btnIndex = point > diapason ? 1 : 0;
+      btnIndex = point > btn1Diapason ? 1 : 0;
     }
 
     this.Observable.notify({

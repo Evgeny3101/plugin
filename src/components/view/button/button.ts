@@ -53,8 +53,11 @@ class Button {
     return false;
   }
 
-  toPosition(coord: number) {
+  setCoord(coord: number) {
     this.coord = coord;
+  }
+
+  toPosition() {
     this.DOM.setAttribute('style', `${this.pos.offset} : ${this.coord}px`);
   }
 } // class
