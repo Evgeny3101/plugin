@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "strict": true,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "target": "ES5"
   }
 }

@@ -71,11 +71,12 @@ class Scale {
   // click handler on the points
   handleScalePointClick(buttons: Button[], index: number) {
     const { isRange } = this.defaultConfig;
-    const point = this.points[index].coord;
+    const point = this.points[index];
 
-    let btnIndex;
+    let indexOfRequiredButton;
+
     if (!isRange) {
-      btnIndex = 0;
+      indexOfRequiredButton = 0;
     } else {
       // initial number of buttons is undefined
       // get the current coordinates of the buttons
@@ -85,12 +86,12 @@ class Scale {
       const range = btn2 - btn1;
       const btn1Diapason = range / 2 + btn1;
 
-      btnIndex = point > btn1Diapason ? 1 : 0;
+      indexOfRequiredButton = point.coord > btn1Diapason ? 1 : 0;
     }
 
     this.Observable.notify({
-      value: this.points[index].value,
-      index: btnIndex,
+      value: point.value,
+      index: indexOfRequiredButton,
     });
   }
 } // class

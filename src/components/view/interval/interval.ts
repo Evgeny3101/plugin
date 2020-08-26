@@ -22,6 +22,15 @@ class Interval {
 
   setBaseCoords(coords: number[]) {
     this.buttonsCoord = coords;
+    this.checkOverrun();
+  }
+
+  checkOverrun() {
+    const isOverrun =
+      this.buttonsCoord[0] > this.buttonsCoord[1] ||
+      this.buttonsCoord[1] < this.buttonsCoord[0];
+
+    if (isOverrun) this.buttonsCoord.reverse();
   }
 
   setCoord(coord: number, index: number) {
@@ -29,8 +38,10 @@ class Interval {
   }
 
   toPosition() {
-    const size = this.buttonsCoord[1] - this.buttonsCoord[0];
-    const offset = this.buttonsCoord[0] + this.buttonSize / 2;
+    const { buttonsCoord, buttonSize } = this;
+
+    const size = buttonsCoord[1] - buttonsCoord[0];
+    const offset = buttonsCoord[0] + buttonSize / 2;
 
     this.DOM.setAttribute(
       'style',

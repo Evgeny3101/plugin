@@ -17,35 +17,40 @@ class Button {
   } // constructor
 
   handleButtonMousedown(evt) {
-    const btn = evt.target;
+    const { page, offsetFrom, offsetSize, clientSize } = this.pos;
+    const { isInvert } = this;
+
+    const btnDOM = evt.target;
     const parent = evt.path[1];
-    const basePositionMouse = evt[this.pos.page];
-    const rangeShift = btn[this.pos.offsetFrom];
-    const rangeSize = parent[this.pos.clientSize] - btn[this.pos.offsetSize];
+    const basePositionMouse = evt[page];
+    const rangeShift = btnDOM[offsetFrom];
+    const rangeSize = parent[clientSize] - btnDOM[offsetSize];
 
     document.onmousemove = (event: MouseEvent) => {
-      let coords;
-      const currentPositionMouse = event[this.pos.page];
-
-      if (this.isInvert) {
-        coords = basePositionMouse - currentPositionMouse + (rangeSize - rangeShift);
+      let newCoord;
+      const currentPositionMouse = event[page];
+      if (isInvert) {
+        newCoord = basePositionMouse - currentPositionMouse + (rangeSize - rangeShift);
       } else {
-        coords = rangeShift - (basePositionMouse - currentPositionMouse);
+        newCoord = rangeShift - (basePositionMouse - currentPositionMouse);
       }
 
       // limit coords
-      if (coords < 0) coords = 0;
-      if (coords > rangeSize) coords = rangeSize;
+      if (newCoord < 0) newCoord = 0;
+      if (newCoord > rangeSize) newCoord = rangeSize;
 
-      this.coord = coords;
+      this.setCoord(newCoord);
 
       this.Observable.notify({
-        coord: this.coord,
-        index: this.index,
+        isMouseDown: true,
       });
     };
 
     document.onmouseup = () => {
+      this.Observable.notify({
+        isMouseDown: false,
+      });
+
       document.onmousemove = null;
       document.onmouseup = null;
     };

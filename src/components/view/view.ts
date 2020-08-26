@@ -18,14 +18,15 @@ class View {
   pos!: IPositionVars;
   step!: number;
   rangeSize!: number;
-  buttonSize!: number;
 
   constructor(public parent: Element, public defaultConfig: IConfig) {
     this.setPositionVariables();
     this.installComponents();
+    this.setElementsParameters();
     this.setValues();
-    this.convertValues(this.defaultConfig.sliderValues);
-    this.installSubscribesButtons();
+    this.convertValues();
+    this.setCoords();
+    this.toPositionElements();
     this.setListeners();
   }
 
@@ -94,22 +95,39 @@ class View {
       this.scale = new Scale(this.range.DOM, this.defaultConfig);
     }
 
-    //
+    // creates classes and finds the text fields
     if (textField) {
       textField.forEach((element, i) => {
         this.textField[i] = new TextField(element, i);
       });
     }
 
-    // insert slider in Page
+    // insert slider in page
     this.parent.append(this.range.DOM);
+  }
 
+  // sets values for this.rangeSize и this.step will use in 'setValues'
+  // will use 'setElementsParameters' and 'handleWindowResize'
+  updateRangeSize() {
+    const { minValue, maxValue } = this.defaultConfig;
+
+    const buttonSize = this.button[0].DOM[this.pos.offsetSize];
+    const rangeSize = this.range.DOM[this.pos.clientSize];
+
+    this.rangeSize = rangeSize - buttonSize;
+
+    const valueRange = Math.abs(maxValue - minValue);
+    this.step = this.rangeSize / valueRange;
+  }
+
+  // sets parameters of elements
+  setElementsParameters() {
     // require this.rangeSize for setScale values
-    // require this.buttonSize for setButtonValue values
     this.updateRangeSize();
 
     if (this.interval) {
-      this.interval.setButtonValue(this.buttonSize);
+      const buttonSize = this.button[0].DOM[this.pos.offsetSize];
+      this.interval.setButtonValue(buttonSize);
     }
 
     if (this.scale) {
@@ -117,22 +135,8 @@ class View {
     }
   }
 
-  // sets values for this.rangeSize и this.step
-  // will use 'setValues' and 'handleWindowResize'
-  updateRangeSize() {
-    const { minValue, maxValue } = this.defaultConfig;
-
-    this.buttonSize = this.button[0].DOM[this.pos.offsetSize];
-    this.rangeSize = this.range.DOM[this.pos.clientSize] - this.buttonSize;
-
-    const valueRange = Math.abs(maxValue - minValue);
-    this.step = this.rangeSize / valueRange;
-  }
-
-  // sets element values
-  setValues() {
-    const { sliderValues } = this.defaultConfig;
-
+  // sets in elements slider values
+  setValues(sliderValues: number[] = this.defaultConfig.sliderValues) {
     if (this.textField) {
       this.textField.forEach((element, i) => {
         element.setValue(sliderValues[i]);
@@ -146,40 +150,42 @@ class View {
     }
   }
 
-  // updates coordinates and set items to position
-  convertValues(sliderValues: number[]) {
-    const { minValue, isRange, isLabel, isInvert } = this.defaultConfig;
+  convertValues(sliderValues: number[] = this.defaultConfig.sliderValues) {
+    const { minValue, isRange } = this.defaultConfig;
 
     if (isRange === true) {
       sliderValues.forEach((num, i) => {
         const newCoord = this.step * (num + Math.abs(minValue));
         this.button[i].setCoord(newCoord);
       });
-
-      // sets interval to position
-      if (this.interval) {
-        const buttonsCoord = this.button.map((elem) => elem.coord);
-        this.interval.setBaseCoords(buttonsCoord);
-      }
     } else {
       const newCoord = this.step * (sliderValues[0] + Math.abs(minValue));
       this.button[0].setCoord(newCoord);
     }
+  }
 
-    // sets label to position
-    if (isLabel) {
-      this.label.forEach((element, i) => {
-        let coord: number;
+  setCoords() {
+    const { isLabel, isInvert } = this.defaultConfig;
+    const buttonsCoords = this.button.map((elem) => elem.coord);
+    const buttonsSizes = this.button.map((elem) => elem[this.pos.offsetSize]);
 
-        if (isInvert) {
-          coord = this.button[i].coord + this.button[i].DOM[this.pos.offsetSize];
-        } else coord = this.button[i].coord;
-
-        element.setCoord(coord);
-      });
+    // sets coords for interval
+    if (this.interval) {
+      this.interval.setBaseCoords(buttonsCoords);
     }
 
-    this.toPositionElements();
+    // sets coords for label
+    if (isLabel) {
+      this.label.forEach((element, i) => {
+        let coords: number;
+
+        if (isInvert) {
+          coords = buttonsCoords[i] + buttonsSizes[i];
+        } else coords = buttonsCoords[i];
+
+        element.setCoord(coords);
+      });
+    }
   }
 
   toPositionElements() {
@@ -195,30 +201,6 @@ class View {
     if (this.label) {
       this.label.forEach((elem) => elem.toPosition());
     }
-  }
-
-  installSubscribesButtons() {
-    this.button.forEach((elem) => {
-      elem.Observable.subscribe((options: { coord: number; index: number }) => {
-        const { coord, index } = options;
-
-        // button
-        this.button[index].setCoord(coord);
-        this.button[index].toPosition();
-
-        // interval
-        if (this.interval) {
-          this.interval.setCoord(coord, index);
-          this.interval.toPosition();
-        }
-
-        // label
-        if (this.label) {
-          this.label[index].setCoord(coord);
-          this.label[index].toPosition();
-        }
-      });
-    });
   }
 
   setListeners() {

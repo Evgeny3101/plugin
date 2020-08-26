@@ -14,19 +14,23 @@ class Model {
   } // constructor
 
   // sets new values and processes the entered values by limits and step
-  setNewValues(numbersArr: number[]) {
+  setNewValues(values: number[]) {
     const { isRange } = this.defaultConfig;
 
-    let newValue: number[] = numbersArr;
-    newValue = this.checkLimit(newValue);
-    newValue = this.putInStep(newValue);
-
-    let result: number[] = [];
+    let newValues: number[] = [];
     if (isRange === true) {
-      result.push(Math.min.apply(null, newValue));
-      result.push(Math.max.apply(null, newValue));
-    } else result = newValue;
-    this.value = result;
+      newValues.push(Math.min.apply(null, values));
+      newValues.push(Math.max.apply(null, values));
+    } else newValues = values;
+
+    newValues = this.checkLimit(newValues);
+    newValues = this.putInStep(newValues);
+
+    this.value = newValues;
+
+    this.Observable.notify({
+      value: this.value,
+    });
   }
 
   // checks by limits
@@ -54,35 +58,22 @@ class Model {
     return result;
   }
 
-  // update value by id. check by limits and step
-  updateValue(number: number, index: number) {
+  // convert coords into value
+  convertCoords(options: { buttonsCoords: number[]; stepInCoord: number }) {
+    const { buttonsCoords, stepInCoord } = options;
     const { minValue } = this.defaultConfig;
 
-    this.value[index] = number;
-    this.setNewValues(this.value);
+    const newValues: number[] = buttonsCoords.map(
+      (coord) => coord / stepInCoord + minValue
+    );
 
-    this.Observable.notify({
-      value: this.value,
-      minValue,
-    });
+    this.setNewValues(newValues);
   }
 
-  // convert coords into value and sets by id
-  convertCoords(options: { coord: number; stepInCoord: number; index: number }) {
-    const { coord, stepInCoord, index } = options;
-    const { minValue, isRange, step } = this.defaultConfig;
-
-    const valueFromCoord = coord / stepInCoord;
-    const newValue = roundToMultiple(valueFromCoord, step) + minValue;
-
-    if (isRange === true) {
-      this.value[index] = newValue;
-      this.setNewValues(this.value);
-    } else this.setNewValues([newValue]);
-
-    this.Observable.notify({
-      value: this.value,
-    });
+  // update value by id
+  updateValue(number: number, index: number) {
+    this.value[index] = number;
+    this.setNewValues(this.value);
   }
 } // Model
 

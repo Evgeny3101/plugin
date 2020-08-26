@@ -5,12 +5,12 @@ class TextField {
   DOM!: HTMLInputElement;
 
   constructor(field: string, public index: number) {
-    this.setTextField(field);
+    this.find(field);
   }
 
-  setTextField(field: string) {
+  find(field: string) {
     const elem: HTMLInputElement | null = document.querySelector(field);
-    if (!elem) throw new Error('Text field not funded.'); // null
+    if (!elem) throw new Error('Text field not found.');
     this.DOM = elem;
   }
 

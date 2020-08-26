@@ -6,6 +6,9 @@ slider.rangeSlider({
   sliderValues: [-22, 43],
   minValue: -100,
   textField: ['.text-field', '.text-field2'],
+  step: 10,
+
+  points: 21,
 
   isRange: true,
   isLabel: true,
@@ -29,11 +32,9 @@ slider2
     isLabel: true,
   });
 
-
 //  tuning rangeSlider
 const form = document.querySelector('.tuning');
 const btn = form.querySelector('input[type="button"]');
-
 
 // function
 function convertStringsInValue(data) {
@@ -57,7 +58,6 @@ function handleButtonClick() {
   const options = convertStringsInValue(data);
   slider.rangeSlider('config', options);
 }
-
 
 // event
 btn.addEventListener('click', handleButtonClick.bind(form));
