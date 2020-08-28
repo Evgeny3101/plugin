@@ -30,113 +30,10 @@ class View {
     this.setListeners();
   }
 
-  // sets variables for vertical or horizontal positioning
-  setPositionVariables() {
-    const { isVertical, isInvert } = this.defaultConfig;
-
-    if (isVertical) {
-      this.pos = {
-        size: 'height',
-        offset: isInvert ? 'bottom' : 'top',
-        clientSize: 'clientHeight',
-        offsetSize: 'offsetHeight',
-        page: 'pageY',
-        offsetFrom: 'offsetTop',
-      };
-    } else {
-      this.pos = {
-        size: 'width',
-        offset: isInvert ? 'right' : 'left',
-        clientSize: 'clientWidth',
-        offsetSize: 'offsetWidth',
-        page: 'pageX',
-        offsetFrom: 'offsetLeft',
-      };
-    }
-  }
-
-  // creates elements DOM
-  installComponents() {
-    const {
-      isRange,
-      isInvert,
-      isVertical,
-      isLabel,
-      isLabelOnClick,
-      isScale,
-      textField,
-    } = this.defaultConfig;
-
-    this.range = new Range();
-    this.range.setClassPosition(isVertical);
-
-    // creates buttons
-    this.button = [];
-    const buttonArrayLength = Number(isRange) + 1;
-    for (let i = 0; i < buttonArrayLength; i += 1) {
-      this.button[i] = new Button(this.range.DOM, this.pos, i, isInvert);
-    }
-
-    // creates spacing between buttons
-    if (isRange) {
-      this.interval = new Interval(this.range.DOM, this.pos);
-    }
-
-    // creates labels above buttons
-    if (isLabel) {
-      this.label = [];
-      this.button.forEach((element, i) => {
-        this.label[i] = new Label(this.range.DOM, isLabelOnClick, this.pos.offset);
-      });
-    }
-
-    // creates scale
-    if (isScale) {
-      this.scale = new Scale(this.range.DOM, this.defaultConfig);
-    }
-
-    // creates classes and finds the text fields
-    if (textField) {
-      textField.forEach((element, i) => {
-        this.textField[i] = new TextField(element, i);
-      });
-    }
-
-    // insert slider in page
-    this.parent.append(this.range.DOM);
-  }
-
-  // sets values for this.rangeSize и this.step will use in 'setValues'
-  // will use 'setElementsParameters' and 'handleWindowResize'
-  updateRangeSize() {
-    const { minValue, maxValue } = this.defaultConfig;
-
-    const buttonSize = this.button[0].DOM[this.pos.offsetSize];
-    const rangeSize = this.range.DOM[this.pos.clientSize];
-
-    this.rangeSize = rangeSize - buttonSize;
-
-    const valueRange = Math.abs(maxValue - minValue);
-    this.step = this.rangeSize / valueRange;
-  }
-
-  // sets parameters of elements
-  setElementsParameters() {
-    // require this.rangeSize for setScale values
-    this.updateRangeSize();
-
-    if (this.interval) {
-      const buttonSize = this.button[0].DOM[this.pos.offsetSize];
-      this.interval.setButtonValue(buttonSize);
-    }
-
-    if (this.scale) {
-      this.scale.setScale(this.rangeSize);
-    }
-  }
-
   // sets in elements slider values
   setValues(sliderValues: number[] = this.defaultConfig.sliderValues) {
+    this.defaultConfig.sliderValues = sliderValues;
+
     if (this.textField) {
       this.textField.forEach((element, i) => {
         element.setValue(sliderValues[i]);
@@ -153,7 +50,7 @@ class View {
   convertValues(sliderValues: number[] = this.defaultConfig.sliderValues) {
     const { minValue, isRange } = this.defaultConfig;
 
-    if (isRange === true) {
+    if (isRange) {
       sliderValues.forEach((num, i) => {
         const newCoord = this.step * (num + Math.abs(minValue));
         this.button[i].setCoord(newCoord);
@@ -167,12 +64,10 @@ class View {
   setCoords() {
     const { isLabel, isInvert } = this.defaultConfig;
     const buttonsCoords = this.button.map((elem) => elem.coord);
-    const buttonsSizes = this.button.map((elem) => elem[this.pos.offsetSize]);
+    const buttonsSizes = this.button.map((elem) => elem.DOM[this.pos.offsetSize]);
 
     // sets coords for interval
-    if (this.interval) {
-      this.interval.setBaseCoords(buttonsCoords);
-    }
+    if (this.interval) this.interval.setBaseCoords(buttonsCoords);
 
     // sets coords for label
     if (isLabel) {
@@ -203,12 +98,119 @@ class View {
     }
   }
 
-  setListeners() {
-    const { sliderValues, isLabel, isLabelOnClick } = this.defaultConfig;
+  // sets variables for vertical or horizontal positioning
+  private setPositionVariables() {
+    const { isVertical, isInvert } = this.defaultConfig;
+
+    if (isVertical) {
+      this.pos = {
+        size: 'height',
+        offset: isInvert ? 'bottom' : 'top',
+        clientSize: 'clientHeight',
+        offsetSize: 'offsetHeight',
+        page: 'pageY',
+        offsetFrom: 'offsetTop',
+      };
+    } else {
+      this.pos = {
+        size: 'width',
+        offset: isInvert ? 'right' : 'left',
+        clientSize: 'clientWidth',
+        offsetSize: 'offsetWidth',
+        page: 'pageX',
+        offsetFrom: 'offsetLeft',
+      };
+    }
+  }
+
+  // creates elements DOM
+  private installComponents() {
+    const {
+      isRange,
+      isProgress,
+      isInvert,
+      isVertical,
+      isLabel,
+      isLabelOnClick,
+      isScale,
+      textField,
+    } = this.defaultConfig;
+
+    this.range = new Range();
+    this.range.setClassPosition(isVertical);
+
+    // creates buttons
+    this.button = [];
+
+    const buttonArrayLength = isRange ? 2 : 1;
+    for (let i = 0; i < buttonArrayLength; i += 1) {
+      this.button[i] = new Button(this.range.DOM, this.pos, i, isInvert);
+    }
+
+    // creates spacing between buttons
+    if (isRange || isProgress) {
+      this.interval = new Interval(this.range.DOM, this.pos, isProgress);
+    }
+
+    // creates labels above buttons
+    if (isLabel) {
+      this.label = [];
+      this.button.forEach((element, i) => {
+        this.label[i] = new Label(this.range.DOM, isLabelOnClick, this.pos.offset);
+      });
+    }
+
+    // creates scale
+    if (isScale) {
+      this.scale = new Scale(this.range.DOM, this.defaultConfig);
+    }
+
+    // creates classes and finds the text fields
+    if (textField) {
+      textField.forEach((element, i) => {
+        this.textField[i] = new TextField(element, i);
+      });
+    }
+
+    // insert slider in page
+    this.parent.append(this.range.DOM);
+  }
+
+  // sets values for this.rangeSize и this.step will use in 'setValues'
+  // will use 'setElementsParameters' and 'handleWindowResize'
+  private updateRangeSize() {
+    const { minValue, maxValue } = this.defaultConfig;
+
+    const buttonSize = this.button[0].DOM[this.pos.offsetSize];
+    const rangeSize = this.range.DOM[this.pos.clientSize];
+
+    this.rangeSize = rangeSize - buttonSize;
+
+    const valueRange = Math.abs(maxValue - minValue);
+    this.step = this.rangeSize / valueRange;
+  }
+
+  // sets parameters of elements
+  private setElementsParameters() {
+    // require this.rangeSize for setScale values
+    this.updateRangeSize();
+
+    if (this.interval) {
+      const buttonSize = this.button[0].DOM[this.pos.offsetSize];
+      this.interval.setButtonValue(buttonSize);
+    }
+
+    if (this.scale) {
+      this.scale.setScale(this.rangeSize);
+    }
+  }
+
+  private setListeners() {
+    const { isLabel, isLabelOnClick } = this.defaultConfig;
     //
 
     // auto update when the screen width changes
-    window.addEventListener('resize', this.handleWindowResize.bind(this, sliderValues));
+    window.addEventListener('resize', this.handleWindowResize.bind(this));
 
     // buttons move handler
     this.button.forEach((btn) => {
@@ -242,10 +244,12 @@ class View {
     }
   }
 
-  // update range size and set items to position (this.updateRangeSize, this.convertValues)
-  handleWindowResize(sliderValues: number[]) {
+  // update range size and set items to position
+  private handleWindowResize() {
     this.updateRangeSize();
-    this.convertValues(sliderValues);
+    this.setValues();
+    this.convertValues();
+    this.setCoords();
     this.toPositionElements();
   }
 } // class View

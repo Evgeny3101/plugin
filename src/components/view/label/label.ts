@@ -16,18 +16,6 @@ class Label {
     this.createElements(parent);
   } // constructor
 
-  createElements(parent: Element) {
-    this.DOM = createHTML(
-      `<div class="js-range-slider__container-label">
-        <div class="js-button-label">
-          <input class="js-button-label__input" readonly> </input>
-        </div>
-      </div>`,
-      parent
-    );
-    this.input = this.DOM.querySelector('input')!;
-  }
-
   setCoord(coord: number) {
     this.coord = coord;
   }
@@ -46,6 +34,18 @@ class Label {
 
   setValue(value: number) {
     this.input.value = String(value);
+  }
+
+  private createElements(parent: Element) {
+    this.DOM = createHTML(
+      `<div class="js-range-slider__container-label">
+        <div class="js-button-label">
+          <input class="js-button-label__input" readonly> </input>
+        </div>
+      </div>`,
+      parent
+    );
+    this.input = this.DOM.querySelector('input')!;
   }
 } // class
 

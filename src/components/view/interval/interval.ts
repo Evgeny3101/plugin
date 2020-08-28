@@ -6,7 +6,7 @@ class Interval {
   DOM: Element;
   buttonsCoord!: number[];
 
-  constructor(parent: Element, public pos: IPositionVars) {
+  constructor(parent: Element, public pos: IPositionVars, public isProgress: boolean) {
     this.DOM = createHTML(
       `
       <div class="js-range-slider__container-interval">
@@ -21,25 +21,16 @@ class Interval {
   }
 
   setBaseCoords(coords: number[]) {
-    this.buttonsCoord = coords;
-    this.checkOverrun();
-  }
-
-  checkOverrun() {
-    const isOverrun =
-      this.buttonsCoord[0] > this.buttonsCoord[1] ||
-      this.buttonsCoord[1] < this.buttonsCoord[0];
-
-    if (isOverrun) this.buttonsCoord.reverse();
-  }
-
-  setCoord(coord: number, index: number) {
-    this.buttonsCoord[index] = coord;
+    if (this.isProgress) {
+      this.buttonsCoord = [0, coords[0]];
+    } else {
+      this.buttonsCoord = coords;
+      this.checkOverrun();
+    }
   }
 
   toPosition() {
     const { buttonsCoord, buttonSize } = this;
-
     const size = buttonsCoord[1] - buttonsCoord[0];
     const offset = buttonsCoord[0] + buttonSize / 2;
 
@@ -49,6 +40,14 @@ class Interval {
         ${this.pos.size}: ${size}px;
       `
     );
+  }
+
+  private checkOverrun() {
+    const isOverrun =
+      this.buttonsCoord[0] > this.buttonsCoord[1] ||
+      this.buttonsCoord[1] < this.buttonsCoord[0];
+
+    if (isOverrun) this.buttonsCoord.reverse();
   }
 }
 

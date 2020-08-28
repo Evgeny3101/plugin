@@ -6,96 +6,138 @@ html
 body.page
   .wrapper
     form.tuning
-      .tuning__container
-        h3 values
-        input(name="sliderValues" placeholder="number" value="-50").field-style
-        input(name="sliderValues2" placeholder="number" value="50").field-style
 
       .tuning__container
-        h3 min max values
-        input(name="minValue" placeholder="min" value="-100").field-style
-        input(name="maxValue" placeholder="max" value="100" ).field-style
+        .parameter
+          h3.parameter__name slider type
 
-      .tuning__container
-        h3 step
-        input(name="step" placeholder="number" value="1").field-style
-
-      .tuning__container
-        h3 range
-        label
-          input(type="radio" name="isRange" value="true" checked)
-          |true
-        label
-          input(type="radio" name="isRange" value="false")
-          |false
-
-      .tuning__container
-        h3 vertical
-        label
-          input(type="radio" name="isVertical" value="true" checked)
-          |true
-
-        label
-          input(type="radio" name="isVertical" value="false")
-          |false
-
-      .tuning__container
-        h3 invert
-        label
-          input(type="radio" name="isInvert" value="true" checked)
-          |true
-
-        label
-          input(type="radio" name="isInvert" value="false")
-          |false
+          .parameter__container
+            label.parameter__options
+              input(type="radio" name="sliderType" value="single").parameter__input
+              |single
+            label.parameter__options
+              input(type="radio" name="sliderType" value="range" checked).parameter__input
+              |range
+            label.parameter__options
+              input(type="radio" name="sliderType" value="progress").parameter__input
+              |progress
 
       hr
 
       .tuning__container
-        h3 label
-        label
-          input(type="radio" name="isLabel" value="true" checked)
-          |true
+        .parameter
+          h3.parameter__name vertical
 
-        label
-          input(type="radio" name="isLabel" value="false")
-          |false
+          .parameter__container
+            label.parameter__options
+              input(type="radio" name="isVertical" value="true" checked).parameter__input
+              |true
+
+            label.parameter__options
+              input(type="radio" name="isVertical" value="false").parameter__input
+              |false
 
       .tuning__container
-        h3 onClick
-        label
-          input(type="radio" name="isLabelOnClick" value="true" checked)
-          |true
+        .parameter
+          h3.parameter__name invert
 
-        label
-          input(type="radio" name="isLabelOnClick" value="false")
-          |false
+          .parameter__container
+            label.parameter__options
+              input(type="radio" name="isInvert" value="true" checked).parameter__input
+              |true
+
+            label.parameter__options
+              input(type="radio" name="isInvert" value="false").parameter__input
+              |false
+
+      .tuning__container
+        .parameter
+          h3.parameter__name values
+
+          .parameter__container
+            input(name="sliderValues" placeholder="number" value="-50").parameter__input.field-style
+            input(name="sliderValues2" placeholder="number" value="50").parameter__input.field-style
+
+      .tuning__container
+        .parameter
+          h3.parameter__name min max values
+
+          .parameter__container
+            input(name="minValue" placeholder="min" value="-100").parameter__input.field-style
+            input(name="maxValue" placeholder="max" value="100" ).parameter__input.field-style
+
+      .tuning__container
+        .parameter
+          h3.parameter__name step
+
+          .parameter__container
+            input(name="step" placeholder="number" value="1").parameter__input.field-style
 
       hr
 
       .tuning__container
-        h3 scale
-        label
-          input(type="radio" name="isScale" value="true" checked)
-          |true
+        .parameter
+          h3.parameter__name label
 
-        label
-          input(type="radio" name="isScale" value="false")
-          |false
+          .parameter__container
+            label.parameter__options
+              input(type="radio" name="islabel" value="true" checked).parameter__input
+              |true
 
-      .tuning__container
-        h3 points
-        input(name="points" placeholder="number" value="13").field-style
-
-      .tuning__container
-        h3 numberForEach
-        input(name="numberForEach" placeholder="number" value="4").field-style
+            label.parameter__options
+              input(type="radio" name="islabel" value="false").parameter__input
+              |false
 
       .tuning__container
-        h3 longForEach
-        input(name="longForEach" placeholder="number" value="2").field-style
+        .parameter
+          h3.parameter__name onClick
 
-      input(type="button" value="accept")
+          .parameter__container
+            label.parameter__options
+              input(type="radio" name="islabelOnClick" value="true" checked).parameter__input
+              |true
+
+            label.parameter__options
+              input(type="radio" name="islabelOnClick" value="false").parameter__input
+              |false
+
+      hr
+
+      .tuning__container
+        .parameter
+          h3.parameter__name scale
+
+          .parameter__container
+            label.parameter__options
+              input(type="radio" name="isScale" value="true" checked).parameter__input
+              |true
+
+            label.parameter__options
+              input(type="radio" name="isScale" value="false").parameter__input
+              |false
+
+      .tuning__container
+        .parameter
+          h3.parameter__name points
+
+          .parameter__container
+            input(name="points" placeholder="number" value="13").parameter__input.field-style
+
+      .tuning__container
+        .parameter
+          h3.parameter__name numberForEach
+
+          .parameter__container
+            input(name="numberForEach" placeholder="number" value="4").parameter__input.field-style
+
+      .tuning__container
+        .parameter
+          h3.parameter__name longForEach
+
+          .parameter__container
+            input(name="longForEach" placeholder="number" value="2").parameter__input.field-style
+
+      input(type="button" value="accept").tuning__btn
 
     .container
       .container-field

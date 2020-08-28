@@ -14,18 +14,6 @@ class Scale {
     this.createPoints();
   } // constructor end
 
-  // create scale points
-  createPoints() {
-    const { points, numberForEach, longForEach } = this.defaultConfig;
-
-    for (let i = 0; i < points; i += 1) {
-      const isNumber = i % numberForEach === 0;
-      const isLong = i % longForEach === 0;
-
-      this.points[i] = new Point(this.DOM, isNumber, isLong);
-    }
-  }
-
   // sets scale according to parameters
   setScale(size: number) {
     this.setValue();
@@ -54,20 +42,6 @@ class Scale {
     });
   }
 
-  // determination coordinates of the points on scale
-  determineСoordScale(rangeSize: number) {
-    const { isInvert } = this.defaultConfig;
-
-    const step = rangeSize / (this.points.length - 1);
-    let coord = isInvert ? rangeSize : 0;
-
-    this.points.forEach((elem) => {
-      const point = elem;
-      point.coord = coord;
-      coord = isInvert ? (coord -= step) : (coord += step);
-    });
-  }
-
   // click handler on the points
   handleScalePointClick(buttons: Button[], index: number) {
     const { isRange } = this.defaultConfig;
@@ -92,6 +66,32 @@ class Scale {
     this.Observable.notify({
       value: point.value,
       index: indexOfRequiredButton,
+    });
+  }
+
+  // create scale points
+  private createPoints() {
+    const { points, numberForEach, longForEach } = this.defaultConfig;
+
+    for (let i = 0; i < points; i += 1) {
+      const isNumber = i % numberForEach === 0;
+      const isLong = i % longForEach === 0;
+
+      this.points[i] = new Point(this.DOM, isNumber, isLong);
+    }
+  }
+
+  // determination coordinates of the points on scale
+  private determineСoordScale(rangeSize: number) {
+    const { isInvert } = this.defaultConfig;
+
+    const step = rangeSize / (this.points.length - 1);
+    let coord = isInvert ? rangeSize : 0;
+
+    this.points.forEach((elem) => {
+      const point = elem;
+      point.coord = coord;
+      coord = isInvert ? (coord -= step) : (coord += step);
     });
   }
 } // class

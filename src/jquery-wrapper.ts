@@ -40,13 +40,14 @@ import RangeSlider from './plugin-api';
   };
 
   $.fn.rangeSlider.defaults = {
+    sliderType: 'range',
+
     sliderValues: [-25, 25],
     minValue: -100,
     maxValue: 100,
     step: 0.1,
     textField: [],
 
-    isRange: false,
     isVertical: false,
     isInvert: false,
 

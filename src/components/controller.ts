@@ -7,19 +7,19 @@ class Controller {
     this.installSubscribes();
   }
 
-  installSubscribes() {
+  private installSubscribes() {
     ///  notify Model  ///
     this.subscribeToChangeValue();
 
     ///  notify View ///
     this.subscribeButtons();
-    if (this.view.textField) this.subscribeTextField();
-    if (this.view.scale) this.subscribeScale();
+    this.subscribeTextField();
+    this.subscribeScale();
   }
 
   // methods model.updateValue
   // when the model.value changes
-  subscribeToChangeValue() {
+  private subscribeToChangeValue() {
     this.model.Observable.subscribe((options: { value: number[] }) => {
       const { value } = options;
       const { isMouseDown } = this;
@@ -36,7 +36,7 @@ class Controller {
 
   // method button[].move
   // buttons move handler
-  subscribeButtons() {
+  private subscribeButtons() {
     this.view.button.forEach((elem) => {
       elem.Observable.subscribe((options: { isMouseDown: boolean }) => {
         const { isMouseDown } = options;
@@ -61,22 +61,26 @@ class Controller {
 
   // method textField[].toInputValues
   // entering values into a text field
-  subscribeTextField() {
-    this.view.textField.forEach((elem) => {
-      elem.Observable.subscribe((options: { value: number; index: number }) => {
-        const { value, index } = options;
-        this.model.updateValue(value, index);
+  private subscribeTextField() {
+    if (this.view.textField)
+      this.view.textField.forEach((elem) => {
+        elem.Observable.subscribe((options: { value: number; index: number }) => {
+          const { value, index } = options;
+          this.model.updateValue(value, index);
+        });
       });
-    });
   }
 
   // method scale.pressScaleBar
   // handler for click on points
   subscribeScale() {
-    this.view.scale.Observable.subscribe((options: { value: number; index: number }) => {
-      const { value, index } = options;
-      this.model.updateValue(value, index);
-    });
+    if (this.view.scale)
+      this.view.scale.Observable.subscribe(
+        (options: { value: number; index: number }) => {
+          const { value, index } = options;
+          this.model.updateValue(value, index);
+        }
+      );
   }
 } // class
 
