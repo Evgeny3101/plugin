@@ -9,12 +9,11 @@ class RangeSlider {
   controller!: Controller;
 
   constructor(public mainDOM: Element, public config: IConfig) {
+    this.customizationConfig(this.config);
     this.init();
   } // constructor
 
   init() {
-    this.customizationConfig(this.config);
-
     this.model = new Model(this.config);
     // after checking the limits and step
     this.config.sliderValues = this.model.value;
@@ -24,18 +23,20 @@ class RangeSlider {
   }
 
   setNewConfig(config: IConfig) {
-    this.config = config;
-    this.mainDOM.innerHTML = '';
+    this.customizationConfig(config);
     this.init();
   }
 
   private customizationConfig(options: any) {
     const newConfig = options;
-    const { sliderType } = options;
-
-    newConfig.isSingle = sliderType === 'single';
-    newConfig.isRange = sliderType === 'range';
-    newConfig.isProgress = sliderType === 'progress';
+    const { sliderType, sliderValues1, sliderValues2 } = options;
+    if (typeof sliderValues1 === 'number') newConfig.sliderValues[0] = [sliderValues1];
+    if (typeof sliderValues2 === 'number') newConfig.sliderValues[1] = [sliderValues2];
+    if (sliderType) {
+      newConfig.isSingle = sliderType === 'single';
+      newConfig.isRange = sliderType === 'range';
+      newConfig.isProgress = sliderType === 'progress';
+    }
 
     delete newConfig.sliderType;
 

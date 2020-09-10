@@ -7,13 +7,20 @@ class Label {
   DOM!: HTMLInputElement;
   buttonSize: number = 0;
   coord!: number;
+  handleButtonMousedown!: EventListener;
+  handleButtonMouseup!: EventListener;
 
   constructor(
     parent: Element,
-    public labelOnClick: boolean,
+    public isLabelOnClick: boolean,
     public positionName: string
   ) {
     this.createElements(parent);
+
+    if (isLabelOnClick) {
+      this.handleButtonMousedown = this.show.bind(this);
+      this.handleButtonMouseup = this.hide.bind(this);
+    }
   } // constructor
 
   setCoord(coord: number) {

@@ -3,9 +3,11 @@ import Observable from '../../ts/observable';
 class TextField {
   Observable = new Observable();
   DOM!: HTMLInputElement;
+  handleTextFieldBlur: EventListener;
 
   constructor(field: string, public index: number) {
     this.find(field);
+    this.handleTextFieldBlur = this.getValue.bind(this);
   }
 
   find(field: string) {
@@ -16,7 +18,7 @@ class TextField {
 
   // gets values from the text field
   // old getFieldValues
-  handleTextFieldBlur() {
+  getValue() {
     const newValue = [Number(this.DOM.value) || 0];
 
     this.Observable.notify({

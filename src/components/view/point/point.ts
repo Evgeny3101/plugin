@@ -1,11 +1,14 @@
 import { createHTML } from '../../../ts/mixins';
+import Observable from '../../../ts/observable';
 
 class Point {
+  Observable = new Observable();
   value!: number;
   coord!: number;
   lineDOM: HTMLElement;
   DOM: HTMLElement;
   numberDOM?: HTMLElement;
+  handlePointClick: EventListener;
 
   constructor(parent: Element, isNumber: boolean, isLong: boolean) {
     this.DOM = createHTML('<div class="js-scale-point"></div>', parent);
@@ -24,6 +27,15 @@ class Point {
         '<div class="js-scale-point__short-line"></div>',
         this.DOM
       );
+
+    this.handlePointClick = this.clickPoint.bind(this);
+  }
+
+  // click handler on the points
+  clickPoint() {
+    this.Observable.notify({
+      value: this.value,
+    });
   }
 } // class
 

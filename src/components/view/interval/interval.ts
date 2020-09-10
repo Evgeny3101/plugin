@@ -20,7 +20,7 @@ class Interval {
     this.buttonSize = buttonSize;
   }
 
-  setBaseCoords(coords: number[]) {
+  setCoords(coords: number[]) {
     if (this.isProgress) {
       this.buttonsCoord = [0, coords[0]];
     } else {

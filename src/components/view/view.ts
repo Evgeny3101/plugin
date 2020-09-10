@@ -18,6 +18,7 @@ class View {
   pos!: IPositionVars;
   step!: number;
   rangeSize!: number;
+  handleWindowResize!: EventListener;
 
   constructor(public parent: Element, public defaultConfig: IConfig) {
     this.setPositionVariables();
@@ -67,7 +68,7 @@ class View {
     const buttonsSizes = this.button.map((elem) => elem.DOM[this.pos.offsetSize]);
 
     // sets coords for interval
-    if (this.interval) this.interval.setBaseCoords(buttonsCoords);
+    if (this.interval) this.interval.setCoords(buttonsCoords);
 
     // sets coords for label
     if (isLabel) {
@@ -95,6 +96,77 @@ class View {
     // label
     if (this.label) {
       this.label.forEach((elem) => elem.toPosition());
+    }
+  }
+
+  setListeners() {
+    const { isLabel, isLabelOnClick } = this.defaultConfig;
+
+    // auto update when the screen width changes
+    this.handleWindowResize = this.resizeSlider.bind(this);
+    window.addEventListener('resize', this.handleWindowResize);
+
+    // buttons move handler
+    this.button.forEach((btn) => {
+      btn.DOM.addEventListener('mousedown', btn.handleButtonMousedown);
+    });
+
+    // entering values into a text field
+    this.textField.forEach((elem) => {
+      if (elem.DOM) {
+        elem.DOM.addEventListener('blur', elem.handleTextFieldBlur);
+      }
+    });
+
+    // handler for click on points
+    if (this.scale) {
+      this.scale.points.forEach((elem) => {
+        elem.DOM.addEventListener('click', elem.handlePointClick);
+      });
+    }
+
+    // show/hide label on click
+    if (isLabel && isLabelOnClick) {
+      this.label.forEach((elem, i) => {
+        elem.hide();
+        this.button[i].DOM.addEventListener('mousedown', elem.handleButtonMousedown);
+        document.addEventListener('mouseup', elem.handleButtonMouseup);
+      });
+    }
+  }
+
+  removeListeners() {
+    const { isLabel, isLabelOnClick } = this.defaultConfig;
+
+    // auto update when the screen width changes
+    window.removeEventListener('resize', this.handleWindowResize);
+
+    // buttons move handler
+    this.button.forEach((btn) => {
+      btn.DOM.removeEventListener('mousedown', btn.handleButtonMousedown);
+    });
+
+    // entering values into a text field
+    this.textField.forEach((elem) => {
+      if (elem.DOM) {
+        elem.DOM.removeEventListener('blur', elem.handleTextFieldBlur);
+      }
+    });
+
+    // handler for click on points
+    if (this.scale) {
+      this.scale.points.forEach((elem) => {
+        elem.DOM.removeEventListener('click', elem.handlePointClick);
+      });
+    }
+
+    // show/hide label on click
+    if (isLabel && isLabelOnClick) {
+      this.label.forEach((elem, i) => {
+        elem.show();
+        this.button[i].DOM.removeEventListener('mousedown', elem.handleButtonMousedown);
+        document.removeEventListener('mouseup', elem.handleButtonMouseup);
+      });
     }
   }
 
@@ -205,47 +277,8 @@ class View {
     }
   }
 
-  private setListeners() {
-    const { isLabel, isLabelOnClick } = this.defaultConfig;
-    //
-
-    // auto update when the screen width changes
-    window.addEventListener('resize', this.handleWindowResize.bind(this));
-
-    // buttons move handler
-    this.button.forEach((btn) => {
-      btn.DOM.addEventListener('mousedown', btn.handleButtonMousedown.bind(btn));
-    });
-
-    // entering values into a text field
-    this.textField.forEach((elem) => {
-      if (elem.DOM) {
-        elem.DOM.addEventListener('blur', elem.handleTextFieldBlur.bind(elem));
-      }
-    });
-
-    // handler for click on points
-    if (this.scale) {
-      this.scale.points.forEach((element, i) => {
-        element.DOM.addEventListener(
-          'click',
-          this.scale.handleScalePointClick.bind(this.scale, this.button, i)
-        );
-      });
-    }
-
-    // show/hide label on click
-    if (isLabel && isLabelOnClick) {
-      this.label.forEach((elem, i) => {
-        elem.hide();
-        this.button[i].DOM.addEventListener('mousedown', elem.show.bind(elem));
-        document.addEventListener('mouseup', elem.hide.bind(elem));
-      });
-    }
-  }
-
   // update range size and set items to position
-  private handleWindowResize() {
+  private resizeSlider() {
     this.updateRangeSize();
     this.setValues();
     this.convertValues();

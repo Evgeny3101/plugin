@@ -1,11 +1,8 @@
 import { roundToMultiple, createHTML } from '../../../ts/mixins';
-import Observable from '../../../ts/observable';
 import IConfig from '../../interface/IConfig';
 import Point from '../point/point';
-import Button from '../button/button';
 
 class Scale {
-  Observable = new Observable();
   points: Point[] = [];
   DOM: HTMLElement;
 
@@ -39,33 +36,6 @@ class Scale {
       }
 
       currentValue = isInvert ? currentValue - stepBetween : currentValue + stepBetween;
-    });
-  }
-
-  // click handler on the points
-  handleScalePointClick(buttons: Button[], index: number) {
-    const { isRange } = this.defaultConfig;
-    const point = this.points[index];
-
-    let indexOfRequiredButton;
-
-    if (!isRange) {
-      indexOfRequiredButton = 0;
-    } else {
-      // initial number of buttons is undefined
-      // get the current coordinates of the buttons
-      const btn1 = buttons[0].coord;
-      const btn2 = buttons[1].coord;
-
-      const range = btn2 - btn1;
-      const btn1Diapason = range / 2 + btn1;
-
-      indexOfRequiredButton = point.coord > btn1Diapason ? 1 : 0;
-    }
-
-    this.Observable.notify({
-      value: point.value,
-      index: indexOfRequiredButton,
     });
   }
 

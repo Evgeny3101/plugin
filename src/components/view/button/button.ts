@@ -6,6 +6,7 @@ class Button {
   Observable = new Observable();
   coord!: number;
   DOM: Element;
+  handleButtonMousedown: EventListener;
 
   constructor(
     public parent: Element,
@@ -14,9 +15,10 @@ class Button {
     public isInvert: boolean
   ) {
     this.DOM = createHTML('<div class="js-slider-button"></div>', parent);
+    this.handleButtonMousedown = this.move.bind(this);
   } // constructor
 
-  handleButtonMousedown(evt) {
+  move(evt) {
     const { page, offsetFrom, offsetSize, clientSize } = this.pos;
     const { isInvert } = this;
 

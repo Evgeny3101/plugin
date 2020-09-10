@@ -14,7 +14,7 @@ class Controller {
     ///  notify View ///
     this.subscribeButtons();
     this.subscribeTextField();
-    this.subscribeScale();
+    this.subscribePoint();
   }
 
   // methods model.updateValue
@@ -73,14 +73,33 @@ class Controller {
 
   // method scale.pressScaleBar
   // handler for click on points
-  subscribeScale() {
+  subscribePoint() {
     if (this.view.scale)
-      this.view.scale.Observable.subscribe(
-        (options: { value: number; index: number }) => {
-          const { value, index } = options;
-          this.model.updateValue(value, index);
-        }
-      );
+      this.view.scale.points.forEach((point) => {
+        point.Observable.subscribe((options: { value: number }) => {
+          // looking for the nearest button
+          const { value } = options;
+          const { isRange } = this.view.defaultConfig;
+
+          let indexOfRequiredButton;
+
+          if (!isRange) {
+            indexOfRequiredButton = 0;
+          } else {
+            // initial number of buttons is undefined
+            // get the current coordinates of the buttons
+            const btn1 = this.view.button[0].coord;
+            const btn2 = this.view.button[1].coord;
+
+            const range = btn2 - btn1;
+            const btn1Diapason = range / 2 + btn1;
+
+            indexOfRequiredButton = point.coord > btn1Diapason ? 1 : 0;
+          }
+
+          this.model.updateValue(value, indexOfRequiredButton);
+        });
+      });
   }
 } // class
 
