@@ -34,7 +34,8 @@ import RangeSlider from './plugin-api';
           if (slider.mainDOM === elem) {
             $(slider.mainDOM).empty();
             const config = $.extend({}, slider.config, options);
-            return slider.setNewConfig(config);
+            slider.setNewConfig(config);
+            return slider.init();
           }
           return false;
         });

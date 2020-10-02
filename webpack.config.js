@@ -3,6 +3,7 @@ const webpack = require('webpack');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const isProd = process.env.NODE_ENV === 'production';
 const isStart = process.env.NODE_ENV === 'start';
@@ -32,6 +33,20 @@ module.exports = {
       {
         test: /\.pug$/,
         loader: 'pug-loader',
+      },
+      {
+        test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
+        loader: 'file-loader',
+        options: {
+          name: '[name].[ext]',
+        },
+      },
+      {
+        test: /\.(png|jpg|gif|svg)$/,
+        loader: 'file-loader',
+        options: {
+          name: '[name].[ext]',
+        },
       },
       {
         test: /\.css$/,
@@ -96,6 +111,10 @@ module.exports = {
   devtool: isStart ? 'source-map' : '',
 
   plugins: [
+    new CopyWebpackPlugin({
+      patterns: [{ from: './page/favicons', to: './favicons' }],
+    }),
+
     new HTMLWebpackPlugin({
       filename: 'index.html',
       template: './page/index.pug',

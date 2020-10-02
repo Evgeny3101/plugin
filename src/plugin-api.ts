@@ -9,7 +9,7 @@ class RangeSlider {
   controller!: Controller;
 
   constructor(public mainDOM: Element, public config: IConfig) {
-    this.customizationConfig(this.config);
+    this.setNewConfig(this.config);
     this.init();
   } // constructor
 
@@ -22,12 +22,7 @@ class RangeSlider {
     this.controller = new Controller(this.model, this.view);
   }
 
-  setNewConfig(config: IConfig) {
-    this.customizationConfig(config);
-    this.init();
-  }
-
-  private customizationConfig(options: any) {
+  setNewConfig(options: any) {
     const newConfig = options;
     const { sliderType, sliderValues1, sliderValues2 } = options;
     if (typeof sliderValues1 === 'number') newConfig.sliderValues[0] = [sliderValues1];

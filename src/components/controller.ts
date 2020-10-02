@@ -4,10 +4,6 @@ import View from './view/view';
 class Controller {
   isMouseDown: boolean = false;
   constructor(public model: Model, public view: View) {
-    this.installSubscribes();
-  }
-
-  private installSubscribes() {
     ///  notify Model  ///
     this.subscribeToChangeValue();
 
