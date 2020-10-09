@@ -1,10 +1,17 @@
-const webpackConfig = require('./webpack.config');
 const webpack = require('webpack');
+const webpackConfig = require('./webpack.config');
 
-module.exports = function (config) {
+module.exports = (config) => {
   config.set({
     basePath: '',
     frameworks: ['jasmine-jquery', 'jasmine'],
+
+    client: {
+      clearContext: false,
+      jasmine: {
+        random: false,
+      },
+    },
 
     files: [
       { pattern: 'src/**/*.ts' },
@@ -18,10 +25,10 @@ module.exports = function (config) {
       'test/**/*.ts': ['webpack', 'sourcemap'],
     },
 
-    reporters: ['progress', 'coverage-istanbul'],
+    reporters: ['progress', 'coverage-istanbul', 'kjhtml'],
 
     coverageIstanbulReporter: {
-      reports: ['html'],
+      reports: ['html', 'lcovonly'],
       dir: 'coverage/',
       combineBrowserReports: true,
       fixWebpackSourcePaths: true,

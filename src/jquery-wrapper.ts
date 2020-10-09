@@ -3,7 +3,6 @@ import RangeSlider from './plugin-api';
 
 ((jQuery) => {
   const $ = jQuery;
-  const sliders: RangeSlider[] = [];
 
   const methods: { [key: string]: Function } = {
     init(options: {}) {
@@ -11,17 +10,17 @@ import RangeSlider from './plugin-api';
         const config: IConfig = $.extend({}, $.fn.rangeSlider.defaults, options);
         const newSlider = new RangeSlider(elem, config);
 
-        sliders.push(newSlider);
+        $.fn.rangeSlider.sliders.push(newSlider);
       });
     },
 
     delete() {
       return this.each((index: number, elem: Element) => {
-        sliders.forEach((slider, i) => {
+        $.fn.rangeSlider.sliders.forEach((slider, i) => {
           if (slider.mainDOM === elem) {
             slider.view.removeListeners();
             $(slider.mainDOM).empty();
-            delete sliders[i];
+            delete $.fn.rangeSlider.sliders[i];
           }
           return false;
         });
@@ -30,7 +29,7 @@ import RangeSlider from './plugin-api';
 
     config(options: {}) {
       return this.each((index: number, elem: Element) => {
-        sliders.forEach((slider) => {
+        $.fn.rangeSlider.sliders.forEach((slider) => {
           if (slider.mainDOM === elem) {
             $(slider.mainDOM).empty();
             const config = $.extend({}, slider.config, options);
@@ -44,7 +43,7 @@ import RangeSlider from './plugin-api';
 
     setListeners() {
       return this.each((index: number, elem: Element) => {
-        sliders.forEach((slider) => {
+        $.fn.rangeSlider.sliders.forEach((slider) => {
           if (slider.mainDOM === elem) {
             slider.view.setListeners();
             return false;
@@ -56,7 +55,7 @@ import RangeSlider from './plugin-api';
 
     removeListeners() {
       return this.each((index: number, elem: Element) => {
-        sliders.forEach((slider) => {
+        $.fn.rangeSlider.sliders.forEach((slider) => {
           if (slider.mainDOM === elem) {
             slider.view.removeListeners();
             return false;
@@ -78,6 +77,7 @@ import RangeSlider from './plugin-api';
     return $.error(`Method named ${method} does not exist for jQuery.rangeSlider`);
   };
 
+  // Настройки по умолчанию
   $.fn.rangeSlider.defaults = {
     sliderType: 'single',
 
@@ -98,4 +98,7 @@ import RangeSlider from './plugin-api';
     numberForEach: 4,
     longForEach: 2,
   };
+
+  // Массив для слайдеров
+  $.fn.rangeSlider.sliders = [];
 })(jQuery);

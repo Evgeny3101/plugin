@@ -24,9 +24,9 @@ class RangeSlider {
 
   setNewConfig(options: any) {
     const newConfig = options;
-    const { sliderType, sliderValues1, sliderValues2 } = options;
-    if (typeof sliderValues1 === 'number') newConfig.sliderValues[0] = [sliderValues1];
-    if (typeof sliderValues2 === 'number') newConfig.sliderValues[1] = [sliderValues2];
+    const { sliderType, value1slider, value2slider } = options;
+    if (typeof value1slider === 'number') newConfig.sliderValues[0] = [value1slider];
+    if (typeof value2slider === 'number') newConfig.sliderValues[1] = [value2slider];
     if (sliderType) {
       newConfig.isSingle = sliderType === 'single';
       newConfig.isRange = sliderType === 'range';

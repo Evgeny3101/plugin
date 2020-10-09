@@ -1,6 +1,6 @@
 import '../jquery-wrapper';
 
-// set options for slider tuning
+// set the slider settings according to the specified options
 function setOptionsTuning(tuningDOM, sliderConfig) {
   const defaultConfig = $.fn.rangeSlider.defaults;
   const names = Object.keys(defaultConfig);
@@ -23,7 +23,8 @@ function setOptionsTuning(tuningDOM, sliderConfig) {
   });
 }
 
-// events
+// event handling //
+
 function convertStringsInValue(string) {
   let value = string;
   const isString = Number.isNaN(Number(value));
@@ -35,15 +36,11 @@ function convertStringsInValue(string) {
   return value;
 }
 
-function setOption(currentOptions, slider) {
-  const { value, name } = currentOptions;
+function handleButtonClick(slider, event) {
+  const { value, name } = event.target;
   const newOption = {};
   newOption[name] = convertStringsInValue(value);
   $(slider).rangeSlider('config', newOption);
-}
-
-function handleButtonClick(slider, event) {
-  setOption(event.target, slider);
 }
 
 function setListeners(tuningDOM, slider) {
@@ -68,7 +65,9 @@ sliderConfigArr[0] = {
   textField: ['.text-field1', '.text-field2'],
   sliderType: 'range',
 
-  sliderValues: [-22, 43],
+  value1slider: -22,
+  value2slider: 43,
+
   minValue: -100,
   step: 10,
 
@@ -79,70 +78,61 @@ sliderConfigArr[0] = {
   points: 21,
 };
 
-// // slider 2
-// sliderArr[1] = $('.rangeSlider2');
-// sliderConfigArr[1] = {
-//   textField: ['.text-field3', '.text-field4'],
-//   sliderValues: [-22.3, 33.2],
+// slider 2
+sliderArr[1] = $('.rangeSlider2');
+sliderConfigArr[1] = {
+  textField: ['.text-field3', '.text-field4'],
+  sliderValues: [-22.3, 33.2],
 
-//   isRange: true,
-//   isScale: true,
-//   isLabel: true,
-//   isInvert: true,
-// };
+  isRange: true,
+  isScale: true,
+  isLabel: true,
+  isInvert: true,
+};
 
-// // slider 3
-// sliderArr[2] = $('.rangeSlider3');
-// sliderConfigArr[2] = {
-//   textField: ['.text-field5', '.text-field6'],
-//   sliderType: 'range',
-//   isVertical: true,
+// slider 3
+sliderArr[2] = $('.rangeSlider3');
+sliderConfigArr[2] = {
+  textField: ['.text-field5', '.text-field6'],
+  sliderType: 'range',
+  isVertical: true,
 
-//   step: 0.001,
+  step: 0.001,
 
-//   isScale: true,
-//   points: 10,
-//   numberForEach: 3,
-//   longForEach: 3,
-// };
+  isScale: true,
+  points: 10,
+  numberForEach: 3,
+  longForEach: 3,
+};
 
 // init sliders with id '1-3'
-// sliderArr[0].rangeSlider();
-// sliderArr[0].rangeSlider('removeListener');
-
 sliderArr.forEach((slider, i) => {
   slider.rangeSlider(sliderConfigArr[i]);
   setListeners(tuningArr[i], sliderArr[i]);
   setOptionsTuning(tuningArr[i], sliderConfigArr[i]);
 });
-sliderArr[0].rangeSlider('removeListeners');
-sliderArr[0].rangeSlider('setListeners');
 
-// console.log(sliderArr[0]);
-// delete sliderArr[0];
+// two sliders with id '4'
+const $sliders4 = $('.rangeSlider4');
+const tuningId4Arr = [tuningArr[3], tuningArr[4]];
+const sliders4Config = [];
+sliders4Config[0] = {
+  textField: ['.text-field7', '.text-field8'],
+  type: 'range',
+  isScale: true,
+  isLabel: true,
+};
 
-// // two sliders with id '4'
-// const $sliders4 = $('.rangeSlider4');
-// const tuningId4Arr = [tuningArr[3], tuningArr[4]];
-// const sliders4Config = [];
-// sliders4Config[0] = {
-//   textField: ['.text-field7', '.text-field8'],
-//   type: 'range',
-//   isScale: true,
-//   isLabel: true,
-// };
+sliders4Config[1] = {
+  textField: ['.text-field9', '.text-field10'],
+  type: 'range',
+  isScale: true,
+  isLabel: true,
+};
 
-// sliders4Config[1] = {
-//   textField: ['.text-field9', '.text-field10'],
-//   type: 'range',
-//   isScale: true,
-//   isLabel: true,
-// };
-
-// // init sliders with id '4'
-
-// $.each($sliders4, (i, elem) => {
-//   $(elem).rangeSlider(sliders4Config[i]);
-//   setListeners(tuningId4Arr[i], elem);
-//   setOptionsTuning(elem, sliders4Config[i]);
-// });
+// init sliders with id '4'
+$.each($sliders4, (i, elem) => {
+  $(elem).rangeSlider(sliders4Config[i]);
+  setListeners(tuningId4Arr[i], elem);
+  setOptionsTuning(elem, sliders4Config[i]);
+});
