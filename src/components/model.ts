@@ -5,7 +5,6 @@ import IConfig from './interface/IConfig';
 class Model {
   Observable: Observable = new Observable();
   value!: number[];
-  step!: number;
 
   constructor(public defaultConfig: IConfig) {
     const { sliderValues } = this.defaultConfig;

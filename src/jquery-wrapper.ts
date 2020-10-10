@@ -1,5 +1,5 @@
+import Controller from './components/controller';
 import IConfig from './components/interface/IConfig';
-import RangeSlider from './plugin-api';
 
 ((jQuery) => {
   const $ = jQuery;
@@ -8,7 +8,7 @@ import RangeSlider from './plugin-api';
     init(options: {}) {
       return this.each((index: number, elem: Element) => {
         const config: IConfig = $.extend({}, $.fn.rangeSlider.defaults, options);
-        const newSlider = new RangeSlider(elem, config);
+        const newSlider = new Controller(elem, config);
 
         $.fn.rangeSlider.sliders.push(newSlider);
       });

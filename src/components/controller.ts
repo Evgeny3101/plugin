@@ -1,9 +1,16 @@
+import IConfig from './interface/IConfig';
 import Model from './model';
 import View from './view/view';
 
 class Controller {
+  model!: Model;
+  view!: View;
   isMouseDown: boolean = false;
-  constructor(public model: Model, public view: View) {
+
+  constructor(public mainDOM: Element, public config: IConfig) {
+    this.setNewConfig(this.config);
+    this.init();
+
     ///  notify Model  ///
     this.subscribeToChangeValue();
 
@@ -11,6 +18,30 @@ class Controller {
     this.subscribeButtons();
     this.subscribeTextField();
     this.subscribePoint();
+  }
+
+  init() {
+    this.model = new Model(this.config);
+    // after checking the limits and step
+    this.config.sliderValues = this.model.value;
+
+    this.view = new View(this.mainDOM, this.config);
+  }
+
+  setNewConfig(options: any) {
+    const newConfig = options;
+    const { sliderType, value1slider, value2slider } = options;
+    if (typeof value1slider === 'number') newConfig.sliderValues[0] = [value1slider];
+    if (typeof value2slider === 'number') newConfig.sliderValues[1] = [value2slider];
+    if (sliderType) {
+      newConfig.isSingle = sliderType === 'single';
+      newConfig.isRange = sliderType === 'range';
+      newConfig.isProgress = sliderType === 'progress';
+    }
+
+    delete newConfig.sliderType;
+
+    this.config = newConfig;
   }
 
   // methods model.updateValue
@@ -69,13 +100,13 @@ class Controller {
 
   // method scale.pressScaleBar
   // handler for click on points
-  subscribePoint() {
+  private subscribePoint() {
     if (this.view.scale)
       this.view.scale.points.forEach((point) => {
         point.Observable.subscribe((options: { value: number }) => {
           // looking for the nearest button
           const { value } = options;
-          const { isRange } = this.view.defaultConfig;
+          const { isRange } = this.config;
 
           let indexOfRequiredButton;
 
