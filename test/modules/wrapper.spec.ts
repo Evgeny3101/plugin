@@ -16,7 +16,7 @@ describe('Обертка JQuery.', () => {
 
     $elem.rangeSlider({
       sliderValues: [10, 20],
-      range: true,
+      sliderType: 'range',
       textField: ['.text-field', '.text-field2'],
     });
   });

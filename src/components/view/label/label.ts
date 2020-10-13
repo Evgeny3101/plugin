@@ -3,9 +3,8 @@ import Observable from '../../../ts/observable';
 
 class Label {
   Observable = new Observable();
-  input!: HTMLInputElement;
-  DOM!: HTMLInputElement;
-  buttonSize: number = 0;
+  input!: HTMLInputElement; // container for value
+  DOM!: HTMLInputElement;   // wrapper for label
   coord!: number;
   handleButtonMousedown!: EventListener;
   handleButtonMouseup!: EventListener;

@@ -1,76 +1,103 @@
-// import '../../src/jquery-wrapper';
-// import View from '../../src/ts/layers/view/view';
-// import Config from '../../src/components/interface/IConfig';
+import '../../src/jquery-wrapper';
+import View from '../../src/components/view/view';
+import Config from '../../src/components/interface/IConfig';
 
-// let config: Config;
-// let view: View;
-// let mainDOM: Element;
+let $elem: JQuery<HTMLElement>;
+let view: View;
+let config: Config;
 
-// jasmine.getFixtures().fixturesPath = 'base/test/fixtures';
-// jasmine.getStyleFixtures().fixturesPath = 'base/test/fixtures';
+setFixtures(
+  '<div class="js-plugin"></div>'
+);
 
-// describe('View testing.', () => {
-//   beforeEach(() => {
-//     loadFixtures('fixt.html');
-//     loadStyleFixtures('fixt.css');
-//     mainDOM = document.querySelector('.js-plugin');
+$elem = $('.js-plugin');
+$elem.rangeSlider();
 
-//     config = $.fn.rangeSlider.defaults;
-//     config.textField = ['.text-field', '.text-field2'];
+describe('Класс View.', () => {
+  beforeEach(() => {
+    setFixtures(
+      '<input class="text-field"></input><input class="text-field2"></input>'
+    );
 
-//     view = new View(mainDOM, config);
-//   });
+    $elem.rangeSlider('config', {
+      textField: ['.text-field', '.text-field2'],
+      sliderType: 'range',
+      isScale :  true,
+      isLabel :  true,
+      isLabelOnClick :  true,
+    });
 
-//   it('Elements DOM defined.', () => {
-//     expect(view.range.DOM).toBeDefined();
-//     expect(view.button[0].DOM).toBeDefined();
-//     expect(view.textField[0].DOM).toBeDefined();
-//   });
+    view = $elem.rangeSlider.sliders[0].view;
+    config = view.defaultConfig;
+  });
 
-//   it('Sets position variables, if isInvert == true.', () => {
-//     config.isInvert = true;
-//     view.init(config);
-//     expect(view.pos.offset).toEqual('right');
+  it('Метод "setPositionVariables". Установка требуемых переменных.', () => {
+    config.isVertical = false;
+    config.isInvert = false;
+    view.setPositionVariables();
+    expect(view.pos.offset).toEqual('left');
 
-//     config.isVertical = true;
-//     view.init(config);
-//     expect(view.pos.offset).toBe('bottom');
-//   });
+    config.isVertical = false;
+    config.isInvert = true;
+    view.setPositionVariables();
+    expect(view.pos.offset).toEqual('right');
 
-//   it('Element "interval" is defined, if range == true.', () => {
-//     config.isRange = true;
-//     view.init(config);
+    config.isVertical = true;
+    config.isInvert = false;
+    view.setPositionVariables();
+    expect(view.pos.offset).toEqual('top');
 
-//     expect(view.interval.DOM).toBeDefined();
-//   });
+    config.isVertical = true;
+    config.isInvert = true;
+    view.setPositionVariables();
+    expect(view.pos.offset).toEqual('bottom');
+  });
 
-//   it('Element "label" is defined, if label == true.', () => {
-//     config.isLabel = true;
-//     view.init(config);
 
-//     expect(view.label[0].DOM).toBeDefined();
-//   });
+  it('Метод "installComponents". Элементы DOM определены.', () => {
+    expect(view.range.DOM).toBeDefined();
+    expect(view.button[0].DOM).toBeDefined();
+    expect(view.button[1].DOM).toBeDefined();
+    expect(view.label[1].DOM).toBeDefined();
+    expect(view.label[1].DOM).toBeDefined();
+    expect(view.interval.DOM).toBeDefined();
+    expect(view.textField[0].DOM).toBeDefined();
+    expect(view.textField[1].DOM).toBeDefined();
+  });
 
-//   it('Show label on click selected, if labelOnClick == true.', () => {
-//     config.isLabel = true;
-//     config.isLabelOnClick = true;
-//     view.init(config);
 
-//     expect(view.label[0].DOM).toHaveClass('js-label__hide');
-//   });
+  it('Метод "setValues". Устанавливает значения слайдера в текстовые поля.', () => {
+    view.setValues([-50, 50]);
 
-//   it('Element "scale" is defined, if scale == true.', () => {
-//     config.isScale = true;
-//     view.init(config);
+    expect(view.textField[0].DOM).toHaveValue('-50');
+    expect(view.textField[1].DOM).toHaveValue('50');
 
-//     expect(view.scale.DOM).toBeDefined();
-//   });
 
-//   it('The "updateSize" method. Updates size slider.', () => {
-//     view.range.DOM.classList.add('js-test-size');
-//     view.updateSize(config); // maxValue, minValue, sliderValues
-//     view.range.DOM.classList.remove('js-test-size');
+    expect(view.label[0].input).toHaveValue('-50');
+    expect(view.label[1].input).toHaveValue('50');
+  });
 
-//     expect(view.rangeSize).toBe(110);
-//   });
-// });
+  it('Метод "resizeSlider". Изменяет размеры слайдера.', () => {
+    const spyEvent = spyOnEvent(window, 'resize');
+
+    const resize = new Event('resize');
+    window.dispatchEvent(resize);
+
+    expect('resize').toHaveBeenTriggeredOn(window);
+    expect(spyEvent).toHaveBeenTriggered();
+  });
+
+
+  it('Метод "removeListeners". Удаляет слушатели.', () => {
+    view.removeListeners();
+    const spyMethod = spyOn(view, 'setValues');
+    const spyEvent = spyOnEvent(window, 'resize');
+
+    const resize = new Event('resize');
+    window.dispatchEvent(resize);
+
+    expect(spyEvent).toHaveBeenTriggered();
+    expect(spyMethod).not.toHaveBeenCalled();
+  });
+
+});
