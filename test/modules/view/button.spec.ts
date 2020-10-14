@@ -1,81 +1,103 @@
-// import '../../../src/jquery-wrapper';
-// import RangeSlider from '../../../src/ts/layers/rangeSliderAPI';
-// import View from '../../../src/ts/layers/view/view';
-// import Config from '../../../src/components/interface/IConfig';
+import '../../../src/jquery-wrapper';
+import Config from '../../../src/components/interface/IConfig';
+import Button from '../../../src/components/view/button/button';
 
-// let slider: RangeSlider;
-// let config: Config;
-// let view: View;
-// let mainDOM: Element;
-// let elem: HTMLElement;
+jasmine.getFixtures().fixturesPath = 'base/test/fixtures';
+jasmine.getStyleFixtures().fixturesPath = 'base/test/fixtures';
 
-// jasmine.getFixtures().fixturesPath = 'base/test/fixtures';
-// jasmine.getStyleFixtures().fixturesPath = 'base/test/fixtures';
+const $elem = $('.js-plugin').rangeSlider();
 
-// describe('Button testing. The "move" method.', () => {
-//   beforeEach(() => {
-//     loadFixtures('fixt.html');
-//     loadStyleFixtures('fixt.css');
-//     mainDOM = document.querySelector('.js-plugin');
+let button: Button;
+let config: Config;
 
-//     config = $.fn.rangeSlider.defaults;
-//     config.textField = ['.text-field', '.text-field2'];
 
-//     slider = new RangeSlider(mainDOM, config);
-//     view = slider.view;
-//     elem = view.button[0].DOM;
+const tests = () => {
 
-//     const mousedown = new MouseEvent('mousedown');
-//     elem.dispatchEvent(mousedown);
-//   });
+  it('Событие "mousemove".', () => {
+    const spyEvent = spyOnEvent(document, 'mousemove');
 
-//   it('The "mousemove" event. Event call.', () => {
-//     const spyEvent = spyOnEvent(document, 'mousemove');
+    const event = new MouseEvent('mousemove');
+    document.dispatchEvent(event);
 
-//     const event = new MouseEvent('mousemove');
-//     document.dispatchEvent(event);
+    expect('mousemove').toHaveBeenTriggeredOn(document);
+    expect(spyEvent).toHaveBeenTriggered();
+  });
 
-//     expect('mousemove').toHaveBeenTriggeredOn(document);
-//     expect(spyEvent).toHaveBeenTriggered();
-//   });
+  it('Событие "mousemove". Проверка лимитов.', () => {
+    const event = new MouseEvent('mousemove', {
+      clientX: 10000,
+      clientY: 10000,
+    });
+    document.dispatchEvent(event);
 
-//   it('Calculation from the left side, if isInvert == false.', () => {
-//     config.isVertical = false;
-//     config.isInvert = false;
-//     view.init(config);
-//     expect(view.button[0].pos.offset).toBe('left');
-//   });
 
-//   it('Calculation from the right side, if isInvert == true.', () => {
-//     config.isVertical = false;
-//     config.isInvert = true;
-//     view.init(config);
-//     expect(view.button[0].pos.offset).toBe('right');
-//   });
+    const event2 = new MouseEvent('mousemove', {
+      clientX: -10000,
+      clientY: -10000,
+    });
+    document.dispatchEvent(event2);
+  });
 
-//   it('The "mousemove" event. Checking limits.', () => {
-//     const event = new MouseEvent('mousemove', {
-//       clientX: 10000,
-//       clientY: 10000,
-//     });
-//     document.dispatchEvent(event);
+  it('Событие "mouseup". Вызвано. Проверка сообщения.', () => {
+    const spyEvent = spyOnEvent(document, 'mouseup');
+    const spyObservable = spyOn(button.Observable, 'notify');
 
-//     const event2 = new MouseEvent('mousemove', {
-//       clientX: -10000,
-//       clientY: -10000,
-//     });
-//     document.dispatchEvent(event2);
-//   });
+    const event = new MouseEvent('mouseup');
+    document.dispatchEvent(event);
 
-//   it('The "mouseup" event. Event call.', () => {
-//     const spyEvent = spyOnEvent(document, 'mouseup');
+    expect('mouseup').toHaveBeenTriggeredOn(document);
+    expect(spyEvent).toHaveBeenTriggered();
+    expect(document.onmouseup).toBe(null);
+    expect(document.onmousemove).toBe(null);
+    expect(spyObservable).toHaveBeenCalledWith({
+      isMouseDown: false,
+    });
+  });
+};
 
-//     const event = new MouseEvent('mouseup');
-//     document.dispatchEvent(event);
+describe('Класс Button.', () => {
+  describe('isInvert == true', () => {
+    beforeEach(() => {
+      setFixtures(
+        '<input class="text-field"></input><input class="text-field2"></input>'
+      );
 
-//     expect('mouseup').toHaveBeenTriggeredOn(document);
-//     expect(spyEvent).toHaveBeenTriggered();
-//     expect(document.onmouseup).toBe(null);
-//     expect(document.onmousemove).toBe(null);
-//   });
-// });
+      $elem.rangeSlider('config', {
+        textField: ['.text-field', '.text-field2'],
+        sliderType: 'range',
+        isInvert: true,
+      });
+
+      button = $elem.rangeSlider.sliders[0].view.button[0];
+      config = $elem.rangeSlider.sliders[0].config;
+
+      const mousedown = new MouseEvent('mousedown');
+      button.DOM.dispatchEvent(mousedown);
+    });
+
+    tests();
+  });
+
+
+  describe('isInvert == false', () => {
+    beforeEach(() => {
+      setFixtures(
+        '<input class="text-field"></input><input class="text-field2"></input>'
+      );
+
+      $elem.rangeSlider('config', {
+        textField: ['.text-field', '.text-field2'],
+        sliderType: 'range',
+        isInvert: false,
+      });
+
+      button = $elem.rangeSlider.sliders[0].view.button[0];
+      config = $elem.rangeSlider.sliders[0].config;
+
+      const mousedown = new MouseEvent('mousedown');
+      button.DOM.dispatchEvent(mousedown);
+    });
+
+    tests();
+  });
+});
