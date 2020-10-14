@@ -1,57 +1,87 @@
-// import '../../../src/jquery-wrapper';
-// import RangeSlider from '../../../src/ts/layers/rangeSliderAPI';
-// import View from '../../../src/ts/layers/view/view';
-// import Config from '../../../src/components/interface/IConfig';
+import '../../../src/jquery-wrapper';
+import TextField from '../../../src/components/view/textField';
 
-// let slider: RangeSlider;
-// let config: Config;
-// let view: View;
-// let mainDOM: Element;
 
-// jasmine.getFixtures().fixturesPath = 'base/test/fixtures';
-// jasmine.getStyleFixtures().fixturesPath = 'base/test/fixtures';
+setFixtures(
+  '<div class="js-plugin"></div>'
+);
+const $elem = $('.js-plugin').rangeSlider();
 
-// describe('TextField testing.', () => {
-//   beforeEach(() => {
-//     loadFixtures('fixt.html');
-//     loadStyleFixtures('fixt.css');
-//     mainDOM = document.querySelector('.js-plugin');
+let $input1: JQuery<HTMLElement>;
+let textField: TextField;
+let spyObservable: jasmine.Spy<(data: any) => void>;
 
-//     config = $.fn.rangeSlider.defaults;
-//     config.textField = ['.text-field', '.text-field2'];
+describe('Класс TextField.', () => {
+  beforeEach(() => {
+    setFixtures(
+      '<input class="text-field"></input><input class="text-field2"></input>'
+    );
 
-//     slider = new RangeSlider(mainDOM, config);
-//     view = slider.view;
-//   });
+    $input1 = $('.text-field');
 
-//   it('The "setTextField" method. Throws error if not found element.', () => {
-//     expect(view.textField[0].DOM).toBeDefined();
-//     expect(() => {
-//       view.textField[0].setTextField('.random');
-//     }).toThrowError();
-//   });
+    $elem.rangeSlider('config', {
+      textField: ['.text-field', '.text-field2'],
+      sliderType: 'range',
+      isScale :  true,
+      isLabel :  true,
+      isLabelOnClick :  true,
+    });
 
-//   it('The "toInputValues" method. Sets values from text-field.', () => {
-//     const textField = $('.text-field');
+    textField = $elem.rangeSlider.sliders[0].view.textField[0];
+    spyObservable = spyOn(textField.Observable, 'notify');
 
-//     textField.val(-120);
-//     view.textField[0].Observable.subscribe(
-//       (data: { value: number[]; elem: TextField }) => {
-//         expect(data.value).toEqual([-120]);
-//       }
-//     );
-//     view.textField[0].toInputValues();
-//   });
+  });
 
-//   it('The "toInputValues" method. Sets values from text-field, if is not number', () => {
-//     const textField = $('.text-field');
+  it('Метод "find". Ошибка если не определен.', () => {
+    expect(() => {
+      textField.find('.falseField');
+    }).toThrowError('Text field not found.');
+  });
 
-//     textField.val('sd');
-//     view.textField[0].Observable.subscribe(
-//       (data: { value: number[]; elem: TextField }) => {
-//         expect(data.value).toEqual([0]);
-//       }
-//     );
-//     view.textField[0].toInputValues();
-//   });
-// });
+  it('Метод "getValue". Обрабатывает значение введенное в текстовое поле.', () => {
+    $input1.val('-120');
+    textField.getValue();
+    expect(spyObservable).toHaveBeenCalledWith({
+      value: [-120],
+      index: 0,
+    });
+  });
+
+  it('Метод "getValue". Если значение введенное в текстовое поле не определено примет как "0".', () => {
+    $input1.val(undefined);
+    textField.getValue();
+    expect(spyObservable).toHaveBeenCalledWith({
+      value: [0],
+      index: 0,
+    });
+
+    $input1.val(null);
+    textField.getValue();
+    expect(spyObservable).toHaveBeenCalledWith({
+      value: [0],
+      index: 0,
+    });
+
+    $input1.val('sdf');
+    textField.getValue();
+    expect(spyObservable).toHaveBeenCalledWith({
+      value: [0],
+      index: 0,
+    });
+
+    $input1.val(NaN);
+    textField.getValue();
+    expect(spyObservable).toHaveBeenCalledWith({
+      value: [0],
+      index: 0,
+    });
+
+    $input1.val( );
+    textField.getValue();
+    expect(spyObservable).toHaveBeenCalledWith({
+      value: [0],
+      index: 0,
+    });
+  });
+
+});

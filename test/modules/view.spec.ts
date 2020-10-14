@@ -2,16 +2,14 @@ import '../../src/jquery-wrapper';
 import View from '../../src/components/view/view';
 import Config from '../../src/components/interface/IConfig';
 
-let $elem: JQuery<HTMLElement>;
-let view: View;
-let config: Config;
 
 setFixtures(
   '<div class="js-plugin"></div>'
 );
+const $elem = $('.js-plugin').rangeSlider();
 
-$elem = $('.js-plugin');
-$elem.rangeSlider();
+let view: View;
+let config: Config;
 
 describe('Класс View.', () => {
   beforeEach(() => {
