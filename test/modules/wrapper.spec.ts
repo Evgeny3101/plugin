@@ -9,6 +9,7 @@ const $elem = $('.js-plugin').rangeSlider();
 let $input1: JQuery<HTMLElement>;
 let $input2: JQuery<HTMLElement>;
 
+
 describe('Обертка JQuery.', () => {
   beforeEach(() => {
     setFixtures(
@@ -24,6 +25,7 @@ describe('Обертка JQuery.', () => {
       textField: ['.text-field', '.text-field2'],
     });
   });
+
 
   it('Доступен в объекте JQuery.', () => {
     expect($.fn.rangeSlider).toBeDefined();

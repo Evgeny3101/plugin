@@ -11,6 +11,7 @@ const $elem = $('.js-plugin').rangeSlider();
 let view: View;
 let config: Config;
 
+
 describe('Класс View.', () => {
   beforeEach(() => {
     setFixtures(
@@ -26,7 +27,7 @@ describe('Класс View.', () => {
     });
 
     view = $elem.rangeSlider.sliders[0].view;
-    config = view.defaultConfig;
+    config = $elem.rangeSlider.sliders[0].config;
   });
 
   it('Метод "setPositionVariables". Установка требуемых переменных.', () => {
