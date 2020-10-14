@@ -2,8 +2,9 @@ import '../../../src/jquery-wrapper';
 import Config from '../../../src/components/interface/IConfig';
 import Button from '../../../src/components/view/button/button';
 
-jasmine.getFixtures().fixturesPath = 'base/test/fixtures';
-jasmine.getStyleFixtures().fixturesPath = 'base/test/fixtures';
+setFixtures(
+  '<div class="js-plugin"></div>'
+);
 
 const $elem = $('.js-plugin').rangeSlider();
 
@@ -12,6 +13,15 @@ let config: Config;
 
 
 const tests = () => {
+  beforeEach(() => {
+
+    button = $elem.rangeSlider.sliders[0].view.button[0];
+    config = $elem.rangeSlider.sliders[0].config;
+
+    const mousedown = new MouseEvent('mousedown');
+    button.DOM.dispatchEvent(mousedown);
+  });
+
 
   it('Событие "mousemove".', () => {
     const spyEvent = spyOnEvent(document, 'mousemove');
@@ -21,21 +31,6 @@ const tests = () => {
 
     expect('mousemove').toHaveBeenTriggeredOn(document);
     expect(spyEvent).toHaveBeenTriggered();
-  });
-
-  it('Событие "mousemove". Проверка лимитов.', () => {
-    const event = new MouseEvent('mousemove', {
-      clientX: 10000,
-      clientY: 10000,
-    });
-    document.dispatchEvent(event);
-
-
-    const event2 = new MouseEvent('mousemove', {
-      clientX: -10000,
-      clientY: -10000,
-    });
-    document.dispatchEvent(event2);
   });
 
   it('Событие "mouseup". Вызвано. Проверка сообщения.', () => {
@@ -67,12 +62,6 @@ describe('Класс Button.', () => {
         sliderType: 'range',
         isInvert: true,
       });
-
-      button = $elem.rangeSlider.sliders[0].view.button[0];
-      config = $elem.rangeSlider.sliders[0].config;
-
-      const mousedown = new MouseEvent('mousedown');
-      button.DOM.dispatchEvent(mousedown);
     });
 
     tests();
@@ -90,12 +79,6 @@ describe('Класс Button.', () => {
         sliderType: 'range',
         isInvert: false,
       });
-
-      button = $elem.rangeSlider.sliders[0].view.button[0];
-      config = $elem.rangeSlider.sliders[0].config;
-
-      const mousedown = new MouseEvent('mousedown');
-      button.DOM.dispatchEvent(mousedown);
     });
 
     tests();
