@@ -27,7 +27,7 @@ describe('Класс TextField.', () => {
       isLabelOnClick :  true,
     });
 
-    textField = $elem.rangeSlider.sliders[0].view.textField[0];
+    [textField] = $elem.rangeSlider.sliders[0].view.textField;
     spyObservable = spyOn(textField.Observable, 'notify');
 
   });

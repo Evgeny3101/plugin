@@ -31,7 +31,6 @@ class View {
     this.setListeners();
   }
 
-  // sets in elements slider values
   setValues(sliderValues: number[] = this.defaultConfig.sliderValues) {
     this.defaultConfig.sliderValues = sliderValues;
 
@@ -85,15 +84,12 @@ class View {
   }
 
   toPositionElements() {
-    // button
     this.button.forEach((elem) => elem.toPosition());
 
-    // interval
     if (this.interval) {
       this.interval.toPosition();
     }
 
-    // label
     if (this.label) {
       this.label.forEach((elem) => elem.toPosition());
     }
@@ -102,30 +98,25 @@ class View {
   setListeners() {
     const { isLabel, isLabelOnClick } = this.defaultConfig;
 
-    // auto update when the screen width changes
     this.handleWindowResize = this.resizeSlider.bind(this);
     window.addEventListener('resize', this.handleWindowResize);
 
-    // buttons move handler
     this.button.forEach((btn) => {
       btn.DOM.addEventListener('mousedown', btn.handleButtonMousedown);
     });
 
-    // entering values into a text field
     this.textField.forEach((elem) => {
       if (elem.DOM) {
         elem.DOM.addEventListener('blur', elem.handleTextFieldBlur);
       }
     });
 
-    // handler for click on points
     if (this.scale) {
       this.scale.points.forEach((elem) => {
         elem.DOM.addEventListener('click', elem.handlePointClick);
       });
     }
 
-    // show/hide label on click
     if (isLabel && isLabelOnClick) {
       this.label.forEach((elem, i) => {
         elem.hide();
@@ -138,29 +129,24 @@ class View {
   removeListeners() {
     const { isLabel, isLabelOnClick } = this.defaultConfig;
 
-    // auto update when the screen width changes
     window.removeEventListener('resize', this.handleWindowResize);
 
-    // buttons move handler
     this.button.forEach((btn) => {
       btn.DOM.removeEventListener('mousedown', btn.handleButtonMousedown);
     });
 
-    // entering values into a text field
     this.textField.forEach((elem) => {
       if (elem.DOM) {
         elem.DOM.removeEventListener('blur', elem.handleTextFieldBlur);
       }
     });
 
-    // handler for click on points
     if (this.scale) {
       this.scale.points.forEach((elem) => {
         elem.DOM.removeEventListener('click', elem.handlePointClick);
       });
     }
 
-    // show/hide label on click
     if (isLabel && isLabelOnClick) {
       this.label.forEach((elem, i) => {
         elem.show();
@@ -170,7 +156,7 @@ class View {
     }
   }
 
-  // sets variables for vertical or horizontal positioning
+  // устанавливает переменные для вертикального или горизонтального позиционирования
   private setPositionVariables() {
     const { isVertical, isInvert } = this.defaultConfig;
 
@@ -195,7 +181,7 @@ class View {
     }
   }
 
-  // creates elements DOM
+  // создание классов компонентов и DOM элементов
   private installComponents() {
     const {
       isRange,
@@ -211,7 +197,7 @@ class View {
     this.range = new Range();
     this.range.setClassPosition(isVertical);
 
-    // creates buttons
+    // создание кнопок
     this.button = [];
 
     const buttonArrayLength = isRange ? 2 : 1;
@@ -219,12 +205,12 @@ class View {
       this.button[i] = new Button(this.range.DOM, this.pos, i, isInvert);
     }
 
-    // creates spacing between buttons
+    // создание интервала между кнопок
     if (isRange || isProgress) {
       this.interval = new Interval(this.range.DOM, this.pos, isProgress);
     }
 
-    // creates labels above buttons
+    // создание надписей над кнопками
     if (isLabel) {
       this.label = [];
       this.button.forEach((element, i) => {
@@ -232,24 +218,24 @@ class View {
       });
     }
 
-    // creates scale
+    // создание шкалы
     if (isScale) {
       this.scale = new Scale(this.range.DOM, this.defaultConfig);
     }
 
-    // creates classes and finds the text fields
+    // создает класс textField и ищет поле
     if (textField) {
       textField.forEach((element, i) => {
         this.textField[i] = new TextField(element, i);
       });
     }
 
-    // insert slider in page
+    // добавляет слайдер на страницу
     this.parent.append(this.range.DOM);
   }
 
-  // sets values for this.rangeSize и this.step will use in 'setValues'
-  // will use 'setElementsParameters' and 'handleWindowResize'
+  // устанавливает значения для this.rangeSize и this.step будет использоваться методом 'setValues'
+  // будет использоваться в методах setElementsParameters и handleWindowResize
   private updateRangeSize() {
     const { minValue, maxValue } = this.defaultConfig;
 
@@ -262,9 +248,9 @@ class View {
     this.step = this.rangeSize / valueRange;
   }
 
-  // sets parameters of elements
+  // задает параметры элементов
+  // необходим this.rangeSize (для метода Scale.setScale)
   private setElementsParameters() {
-    // require this.rangeSize for setScale values
     this.updateRangeSize();
 
     if (this.interval) {
@@ -277,7 +263,7 @@ class View {
     }
   }
 
-  // update range size and set items to position
+  // обновляет размер диапазона и устанавливаем элементы в позицию
   private resizeSlider() {
     this.updateRangeSize();
     this.setValues();

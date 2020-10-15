@@ -16,8 +16,7 @@ class TextField {
     this.DOM = elem;
   }
 
-  // gets values from the text field
-  // old getFieldValues
+  // получает значения из текстового поля
   getValue() {
     const newValue = [Number(this.DOM.value) || 0];
 
@@ -27,7 +26,7 @@ class TextField {
     });
   }
 
-  // sets values into the text field
+  // устанавливает значения в текстовое поле
   setValue(value: number) {
     this.DOM.value = String(value);
   }

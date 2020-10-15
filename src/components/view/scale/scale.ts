@@ -9,15 +9,15 @@ class Scale {
   constructor(parent: HTMLElement, public defaultConfig: IConfig) {
     this.DOM = createHTML('<div class="js-scale-range"></div>', parent);
     this.createPoints();
-  } // constructor end
+  } // constructor
 
-  // sets scale according to parameters
+  // устанавливает шкалу согласно параметрам
   setScale(size: number) {
     this.setValue();
     this.determineСoordScale(size);
   }
 
-  // sets scale values
+  // устанавливает значения шкалы
   setValue() {
     const { minValue, maxValue, step, isInvert } = this.defaultConfig;
 
@@ -39,7 +39,7 @@ class Scale {
     });
   }
 
-  // create scale points
+  // создать точки шкалы
   private createPoints() {
     const { points, numberForEach, longForEach } = this.defaultConfig;
 
@@ -51,7 +51,7 @@ class Scale {
     }
   }
 
-  // determination coordinates of the points on scale
+  // определение координат точек на шкале
   private determineСoordScale(rangeSize: number) {
     const { isInvert } = this.defaultConfig;
 

@@ -6,7 +6,7 @@ class Range {
     this.DOM = createHTML('<div class="js-range-slider"></div>');
   }
 
-  // sets the class (CSS) responsible for the position of the range
+  // устанавливает класс (CSS), отвечающий за положение диапазона
   setClassPosition(isVertical: boolean) {
     if (isVertical) this.DOM.classList.add('js-range-slider_vertical');
     else this.DOM.classList.add('js-range-slider_horizontal');

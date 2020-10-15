@@ -1,6 +1,5 @@
 import '../../src/jquery-wrapper';
 import Controller from '../../src/components/controller';
-import Config from '../../src/components/interface/IConfig';
 import Model from '../../src/components/model';
 import View from '../../src/components/view/view';
 
@@ -13,34 +12,40 @@ const $elem = $('.js-plugin').rangeSlider();
 let controller: Controller;
 let model: Model;
 let view: View;
-let config: Config;
 
 
 const tests = () => {
   beforeEach(() => {
-    controller = $elem.rangeSlider.sliders[0];
+    [controller] = $elem.rangeSlider.sliders;
     model = controller.model;
     view = controller.view;
-    config = $elem.rangeSlider.sliders[0].config;
   });
 
 
-  it('Метод "subscribeToChangeValue". Подписка на изменения значения слайдера, методом "Model.updateValue".', () => {
+  it('Метод "subscribeToChangeValue". Подписка на уведомления при изменении значения слайдера. Уведомления методом "Model.updateValue".', () => {
     controller.subscribeToChangeValue();
-    const spyMethod = spyOn(controller.view, 'setValues');
+    const spyMethod1 = spyOn(view, 'setValues');
+    const spyMethod2 = spyOn(view, 'convertValues');
 
-    controller.model.updateValue(11, 0);
-    controller.model.updateValue(33, 1);
+    controller.isMouseDown = true;
+    model.updateValue(11, 0);
+    model.updateValue(44, 1);
 
-    expect(spyMethod).toHaveBeenCalledWith([11, 33]);
+    expect(spyMethod1).toHaveBeenCalledWith([11, 44]);
+
+    controller.isMouseDown = false;
+    model.updateValue(33, 1);
+
+    expect(spyMethod2).toHaveBeenCalledWith([11, 33]);
+
   });
 
-  it('Метод "subscribeButtons". Подписка на изменения положения кнопок, методом "Button.move".', () => {
+  it('Метод "subscribeButtons". Подписка на уведомления от кнопок. Уведомления методом "Button.move" при нажатии на кнопку.', () => {
     controller.subscribeButtons();
-    const spyMethod = spyOn(controller.model, 'convertCoords');
+    const spyMethod = spyOn(model, 'convertCoords');
 
     const mousedown = new MouseEvent('mousedown');
-    controller.view.button[0].DOM.dispatchEvent(mousedown);
+    view.button[0].DOM.dispatchEvent(mousedown);
 
     const event = new MouseEvent('mousemove', {
       clientX: 10000,
@@ -51,22 +56,44 @@ const tests = () => {
     expect(spyMethod).toHaveBeenCalled();
   });
 
-  it('Метод "subscribeTextField". Подписка на изменения значения в текстовом поле, методом "TextField.getValue".', () => {
-    controller.subscribeTextField();
-    const spyMethod = spyOn(controller.model, 'updateValue');
+  it('Метод "subscribeButtons". Подписка на уведомления от кнопок. Уведомления методом "Button.move" при отжатии кнопки.', () => {
+    controller.subscribeButtons();
+    const spyModelMethod = spyOn(model, 'convertCoords');
 
-    controller.view.textField[0].getValue();
+    const mousedown = new MouseEvent('mousedown');
+    view.button[0].DOM.dispatchEvent(mousedown);
+
+    const event = new MouseEvent('mousemove', {
+      clientX: 10000,
+      clientY: 10000,
+    });
+    document.dispatchEvent(event);
+
+    const spyViewMethod = spyOn(view, 'setCoords');
+
+    const mouseup = new MouseEvent('mouseup');
+    document.dispatchEvent(mouseup);
+
+    expect(spyViewMethod).not.toHaveBeenCalled();
+    expect(spyModelMethod).toHaveBeenCalled();
+  });
+
+  it('Метод "subscribeTextField". Подписка на уведомления на изменение значения в текстовом поле. Уведомления "TextField.getValue".', () => {
+    controller.subscribeTextField();
+    const spyMethod = spyOn(model, 'updateValue');
+
+    view.textField[0].getValue();
 
     expect(spyMethod).toHaveBeenCalled();
   });
 
 
-  it('Метод "subscribePoint". Подписка на клик по шкале, методом "Point.clickPoint".', () => {
+  it('Метод "subscribePoint". Подписка на уведомления о клике по шкале. Уведомления методом "Point.clickPoint".', () => {
     controller.subscribePoint();
-    const spyMethod = spyOn(controller.model, 'updateValue');
+    const spyMethod = spyOn(model, 'updateValue');
 
-    controller.view.scale?.points[0].clickPoint();
-    controller.view.scale?.points[12].clickPoint();
+    view.scale?.points[0].clickPoint();
+    view.scale?.points[12].clickPoint();
 
     expect(spyMethod).toHaveBeenCalled();
   });
@@ -84,11 +111,10 @@ describe('Класс Controller.', () => {
       $elem.rangeSlider('config', {
         textField: ['.text-field', '.text-field2'],
         sliderType: 'range',
-        isInvert :  true,
+        isInvert:  true,
         isVertical: true,
-        isScale :  true,
-        isLabel :  true,
-        isLabelOnClick :  true,
+        isScale:  true,
+        isLabel:  true,
       });
 
     });
@@ -105,9 +131,9 @@ describe('Класс Controller.', () => {
       $elem.rangeSlider('config', {
         textField: ['.text-field', '.text-field2'],
         sliderType: 'progress',
-        isInvert :  false,
-        isVertical :  false,
-        isScale :  true,
+        isInvert:  false,
+        isVertical:  false,
+        isScale:  true,
       });
 
     });

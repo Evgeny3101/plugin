@@ -17,7 +17,7 @@ describe('Класс Point.', () => {
       isScale :  true,
     });
 
-    point = $elem.rangeSlider.sliders[0].view.scale.points[0];
+    [point] = $elem.rangeSlider.sliders[0].view.scale.points;
   });
 
   it('Метод "clickPoint". Сообщает значение шкалы.', () => {

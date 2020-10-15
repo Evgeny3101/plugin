@@ -1,5 +1,4 @@
 import '../../../src/jquery-wrapper';
-import Config from '../../../src/components/interface/IConfig';
 import Button from '../../../src/components/view/button/button';
 
 setFixtures(
@@ -9,14 +8,11 @@ setFixtures(
 const $elem = $('.js-plugin').rangeSlider();
 
 let button: Button;
-let config: Config;
-
 
 const tests = () => {
   beforeEach(() => {
 
-    button = $elem.rangeSlider.sliders[0].view.button[0];
-    config = $elem.rangeSlider.sliders[0].config;
+    [button] = $elem.rangeSlider.sliders[0].view.button;
 
     const mousedown = new MouseEvent('mousedown');
     button.DOM.dispatchEvent(mousedown);
@@ -33,7 +29,7 @@ const tests = () => {
     expect(spyEvent).toHaveBeenTriggered();
   });
 
-  it('Событие "mouseup". Вызвано. Проверка сообщения.', () => {
+  it('Событие "mouseup". Вызвано. Проверка уведомления.', () => {
     const spyEvent = spyOnEvent(document, 'mouseup');
     const spyObservable = spyOn(button.Observable, 'notify');
 

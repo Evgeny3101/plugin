@@ -19,7 +19,7 @@ describe('Обертка JQuery.', () => {
     $input1 = $('.text-field');
     $input2 = $('.text-field2');
 
-    $elem.rangeSlider({
+    $elem.rangeSlider('config', {
       sliderValues: [10, 20],
       sliderType: 'range',
       textField: ['.text-field', '.text-field2'],
@@ -38,6 +38,19 @@ describe('Обертка JQuery.', () => {
   it('Плагин инициализирован.', () => {
     expect($input1).toHaveValue('10');
     expect($input2).toHaveValue('20');
+  });
+
+  it('Вызывается на конкретном слайдере.', () => {
+    setFixtures(
+      `<div class="js-plugin"></div>
+      <div class="js-plugin"></div>`
+    );
+
+    const sliders = document.querySelectorAll('.js-plugin');
+    const $slider1 = $(sliders[0]).rangeSlider();
+    const $slider2 = $(sliders[1]).rangeSlider();
+
+    expect($slider1).not.toEqual($slider2);
   });
 
   it('Метод "setListeners". Определен.', () => {

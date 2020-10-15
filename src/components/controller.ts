@@ -10,6 +10,13 @@ class Controller {
   constructor(public mainDOM: Element, public config: IConfig) {
     this.setNewConfig(this.config);
     this.init();
+  }
+
+  init() {
+    this.model = new Model(this.config);
+    this.config.sliderValues = this.model.value; // после проверки лимитов и шага в Model
+
+    this.view = new View(this.mainDOM, this.config);
 
     ///  notify Model  ///
     this.subscribeToChangeValue();
@@ -20,19 +27,17 @@ class Controller {
     this.subscribePoint();
   }
 
-  init() {
-    this.model = new Model(this.config);
-    // after checking the limits and step
-    this.config.sliderValues = this.model.value;
-
-    this.view = new View(this.mainDOM, this.config);
-  }
-
   setNewConfig(options: any) {
     const newConfig = options;
     const { sliderType, value1slider, value2slider } = options;
-    if (typeof value1slider === 'number') newConfig.sliderValues[0] = [value1slider];
-    if (typeof value2slider === 'number') newConfig.sliderValues[1] = [value2slider];
+    if (typeof value1slider === 'number') {
+      newConfig.sliderValues[0] = [value1slider];
+      delete newConfig.value1slider;
+    }
+    if (typeof value2slider === 'number') {
+      newConfig.sliderValues[1] = [value2slider];
+      delete newConfig.value2slider;
+    }
     if (sliderType) {
       newConfig.isSingle = sliderType === 'single';
       newConfig.isRange = sliderType === 'range';
@@ -44,8 +49,7 @@ class Controller {
     this.config = newConfig;
   }
 
-  // methods model.updateValue
-  // when the model.value changes
+  // уведомляет метод Model.setNewValue
   private subscribeToChangeValue() {
     this.model.Observable.subscribe((options: { value: number[] }) => {
       const { value } = options;
@@ -61,8 +65,7 @@ class Controller {
     });
   }
 
-  // method button[].move
-  // buttons move handler
+  // уведомляет метод Button.move
   private subscribeButtons() {
     this.view.button.forEach((elem) => {
       elem.Observable.subscribe((options: { isMouseDown: boolean }) => {
@@ -86,8 +89,7 @@ class Controller {
     });
   }
 
-  // method textField[].toInputValues
-  // entering values into a text field
+  // уведомляет метод textField.getValue
   private subscribeTextField() {
     if (this.view.textField)
       this.view.textField.forEach((elem) => {
@@ -98,23 +100,22 @@ class Controller {
       });
   }
 
-  // method scale.pressScaleBar
-  // handler for click on points
+  // уведомляет метод Point.clickPoint
   private subscribePoint() {
     if (this.view.scale)
       this.view.scale.points.forEach((point) => {
         point.Observable.subscribe((options: { value: number }) => {
-          // looking for the nearest button
           const { value } = options;
           const { isRange } = this.config;
 
           let indexOfRequiredButton;
 
+          // начальное количество кнопок не определено
           if (!isRange) {
             indexOfRequiredButton = 0;
           } else {
-            // initial number of buttons is undefined
-            // get the current coordinates of the buttons
+            // ищем ближайшую кнопку
+            // получаем текущие координаты кнопок
             const btn1 = this.view.button[0].coord;
             const btn2 = this.view.button[1].coord;
 
