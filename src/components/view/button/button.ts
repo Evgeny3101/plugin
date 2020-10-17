@@ -9,7 +9,7 @@ class Button {
   handleButtonMousedown: EventListener;
 
   constructor(
-    public parent: Element,
+    parent: Element,
     public pos: IPositionVars,
     public index: number,
     public isInvert: boolean

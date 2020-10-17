@@ -1,11 +1,10 @@
 {
-  "name": "plugin-template",
+  "name": "jquery-range-slider-plugin",
   "version": "1.0.0",
-  "description": "RangeSlider",
+  "description": "Customizable range slider.",
   "scripts": {
     "lint": "eslint ./src/**/*.ts",
     "lint:fix": "eslint ./src/**/*.ts --fix",
-    "dev": "cross-env NODE_ENV=development   webpack --mode development",
     "build": "cross-env NODE_ENV=production  webpack --mode production",
     "start": "cross-env NODE_ENV=start       webpack-dev-server --mode development --open",
     "test": "cross-env NODE_ENV=test         karma start karma.conf.js"

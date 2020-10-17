@@ -7,7 +7,7 @@ import IConfig from './components/interface/IConfig';
   const methods: { [key: string]: Function } = {
     init(options: {}) {
       return this.each((index: number, elem: Element) => {
-        const config: IConfig = $.extend({}, $.fn.rangeSlider.defaults, options);
+        const config: IConfig = $.extend({}, $.fn.rangeSlider.config, options);
         const newSlider = new Controller(elem, config);
 
         $.fn.rangeSlider.sliders.push(newSlider);
@@ -16,7 +16,7 @@ import IConfig from './components/interface/IConfig';
 
     delete() {
       return this.each((index: number, elem: Element) => {
-        $.fn.rangeSlider.sliders.forEach((slider, i) => {
+        $.fn.rangeSlider.sliders.forEach((slider: Controller, i: number) => {
           if (slider.mainDOM === elem) {
             slider.view.removeListeners();
             $(slider.mainDOM).empty();
@@ -29,12 +29,11 @@ import IConfig from './components/interface/IConfig';
 
     config(options: {}) {
       return this.each((index: number, elem: Element) => {
-        $.fn.rangeSlider.sliders.forEach((slider) => {
+        $.fn.rangeSlider.sliders.forEach((slider: Controller) => {
           if (slider.mainDOM === elem) {
             $(slider.mainDOM).empty();
             const config = $.extend({}, slider.config, options);
-            slider.setNewConfig(config);
-            return slider.init();
+            return slider.setNewConfig(config);
           }
           return false;
         });
@@ -43,7 +42,7 @@ import IConfig from './components/interface/IConfig';
 
     setListeners() {
       return this.each((index: number, elem: Element) => {
-        $.fn.rangeSlider.sliders.forEach((slider) => {
+        $.fn.rangeSlider.sliders.forEach((slider: Controller) => {
           if (slider.mainDOM === elem) {
             slider.view.setListeners();
             return false;
@@ -55,7 +54,7 @@ import IConfig from './components/interface/IConfig';
 
     removeListeners() {
       return this.each((index: number, elem: Element) => {
-        $.fn.rangeSlider.sliders.forEach((slider) => {
+        $.fn.rangeSlider.sliders.forEach((slider: Controller) => {
           if (slider.mainDOM === elem) {
             slider.view.removeListeners();
             return false;
@@ -78,7 +77,7 @@ import IConfig from './components/interface/IConfig';
   };
 
   // Настройки по умолчанию
-  $.fn.rangeSlider.defaults = {
+  $.fn.rangeSlider.config = {
     sliderType: 'single',
 
     sliderValues: [-25, 25],

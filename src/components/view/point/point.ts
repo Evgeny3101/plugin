@@ -5,8 +5,8 @@ class Point {
   Observable = new Observable();
   value!: number;
   coord!: number;
-  lineDOM: HTMLElement;
   DOM: HTMLElement;
+  lineDOM: HTMLElement;
   numberDOM?: HTMLElement;
   handlePointClick: EventListener;
 

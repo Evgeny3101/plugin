@@ -85,8 +85,8 @@ describe('Обертка JQuery.', () => {
 
   it('Метод "config". Изменяет конфигурацию.', () => {
     $elem.rangeSlider('config', {
-      value1slider: -20,
-      value2slider: 20,
+      value1Slider: -20,
+      value2Slider: 20,
     });
 
     expect($input1).toHaveValue('-20');

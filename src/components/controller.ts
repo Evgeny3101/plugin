@@ -9,12 +9,11 @@ class Controller {
 
   constructor(public mainDOM: Element, public config: IConfig) {
     this.setNewConfig(this.config);
-    this.init();
   }
 
   init() {
     this.model = new Model(this.config);
-    this.config.sliderValues = this.model.value; // после проверки лимитов и шага в Model
+    this.config.sliderValues = this.model.config.sliderValues; // после проверки лимитов и шага в Model
 
     this.view = new View(this.mainDOM, this.config);
 
@@ -29,14 +28,15 @@ class Controller {
 
   setNewConfig(options: any) {
     const newConfig = options;
-    const { sliderType, value1slider, value2slider } = options;
-    if (typeof value1slider === 'number') {
-      newConfig.sliderValues[0] = [value1slider];
-      delete newConfig.value1slider;
+    const { sliderType, value1Slider, value2Slider } = options;
+
+    if (typeof value1Slider === 'number') {
+      newConfig.sliderValues[0] = value1Slider;
+      delete newConfig.value1Slider;
     }
-    if (typeof value2slider === 'number') {
-      newConfig.sliderValues[1] = [value2slider];
-      delete newConfig.value2slider;
+    if (typeof value2Slider === 'number') {
+      newConfig.sliderValues[1] = value2Slider;
+      delete newConfig.value2Slider;
     }
     if (sliderType) {
       newConfig.isSingle = sliderType === 'single';
@@ -47,6 +47,7 @@ class Controller {
     delete newConfig.sliderType;
 
     this.config = newConfig;
+    this.init();
   }
 
   // уведомляет метод Model.setNewValue

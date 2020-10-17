@@ -7,8 +7,8 @@ let config: IConfig;
 
 describe('Класс Model.', () => {
   beforeEach(() => {
-    model = new Model($.fn.rangeSlider.defaults);
-    config = model.defaultConfig;
+    model = new Model($.fn.rangeSlider.config);
+    config = model.config;
   });
 
   it('Метод "checkLimit". Проверяет лимиты и возвращает значение. Должно вернуть [-100] и [100].', () => {

@@ -1,10 +1,8 @@
 import { createHTML } from '../../../ts/mixins';
-import Observable from '../../../ts/observable';
 
 class Label {
-  Observable = new Observable();
-  input!: HTMLInputElement; // container for value
   DOM!: HTMLInputElement;   // wrapper for label
+  input!: HTMLInputElement; // container for value
   coord!: number;
   handleButtonMousedown!: EventListener;
   handleButtonMouseup!: EventListener;

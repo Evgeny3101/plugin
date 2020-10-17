@@ -4,18 +4,16 @@ import IConfig from './interface/IConfig';
 
 class Model {
   Observable: Observable = new Observable();
-  value!: number[];
 
-  constructor(public defaultConfig: IConfig) {
-    const { sliderValues } = this.defaultConfig;
+  constructor(public config: IConfig) {
+    const { sliderValues } = this.config;
 
     this.setNewValues(sliderValues);
   } // constructor
 
-  // convert coords into value
   convertCoords(options: { buttonsCoords: number[]; stepInCoord: number }) {
     const { buttonsCoords, stepInCoord } = options;
-    const { minValue } = this.defaultConfig;
+    const { minValue } = this.config;
 
     const newValues: number[] = buttonsCoords.map(
       (coord) => coord / stepInCoord + minValue
@@ -24,15 +22,18 @@ class Model {
     this.setNewValues(newValues);
   }
 
-  // update value by id
+  // Обновит значение слайдера по id
   updateValue(number: number, index: number) {
-    this.value[index] = number;
-    this.setNewValues(this.value);
+    const values = this.config.sliderValues;
+    values[index] = number;
+
+    this.setNewValues(values);
   }
 
-  // sets new values and processes the entered values by limits and step
+  // Устанавливает новые значения
   private setNewValues(values: number[]) {
-    const { isRange } = this.defaultConfig;
+
+    const { isRange } = this.config;
 
     let newValues: number[] = [];
     if (isRange) {
@@ -43,16 +44,16 @@ class Model {
     newValues = this.checkLimit(newValues);
     newValues = this.putInStep(newValues);
 
-    this.value = newValues;
+    this.config.sliderValues = newValues;
 
     this.Observable.notify({
-      value: this.value,
+      value: newValues,
     });
   }
 
-  // checks by limits
+  // Проверяет значения по лимитам
   private checkLimit(numbersArr: number[]): number[] {
-    const { minValue, maxValue } = this.defaultConfig;
+    const { minValue, maxValue } = this.config;
 
     const result: number[] = [];
     numbersArr.forEach((number) => {
@@ -63,16 +64,16 @@ class Model {
     return result;
   }
 
-  // put on the nearest step and round to multiple
+  // Округляет значение по шагу
   private putInStep(numbersArr: number[]): number[] {
-    const { step } = this.defaultConfig;
+    const { step } = this.config;
+    const roundValuesArr: number[] = [];
 
-    const result: number[] = [];
-    numbersArr.forEach((number) => {
-      const roundValue = roundToMultiple(number, step);
-      result.push(roundValue);
+    numbersArr.forEach((number, i) => {
+      roundValuesArr[i] = roundToMultiple(number, step);
     });
-    return result;
+
+    return roundValuesArr;
   }
 } // Model
 

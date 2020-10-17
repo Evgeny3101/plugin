@@ -18,7 +18,7 @@ class TextField {
 
   // получает значения из текстового поля
   getValue() {
-    const newValue = [Number(this.DOM.value) || 0];
+    const newValue = Number(this.DOM.value) || 0;
 
     this.Observable.notify({
       value: newValue,

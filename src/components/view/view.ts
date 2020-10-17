@@ -20,19 +20,19 @@ class View {
   rangeSize!: number;
   handleWindowResize!: EventListener;
 
-  constructor(public parent: Element, public defaultConfig: IConfig) {
+  constructor(public parent: Element, public config: IConfig) {
     this.setPositionVariables();
     this.installComponents();
     this.setElementsParameters();
-    this.setValues();
-    this.convertValues();
+    this.setValues(this.config.sliderValues);
+    this.convertValues(this.config.sliderValues);
     this.setCoords();
     this.toPositionElements();
     this.setListeners();
   }
 
-  setValues(sliderValues: number[] = this.defaultConfig.sliderValues) {
-    this.defaultConfig.sliderValues = sliderValues;
+  setValues(sliderValues: number[]) {
+    this.config.sliderValues = sliderValues;
 
     if (this.textField) {
       this.textField.forEach((element, i) => {
@@ -47,8 +47,8 @@ class View {
     }
   }
 
-  convertValues(sliderValues: number[] = this.defaultConfig.sliderValues) {
-    const { minValue, isRange } = this.defaultConfig;
+  convertValues(sliderValues: number[]) {
+    const { minValue, isRange } = this.config;
 
     if (isRange) {
       sliderValues.forEach((num, i) => {
@@ -62,7 +62,7 @@ class View {
   }
 
   setCoords() {
-    const { isLabel, isInvert } = this.defaultConfig;
+    const { isLabel, isInvert } = this.config;
     const buttonsCoords = this.button.map((elem) => elem.coord);
     const buttonsSizes = this.button.map((elem) => elem.DOM[this.pos.offsetSize]);
 
@@ -96,7 +96,7 @@ class View {
   }
 
   setListeners() {
-    const { isLabel, isLabelOnClick } = this.defaultConfig;
+    const { isLabel, isLabelOnClick } = this.config;
 
     this.handleWindowResize = this.resizeSlider.bind(this);
     window.addEventListener('resize', this.handleWindowResize);
@@ -127,7 +127,7 @@ class View {
   }
 
   removeListeners() {
-    const { isLabel, isLabelOnClick } = this.defaultConfig;
+    const { isLabel, isLabelOnClick } = this.config;
 
     window.removeEventListener('resize', this.handleWindowResize);
 
@@ -158,7 +158,7 @@ class View {
 
   // устанавливает переменные для вертикального или горизонтального позиционирования
   private setPositionVariables() {
-    const { isVertical, isInvert } = this.defaultConfig;
+    const { isVertical, isInvert } = this.config;
 
     if (isVertical) {
       this.pos = {
@@ -192,7 +192,7 @@ class View {
       isLabelOnClick,
       isScale,
       textField,
-    } = this.defaultConfig;
+    } = this.config;
 
     this.range = new Range();
     this.range.setClassPosition(isVertical);
@@ -220,7 +220,7 @@ class View {
 
     // создание шкалы
     if (isScale) {
-      this.scale = new Scale(this.range.DOM, this.defaultConfig);
+      this.scale = new Scale(this.range.DOM, this.config);
     }
 
     // создает класс textField и ищет поле
@@ -237,7 +237,7 @@ class View {
   // устанавливает значения для this.rangeSize и this.step будет использоваться методом 'setValues'
   // будет использоваться в методах setElementsParameters и handleWindowResize
   private updateRangeSize() {
-    const { minValue, maxValue } = this.defaultConfig;
+    const { minValue, maxValue } = this.config;
 
     const buttonSize = this.button[0].DOM[this.pos.offsetSize];
     const rangeSize = this.range.DOM[this.pos.clientSize];
@@ -266,8 +266,8 @@ class View {
   // обновляет размер диапазона и устанавливаем элементы в позицию
   private resizeSlider() {
     this.updateRangeSize();
-    this.setValues();
-    this.convertValues();
+    this.setValues(this.config.sliderValues);
+    this.convertValues(this.config.sliderValues);
     this.setCoords();
     this.toPositionElements();
   }

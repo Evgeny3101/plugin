@@ -2,11 +2,19 @@ import '../jquery-wrapper';
 
 // set the slider settings according to the specified options
 function setOptionsTuning(tuningDOM, sliderConfig) {
-  const defaultConfig = $.fn.rangeSlider.defaults;
+  const defaultConfig = $.fn.rangeSlider.config;
   const names = Object.keys(defaultConfig);
   const config = $.extend({}, defaultConfig, sliderConfig);
 
   names.forEach((name) => {
+
+    if (name === 'sliderValues') {
+      const value1 = tuningDOM.querySelector(`input[name=${'value1Slider'}]`);
+      const value2 = tuningDOM.querySelector(`input[name=${'value2Slider'}]`);
+      if (value1)value1.value = config.sliderValues[0] || 0;
+      if (value2)value2.value = config.sliderValues[1] || 0;
+    }
+
     const inputs = tuningDOM.querySelectorAll(`input[name=${name}]`);
     inputs.forEach((input) => {
       const elem = input;
@@ -65,8 +73,8 @@ sliderConfigArr[0] = {
   textField: ['.text-field1', '.text-field2'],
   sliderType: 'range',
 
-  value1slider: -22,
-  value2slider: 43,
+  value1Slider: -22,
+  value2Slider: 43,
 
   minValue: -100,
   step: 10,
@@ -94,7 +102,7 @@ sliderConfigArr[1] = {
 sliderArr[2] = $('.rangeSlider3');
 sliderConfigArr[2] = {
   textField: ['.text-field5', '.text-field6'],
-  sliderType: 'range',
+  sliderType: 'progress',
   isVertical: true,
 
   step: 0.001,
@@ -117,15 +125,18 @@ const $sliders4 = $('.rangeSlider4');
 const tuningId4Arr = [tuningArr[3], tuningArr[4]];
 const sliders4Config = [];
 sliders4Config[0] = {
+  sliderValues: [5, 25],
   textField: ['.text-field7', '.text-field8'],
-  type: 'range',
+  sliderType: 'range',
   isScale: true,
   isLabel: true,
 };
 
 sliders4Config[1] = {
+  value1Slider:  25,
+  value2Slider:  65,
   textField: ['.text-field9', '.text-field10'],
-  type: 'range',
+  sliderType: 'range',
   isScale: true,
   isLabel: true,
 };
@@ -134,5 +145,5 @@ sliders4Config[1] = {
 $.each($sliders4, (i, elem) => {
   $(elem).rangeSlider(sliders4Config[i]);
   setListeners(tuningId4Arr[i], elem);
-  setOptionsTuning(elem, sliders4Config[i]);
+  setOptionsTuning(tuningId4Arr[i], sliders4Config[i]);
 });
