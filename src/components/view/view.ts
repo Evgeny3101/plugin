@@ -72,13 +72,9 @@ class View {
     // sets coords for label
     if (isLabel) {
       this.label.forEach((element, i) => {
-        let coords: number;
-
         if (isInvert) {
-          coords = buttonsCoords[i] + buttonsSizes[i];
-        } else coords = buttonsCoords[i];
-
-        element.setCoord(coords);
+          element.setCoord(buttonsCoords[i] + buttonsSizes[i]);
+        } else element.setCoord(buttonsCoords[i]);
       });
     }
   }
@@ -202,7 +198,7 @@ class View {
 
     const buttonArrayLength = isRange ? 2 : 1;
     for (let i = 0; i < buttonArrayLength; i += 1) {
-      this.button[i] = new Button(this.range.DOM, this.pos, i, isInvert);
+      this.button[i] = new Button(this.range.DOM, this.pos, isInvert);
     }
 
     // создание интервала между кнопок

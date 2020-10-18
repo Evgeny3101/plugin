@@ -21,10 +21,12 @@ class Interval {
   }
 
   setCoords(coords: number[]) {
+    const buttonsCoord = [ ...coords];
+
     if (this.isProgress) {
-      this.buttonsCoord = [0, coords[0]];
+      this.buttonsCoord = [0, buttonsCoord[0]];
     } else {
-      this.buttonsCoord = coords;
+      this.buttonsCoord = buttonsCoord;
       this.checkOverrun();
     }
   }

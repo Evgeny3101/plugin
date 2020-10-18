@@ -1,36 +1,34 @@
 # Jquery range slider plugin.
 
+Имеет несколько типов слайдера с 1-2 бегунками и возможностью менять значения.
+
 [Примеры](https://...)
 
 [Репозиторий](https://github.com/Evgeny3101/plugin.git)
-
-## Описание
-
-Несколько типов слайдера с 1-2 бегунками и возможностью менять значения.
 
 ## API
 
 ```js
 // установка
-\$('.my-slider-wrapper2').rangeSlider({
+\$('.my-slider-wrapper').rangeSlider({
   sliderType: 'range',
   sliderValues: [-100, 100],
   step: 0.1,
 });
 
 // установка конфигурации
-\$('.my-slider-wrapper1').rangeSlider('config', {
+\$('.my-slider-wrapper').rangeSlider('config', {
   sliderType: 'progress',
   value1Slider: 0,
   step: 1,
 });
 
 // удаление слайдера
-\$('.my-slider-wrapper1').rangeSlider('delete');
+\$('.my-slider-wrapper').rangeSlider('delete');
 
 // включить/отключить события
-\$('.my-slider-wrapper1').rangeSlider('setListeners');
-\$('.my-slider-wrapper1').rangeSlider('removeListeners');
+\$('.my-slider-wrapper').rangeSlider('setListeners');
+\$('.my-slider-wrapper').rangeSlider('removeListeners');
 ```
 
 ## Параметры и настройки по умолчанию
@@ -94,12 +92,16 @@ npm run build
 
 Слой View, содержит логику связанную с отображением и обеспечивает взаимодействие пользователя с приложением.
 
-![Plugin structure](uml/slider.svg)
-
-![Class "View" structure](uml/viewComponents.svg)
-
-Слой компоненты слоя View при деиствиях пользователя передают изменения на Controller.
+Компоненты слоя View при действиях пользователя передают изменения на Controller.
 
 Controller передает(при необходимости собирает) значения и вызывает необходимые методы в Model и/или View.
 
 После обработки значений в Model, изменения передаются в Controller который обновит View.
+
+#### Структура плагина
+
+![Plugin structure](uml/slider.svg)
+
+#### Структура класса View
+
+![Class "View" structure](uml/viewComponents.svg)

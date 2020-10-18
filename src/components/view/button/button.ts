@@ -11,7 +11,6 @@ class Button {
   constructor(
     parent: Element,
     public pos: IPositionVars,
-    public index: number,
     public isInvert: boolean
   ) {
     this.DOM = createHTML('<div class="js-slider-button"></div>', parent);

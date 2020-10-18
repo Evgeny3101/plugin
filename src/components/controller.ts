@@ -68,14 +68,25 @@ class Controller {
 
   // уведомляет метод Button.move
   private subscribeButtons() {
-    this.view.button.forEach((elem) => {
+    this.view.button.forEach((elem, index) => {
       elem.Observable.subscribe((options: { isMouseDown: boolean }) => {
         const { isMouseDown } = options;
-        const { step } = this.view;
+        const { step, label } = this.view;
+        const isElementsLiftUp = this.config.isRange && this.config.isLabel;
 
         const buttonsCoords = this.view.button.map((btn) => btn.coord);
 
         this.isMouseDown = isMouseDown;
+
+        if (isElementsLiftUp) {
+          if (isMouseDown) {
+            elem.DOM.classList.add('js-slider-button_lift-up');
+            label[index].DOM.classList.add('js-button-label_lift-up');
+          } else {
+            elem.DOM.classList.remove('js-slider-button_lift-up');
+            label[index].DOM.classList.remove('js-button-label_lift-up');
+          }
+        }
 
         if (isMouseDown) {
           this.view.setCoords();
@@ -90,7 +101,7 @@ class Controller {
     });
   }
 
-  // уведомляет метод textField.getValue
+  // уведомляет метод TextField.getValue
   private subscribeTextField() {
     if (this.view.textField)
       this.view.textField.forEach((elem) => {
