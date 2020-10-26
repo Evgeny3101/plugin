@@ -1,5 +1,5 @@
 const path = require('path');
-const webpack = require('webpack');
+// const webpack = require('webpack');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -12,11 +12,13 @@ module.exports = {
   context: path.resolve(__dirname, 'src'),
 
   entry: {
-    main: './index.js',
+    rangeSlider: './rangeSlider.js',
+    page: './page.js',
   },
 
   output: {
-    filename: '[name].[hash].js',
+    filename: '[name].js',
+    // filename: '[name].[hash].js',
     path: path.resolve(__dirname, 'dist'),
   },
 
@@ -129,21 +131,22 @@ module.exports = {
 
     // извлекает css в отдельный файл
     new MiniCssExtractPlugin({
-      filename: '[name].[hash].css',
+      filename: '[name].css',
+      // filename: '[name].[hash].css',
     }),
 
-    new webpack.ProvidePlugin({
-      $: 'jquery',
-      jQuery: 'jquery',
-      'window.jQuery': 'jquery',
-    }),
+    // new webpack.ProvidePlugin({
+    //   $: 'jquery',
+    //   jQuery: 'jquery',
+    //   'window.jQuery': 'jquery',
+    // }),
   ],
 
-  optimization: {
-    splitChunks: {
-      chunks: 'all',
-    },
-  },
+  // optimization: {
+  //   splitChunks: {
+  //     chunks: 'all',
+  //   },
+  // },
 
   devServer: {
     port: 4420,

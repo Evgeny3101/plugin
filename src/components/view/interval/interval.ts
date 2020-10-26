@@ -9,7 +9,7 @@ class Interval {
   constructor(parent: Element, public pos: IPositionVars, public isProgress: boolean) {
     this.DOM = createHTML(
       `
-      <div class="js-range-slider__container-interval">
+      <div class="js-range-slider__interval">
         <div class="js-slider-interval"></div>
       </div>`,
       parent

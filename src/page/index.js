@@ -1,5 +1,3 @@
-import '../jquery-wrapper';
-
 // set the slider settings according to the specified options
 function setOptionsTuning(tuningDOM, sliderConfig) {
   const defaultConfig = $.fn.rangeSlider.config;

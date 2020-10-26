@@ -56,7 +56,7 @@ class Controller {
       const { value } = options;
       const { isMouseDown } = this;
 
-      if (isMouseDown === false) {
+      if (!isMouseDown) {
         this.view.convertValues(value);
         this.view.setCoords();
         this.view.toPositionElements();
@@ -72,19 +72,19 @@ class Controller {
       elem.Observable.subscribe((options: { isMouseDown: boolean }) => {
         const { isMouseDown } = options;
         const { step, label } = this.view;
-        const isElementsLiftUp = this.config.isRange && this.config.isLabel;
+        const { isRange, isLabel } = this.config;
 
         const buttonsCoords = this.view.button.map((btn) => btn.coord);
 
         this.isMouseDown = isMouseDown;
 
-        if (isElementsLiftUp) {
+        if (isRange) {
           if (isMouseDown) {
-            elem.DOM.classList.add('js-slider-button_lift-up');
-            label[index].DOM.classList.add('js-button-label_lift-up');
+            elem.DOM.classList.add('js-range-slider__button_lift-up');
+            if (isLabel)label[index].DOM.classList.add('js-button-label_lift-up');
           } else {
-            elem.DOM.classList.remove('js-slider-button_lift-up');
-            label[index].DOM.classList.remove('js-button-label_lift-up');
+            elem.DOM.classList.remove('js-range-slider__button_lift-up');
+            if (isLabel) label[index].DOM.classList.remove('js-button-label_lift-up');
           }
         }
 

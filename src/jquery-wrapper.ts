@@ -81,9 +81,9 @@ import IConfig from './components/interface/IConfig';
     sliderType: 'single',
 
     sliderValues: [-25, 25],
-    minValue: -100,
+    minValue: 0,
     maxValue: 100,
-    step: 0.1,
+    step: 1,
     textField: [],
 
     isVertical: false,

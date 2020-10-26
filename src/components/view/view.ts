@@ -92,7 +92,7 @@ class View {
   }
 
   setListeners() {
-    const { isLabel, isLabelOnClick } = this.config;
+    const isLabelOnClick = this.config.isLabel && this.config.isLabelOnClick;
 
     this.handleWindowResize = this.resizeSlider.bind(this);
     window.addEventListener('resize', this.handleWindowResize);
@@ -113,7 +113,7 @@ class View {
       });
     }
 
-    if (isLabel && isLabelOnClick) {
+    if (isLabelOnClick) {
       this.label.forEach((elem, i) => {
         elem.hide();
         this.button[i].DOM.addEventListener('mousedown', elem.handleButtonMousedown);
@@ -123,7 +123,7 @@ class View {
   }
 
   removeListeners() {
-    const { isLabel, isLabelOnClick } = this.config;
+    const { isLabelOnClick } = this.config;
 
     window.removeEventListener('resize', this.handleWindowResize);
 
@@ -143,7 +143,7 @@ class View {
       });
     }
 
-    if (isLabel && isLabelOnClick) {
+    if (isLabelOnClick) {
       this.label.forEach((elem, i) => {
         elem.show();
         this.button[i].DOM.removeEventListener('mousedown', elem.handleButtonMousedown);
@@ -189,6 +189,7 @@ class View {
       isScale,
       textField,
     } = this.config;
+    const isInterval = isRange || isProgress;
 
     this.range = new Range();
     this.range.setClassPosition(isVertical);
@@ -202,7 +203,7 @@ class View {
     }
 
     // создание интервала между кнопок
-    if (isRange || isProgress) {
+    if (isInterval) {
       this.interval = new Interval(this.range.DOM, this.pos, isProgress);
     }
 

@@ -42,9 +42,9 @@
   value1Slider: -23, // если параметр указан значение sliderValue будет переписано
   value2Slider: 23,  // если параметр указан значение sliderValue будет переписано
 
-  minValue: -100,
+  minValue: 0,
   maxValue: 100,
-  step: 0.1,
+  step: 1,
 
   textField: [], // для ввода/вывода значений. Строкой указывать идентификатор на input
 

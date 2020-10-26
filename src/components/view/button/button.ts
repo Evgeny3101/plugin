@@ -13,7 +13,7 @@ class Button {
     public pos: IPositionVars,
     public isInvert: boolean
   ) {
-    this.DOM = createHTML('<div class="js-slider-button"></div>', parent);
+    this.DOM = createHTML('<div class="js-range-slider__button"></div>', parent);
     this.handleButtonMousedown = this.move.bind(this);
   } // constructor
 
