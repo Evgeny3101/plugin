@@ -81,7 +81,7 @@ class Controller {
         if (isRange) {
           if (isMouseDown) {
             elem.DOM.classList.add('js-range-slider__button_lift-up');
-            if (isLabel)label[index].DOM.classList.add('js-button-label_lift-up');
+            if (isLabel) label[index].DOM.classList.add('js-button-label_lift-up');
           } else {
             elem.DOM.classList.remove('js-range-slider__button_lift-up');
             if (isLabel) label[index].DOM.classList.remove('js-button-label_lift-up');

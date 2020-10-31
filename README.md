@@ -2,7 +2,7 @@
 
 Имеет несколько типов слайдера с 1-2 бегунками и возможностью менять значения.
 
-[Примеры](https://...)
+[Примеры(не установлено)](https://...)
 
 [Репозиторий](https://github.com/Evgeny3101/plugin.git)
 
@@ -10,11 +10,7 @@
 
 ```js
 // установка
-\$('.my-slider-wrapper').rangeSlider({
-  sliderType: 'range',
-  sliderValues: [-100, 100],
-  step: 0.1,
-});
+\$('.my-slider-wrapper').rangeSlider();
 
 // установка конфигурации
 \$('.my-slider-wrapper').rangeSlider('config', {
@@ -70,13 +66,25 @@ git clone https://github.com/Evgeny3101/plugin.git
 
 ## Запуск разработки
 
+Установка
+
+```
+npm i
+```
+
+Запуск веб сервера
+
 ```
 npm start
 ```
 
+Запуск тестов
+
 ```
 npm test
 ```
+
+Запуск сборки
 
 ```
 npm run build
