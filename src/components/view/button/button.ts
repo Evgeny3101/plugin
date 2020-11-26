@@ -22,10 +22,10 @@ class Button {
     const { isInvert } = this;
 
     const btnDOM = evt.target;
-    const parent = evt.path[1];
+    const parentDOM = btnDOM.parentElement;
     const basePositionMouse = evt[page];
     const rangeShift = btnDOM[offsetFrom];
-    const rangeSize = parent[clientSize] - btnDOM[offsetSize];
+    const rangeSize = parentDOM[clientSize] - btnDOM[offsetSize];
 
     document.onmousemove = (event: MouseEvent) => {
       let newCoord;

@@ -17,7 +17,7 @@ function setOptionsTuning(tuningDOM, sliderConfig) {
     inputs.forEach((input) => {
       const elem = input;
 
-      if (elem.type === 'number') {
+      if (elem.type === 'text') {
         elem.value = config[name];
         return;
       }
@@ -51,7 +51,7 @@ function handleButtonClick(slider, event) {
 
 function setListeners(tuningDOM, slider) {
   const inputsRadio = tuningDOM.querySelectorAll('input[type="radio"]');
-  const inputsText = tuningDOM.querySelectorAll('input[type="number"]');
+  const inputsText = tuningDOM.querySelectorAll('input[type="text"]');
 
   inputsRadio.forEach((elem) =>
     elem.addEventListener('click', handleButtonClick.bind(tuningDOM, slider))
@@ -89,6 +89,7 @@ sliderArr[1] = $('.rangeSlider2');
 sliderConfigArr[1] = {
   textField: ['.text-field3', '.text-field4'],
   sliderValues: [-22.3, 33.2],
+  step: 0.1,
 
   isRange: true,
   isScale: true,
@@ -99,12 +100,12 @@ sliderConfigArr[1] = {
 // slider 3
 sliderArr[2] = $('.rangeSlider3');
 sliderConfigArr[2] = {
+  value1Slider: 22,
   textField: ['.text-field5', '.text-field6'],
   sliderType: 'progress',
-  isVertical: true,
-
   step: 0.001,
 
+  isVertical: true,
   isScale: true,
   points: 10,
   numberForEach: 3,
