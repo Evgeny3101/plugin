@@ -2,7 +2,7 @@ import Controller from './components/controller';
 import IConfig from './components/interface/IConfig';
 
 ((jQuery) => {
-  const $ = jQuery;
+  const $: any = jQuery;
 
   const methods: { [key: string]: Function } = {
     init(options: {}) {

@@ -5,7 +5,7 @@ import Button from './button/button';
 import Interval from './interval/interval';
 import Label from './label/label';
 import Scale from './scale/scale';
-import TextField from './textField';
+import TextField from './text-field';
 
 class View {
   range!: Range;

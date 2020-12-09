@@ -7,13 +7,13 @@ mixin tuning()
 
         .parameter__container
           label.parameter__options
-            input(type="radio" name="sliderType" value="single" checked).parameter__input
+            input(type='radio' name='sliderType' value='single' checked).parameter__input
             |single
           label.parameter__options
-            input(type="radio" name="sliderType" value="range").parameter__input
+            input(type='radio' name='sliderType' value='range').parameter__input
             |range
           label.parameter__options
-            input(type="radio" name="sliderType" value="progress").parameter__input
+            input(type='radio' name='sliderType' value='progress').parameter__input
             |progress
 
     hr
@@ -24,11 +24,11 @@ mixin tuning()
 
         .parameter__container
           label.parameter__options
-            input(type="radio" name="isVertical" value="true" checked).parameter__input
+            input(type='radio' name='isVertical' value='true' checked).parameter__input
             |true
 
           label.parameter__options
-            input(type="radio" name="isVertical" value="false").parameter__input
+            input(type='radio' name='isVertical' value='false').parameter__input
             |false
 
     .tuning__container
@@ -37,11 +37,11 @@ mixin tuning()
 
         .parameter__container
           label.parameter__options
-            input(type="radio" name="isInvert" value="true" checked).parameter__input
+            input(type='radio' name='isInvert' value='true' checked).parameter__input
             |true
 
           label.parameter__options
-            input(type="radio" name="isInvert" value="false").parameter__input
+            input(type='radio' name='isInvert' value='false').parameter__input
             |false
 
     .tuning__container
@@ -49,23 +49,23 @@ mixin tuning()
         h3.parameter__name values
 
         .parameter__container
-          input(name="value1Slider" type="text" placeholder="number" value="-50").parameter__input.field-style
-          input(name="value2Slider" type="text" placeholder="number" value="50").parameter__input.field-style
+          input(name='value1Slider' type='text' placeholder='number' value='-50').parameter__input.field-style
+          input(name='value2Slider' type='text' placeholder='number' value='50').parameter__input.field-style
 
     .tuning__container
       .parameter
         h3.parameter__name min max values
 
         .parameter__container
-          input(name="minValue" type="text" placeholder="min" value="-100").parameter__input.field-style
-          input(name="maxValue" type="text" placeholder="max" value="100" ).parameter__input.field-style
+          input(name='minValue' type='text' placeholder='min' value='-100').parameter__input.field-style
+          input(name='maxValue' type='text' placeholder='max' value='100' ).parameter__input.field-style
 
     .tuning__container
       .parameter
         h3.parameter__name step
 
         .parameter__container
-          input(name="step" type="text" placeholder="number" value="1").parameter__input.field-style
+          input(name='step' type='text' placeholder='number' value='1').parameter__input.field-style
 
     hr
 
@@ -75,11 +75,11 @@ mixin tuning()
 
         .parameter__container
           label.parameter__options
-            input(type="radio" name="isLabel" value="true" checked).parameter__input
+            input(type='radio' name='isLabel' value='true' checked).parameter__input
             |true
 
           label.parameter__options
-            input(type="radio" name="isLabel" value="false").parameter__input
+            input(type='radio' name='isLabel' value='false').parameter__input
             |false
 
     .tuning__container
@@ -88,11 +88,11 @@ mixin tuning()
 
         .parameter__container
           label.parameter__options
-            input(type="radio" name="isLabelOnClick" value="true" checked).parameter__input
+            input(type='radio' name='isLabelOnClick' value='true' checked).parameter__input
             |true
 
           label.parameter__options
-            input(type="radio" name="isLabelOnClick" value="false").parameter__input
+            input(type='radio' name='isLabelOnClick' value='false').parameter__input
             |false
 
     hr
@@ -103,11 +103,11 @@ mixin tuning()
 
         .parameter__container
           label.parameter__options
-            input(type="radio" name="isScale" value="true" checked).parameter__input
+            input(type='radio' name='isScale' value='true' checked).parameter__input
             |true
 
           label.parameter__options
-            input(type="radio" name="isScale" value="false").parameter__input
+            input(type='radio' name='isScale' value='false').parameter__input
             |false
 
     .tuning__container
@@ -115,18 +115,18 @@ mixin tuning()
         h3.parameter__name points
 
         .parameter__container
-          input(name="points" type="text" placeholder="number" value="13").parameter__input.field-style
+          input(name='points' type='text' placeholder='number' value='13').parameter__input.field-style
 
     .tuning__container
       .parameter
         h3.parameter__name numberForEach
 
         .parameter__container
-          input(name="numberForEach" type="text" placeholder="number" value="4").parameter__input.field-style
+          input(name='numberForEach' type='text' placeholder='number' value='4').parameter__input.field-style
 
     .tuning__container
       .parameter
         h3.parameter__name longForEach
 
         .parameter__container
-          input(name="longForEach" type="text" placeholder="number" value="2").parameter__input.field-style
+          input(name='longForEach' type='text' placeholder='number' value='2').parameter__input.field-style

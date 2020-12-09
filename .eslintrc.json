@@ -15,6 +15,7 @@
     "fsd/split-conditionals": "error",
 
     // my rules
+    "@typescript-eslint/keyword-spacing": ["off"],
     "@typescript-eslint/lines-between-class-members": [
       "error",
       "always",

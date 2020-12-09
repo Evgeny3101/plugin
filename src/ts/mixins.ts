@@ -4,7 +4,7 @@ function roundToMultiple(num: number, multiple: number) {
   let result: number = Math.round(num / multiple) * multiple;
   // decimal places calculation
   const decimalPlaces = multiple.toString().includes('.')
-    ? multiple.toString().split('.').pop().length
+    ? multiple.toString().split('.').pop()!.length
     : 0;
   // trims extra decimal places
   result = Number(result.toFixed(decimalPlaces));

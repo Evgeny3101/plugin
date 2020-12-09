@@ -5,31 +5,28 @@ import IPositionVars from '../../interface/IVarsPosition';
 class Button {
   Observable = new Observable();
   coord!: number;
-  DOM: Element;
-  handleButtonMousedown: EventListener;
+  DOM: HTMLElement;
+  handleButtonMousedown: EventListenerOrEventListenerObject;
 
-  constructor(
-    parent: Element,
-    public pos: IPositionVars,
-    public isInvert: boolean
-  ) {
+  constructor(parent: Element, public pos: IPositionVars, public isInvert: boolean) {
     this.DOM = createHTML('<div class="js-range-slider__button"></div>', parent);
-    this.handleButtonMousedown = this.move.bind(this);
+    this.handleButtonMousedown = <EventListenerObject>(<unknown>this.move.bind(this));
   } // constructor
 
-  move(evt) {
+  // move(evt: MouseEvent): boolean {
+  move(evt: MouseEvent): boolean {
     const { page, offsetFrom, offsetSize, clientSize } = this.pos;
     const { isInvert } = this;
 
-    const btnDOM = evt.target;
-    const parentDOM = btnDOM.parentElement;
-    const basePositionMouse = evt[page];
-    const rangeShift = btnDOM[offsetFrom];
-    const rangeSize = parentDOM[clientSize] - btnDOM[offsetSize];
+    const btnDOM: HTMLElement = (<HTMLElement>evt.target)!;
+    const parentDOM: HTMLElement = btnDOM.parentElement!;
+    const basePositionMouse: number = evt[page];
+    const rangeShift: number = btnDOM[offsetFrom];
+    const rangeSize: number = parentDOM[clientSize] - btnDOM[offsetSize];
 
     document.onmousemove = (event: MouseEvent) => {
       let newCoord;
-      const currentPositionMouse = event[page];
+      const currentPositionMouse: number = event[page];
       if (isInvert) {
         newCoord = basePositionMouse - currentPositionMouse + (rangeSize - rangeShift);
       } else {

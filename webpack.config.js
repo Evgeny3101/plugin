@@ -12,8 +12,8 @@ module.exports = {
   context: path.resolve(__dirname, 'src'),
 
   entry: {
-    rangeSlider: './rangeSlider.js',
-    page: './page.js',
+    'range-slider': './range-slider.js',
+    'page': './page.js',
   },
 
   output: {
