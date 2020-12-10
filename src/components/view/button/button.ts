@@ -8,7 +8,7 @@ class Button {
   DOM: HTMLElement;
   handleButtonMousedown: EventListenerOrEventListenerObject;
 
-  constructor(parent: Element, public pos: IPositionVars, public isInvert: boolean) {
+  constructor(parent: HTMLElement, public pos: IPositionVars, public isInvert: boolean) {
     this.DOM = createHTML('<div class="js-range-slider__button"></div>', parent);
     this.handleButtonMousedown = <EventListenerObject>(<unknown>this.move.bind(this));
   } // constructor

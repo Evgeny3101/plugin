@@ -3,10 +3,14 @@ import IPositionVars from '../../interface/IVarsPosition';
 
 class Interval {
   buttonSize: number = 0;
-  DOM: Element;
+  DOM: HTMLElement;
   buttonsCoord!: number[];
 
-  constructor(parent: Element, public pos: IPositionVars, public isProgress: boolean) {
+  constructor(
+    parent: HTMLElement,
+    public pos: IPositionVars,
+    public isProgress: boolean
+  ) {
     this.DOM = createHTML(
       `
       <div class="js-range-slider__interval">
@@ -21,7 +25,7 @@ class Interval {
   }
 
   setCoords(coords: number[]) {
-    const buttonsCoord = [ ...coords];
+    const buttonsCoord = [...coords];
 
     if (this.isProgress) {
       this.buttonsCoord = [0, buttonsCoord[0]];

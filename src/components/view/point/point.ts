@@ -10,7 +10,7 @@ class Point {
   numberDOM?: HTMLElement;
   handlePointClick: EventListener;
 
-  constructor(parent: Element, isNumber: boolean, isLong: boolean) {
+  constructor(parent: HTMLElement, isNumber: boolean, isLong: boolean) {
     this.DOM = createHTML('<div class="js-scale-point"></div>', parent);
 
     if (isNumber) {

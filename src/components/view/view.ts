@@ -20,7 +20,7 @@ class View {
   rangeSize!: number;
   handleWindowResize!: EventListener;
 
-  constructor(public parent: Element, public config: IConfig) {
+  constructor(public parent: HTMLElement, public config: IConfig) {
     this.setPositionVariables();
     this.installComponents();
     this.setElementsParameters();
@@ -28,7 +28,9 @@ class View {
     this.convertValues(this.config.sliderValues);
     this.setCoords();
     this.toPositionElements();
-    this.setListeners();
+
+    //
+    this.handleWindowResize = this.resizeSlider.bind(this);
   }
 
   setValues(sliderValues: number[]) {
@@ -88,67 +90,6 @@ class View {
 
     if (this.label) {
       this.label.forEach((elem) => elem.toPosition());
-    }
-  }
-
-  setListeners() {
-    const isLabelOnClick = this.config.isLabel && this.config.isLabelOnClick;
-
-    this.handleWindowResize = this.resizeSlider.bind(this);
-    window.addEventListener('resize', this.handleWindowResize);
-
-    this.button.forEach((btn) => {
-      btn.DOM.addEventListener('mousedown', btn.handleButtonMousedown);
-    });
-
-    this.textField.forEach((elem) => {
-      if (elem.DOM) {
-        elem.DOM.addEventListener('blur', elem.handleTextFieldBlur);
-      }
-    });
-
-    if (this.scale) {
-      this.scale.points.forEach((elem) => {
-        elem.DOM.addEventListener('click', elem.handlePointClick);
-      });
-    }
-
-    if (isLabelOnClick) {
-      this.label.forEach((elem, i) => {
-        elem.hide();
-        this.button[i].DOM.addEventListener('mousedown', elem.handleButtonMousedown);
-        document.addEventListener('mouseup', elem.handleButtonMouseup);
-      });
-    }
-  }
-
-  removeListeners() {
-    const { isLabelOnClick } = this.config;
-
-    window.removeEventListener('resize', this.handleWindowResize);
-
-    this.button.forEach((btn) => {
-      btn.DOM.removeEventListener('mousedown', btn.handleButtonMousedown);
-    });
-
-    this.textField.forEach((elem) => {
-      if (elem.DOM) {
-        elem.DOM.removeEventListener('blur', elem.handleTextFieldBlur);
-      }
-    });
-
-    if (this.scale) {
-      this.scale.points.forEach((elem) => {
-        elem.DOM.removeEventListener('click', elem.handlePointClick);
-      });
-    }
-
-    if (isLabelOnClick) {
-      this.label.forEach((elem, i) => {
-        elem.show();
-        this.button[i].DOM.removeEventListener('mousedown', elem.handleButtonMousedown);
-        document.removeEventListener('mouseup', elem.handleButtonMouseup);
-      });
     }
   }
 

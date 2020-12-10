@@ -13,7 +13,7 @@ function roundToMultiple(num: number, multiple: number) {
 
 // creates html from string.
 // if parent is specified inserts into it
-function createHTML(html: string, parent?: Element): any {
+function createHTML(html: string, parent?: HTMLElement): any {
   // данный способ позволит редактировать элемент до вставки в документ
   const wrapper = document.createElement('div');
   wrapper.innerHTML = html;

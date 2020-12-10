@@ -1,14 +1,14 @@
 import { createHTML } from '../../../ts/mixins';
 
 class Label {
-  DOM!: HTMLInputElement;   // wrapper for label
+  DOM!: HTMLInputElement; // wrapper for label
   input!: HTMLInputElement; // container for value
   coord!: number;
   handleButtonMousedown!: EventListener;
   handleButtonMouseup!: EventListener;
 
   constructor(
-    parent: Element,
+    parent: HTMLElement,
     public isLabelOnClick: boolean,
     public positionName: string
   ) {
@@ -40,7 +40,7 @@ class Label {
     this.input.value = String(value);
   }
 
-  private createElements(parent: Element) {
+  private createElements(parent: HTMLElement) {
     this.DOM = createHTML(
       `<div class="js-range-slider__container-label">
         <div class="js-button-label">

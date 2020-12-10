@@ -3,20 +3,9 @@ import Model from './model';
 import View from './view/view';
 
 class Controller {
-  model!: Model;
-  view!: View;
   isMouseDown: boolean = false;
 
-  constructor(public mainDOM: Element, public config: IConfig) {
-    this.setNewConfig(this.config);
-  }
-
-  init() {
-    this.model = new Model(this.config);
-    this.config.sliderValues = this.model.config.sliderValues; // после проверки лимитов и шага в Model
-
-    this.view = new View(this.mainDOM, this.config);
-
+  constructor(public model: Model, public view: View, public config: IConfig) {
     ///  notify Model  ///
     this.subscribeToChangeValue();
 
@@ -24,30 +13,6 @@ class Controller {
     this.subscribeButtons();
     this.subscribeTextField();
     this.subscribePoint();
-  }
-
-  setNewConfig(options: any) {
-    const newConfig = options;
-    const { sliderType, value1Slider, value2Slider } = options;
-
-    if (typeof value1Slider === 'number') {
-      newConfig.sliderValues[0] = value1Slider;
-      delete newConfig.value1Slider;
-    }
-    if (typeof value2Slider === 'number') {
-      newConfig.sliderValues[1] = value2Slider;
-      delete newConfig.value2Slider;
-    }
-    if (sliderType) {
-      newConfig.isSingle = sliderType === 'single';
-      newConfig.isRange = sliderType === 'range';
-      newConfig.isProgress = sliderType === 'progress';
-    }
-
-    delete newConfig.sliderType;
-
-    this.config = newConfig;
-    this.init();
   }
 
   // уведомляет метод Model.setNewValue

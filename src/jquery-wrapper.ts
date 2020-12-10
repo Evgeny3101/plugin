@@ -1,4 +1,4 @@
-import Controller from './components/controller';
+import RangeSlider from './components/range-slider';
 import IConfig from './components/interface/IConfig';
 
 ((jQuery) => {
@@ -6,16 +6,16 @@ import IConfig from './components/interface/IConfig';
 
   const methods: { [key: string]: Function } = {
     init(options: {}) {
-      return this.each((index: number, elem: Element) => {
+      return this.each((index: number, elem: HTMLElement) => {
         const config: IConfig = $.extend({}, $.fn.rangeSlider.config, options);
-        const newSlider = new Controller(elem, config);
+        const newSlider = new RangeSlider(elem, config);
 
         $.fn.rangeSlider.sliders.push(newSlider);
       });
     },
 
     delete() {
-      return this.each((index: number, elem: Element) => {
+      return this.each((index: number, elem: HTMLElement) => {
         $.fn.rangeSlider.sliders.forEach((slider: Controller, i: number) => {
           if (slider.mainDOM === elem) {
             slider.view.removeListeners();
@@ -28,7 +28,7 @@ import IConfig from './components/interface/IConfig';
     },
 
     config(options: {}) {
-      return this.each((index: number, elem: Element) => {
+      return this.each((index: number, elem: HTMLElement) => {
         $.fn.rangeSlider.sliders.forEach((slider: Controller) => {
           if (slider.mainDOM === elem) {
             $(slider.mainDOM).empty();
@@ -41,7 +41,7 @@ import IConfig from './components/interface/IConfig';
     },
 
     setListeners() {
-      return this.each((index: number, elem: Element) => {
+      return this.each((index: number, elem: HTMLElement) => {
         $.fn.rangeSlider.sliders.forEach((slider: Controller) => {
           if (slider.mainDOM === elem) {
             slider.view.setListeners();
@@ -53,7 +53,7 @@ import IConfig from './components/interface/IConfig';
     },
 
     removeListeners() {
-      return this.each((index: number, elem: Element) => {
+      return this.each((index: number, elem: HTMLElement) => {
         $.fn.rangeSlider.sliders.forEach((slider: Controller) => {
           if (slider.mainDOM === elem) {
             slider.view.removeListeners();

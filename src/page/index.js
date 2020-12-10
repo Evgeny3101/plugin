@@ -5,12 +5,11 @@ function setOptionsTuning(tuningDOM, sliderConfig) {
   const config = $.extend({}, defaultConfig, sliderConfig);
 
   names.forEach((name) => {
-
     if (name === 'sliderValues') {
       const value1 = tuningDOM.querySelector(`input[name=${'value1Slider'}]`);
       const value2 = tuningDOM.querySelector(`input[name=${'value2Slider'}]`);
-      if (value1)value1.value = config.sliderValues[0] || 0;
-      if (value2)value2.value = config.sliderValues[1] || 0;
+      if (value1) value1.value = config.sliderValues[0] || 0;
+      if (value2) value2.value = config.sliderValues[1] || 0;
     }
 
     const inputs = tuningDOM.querySelectorAll(`input[name=${name}]`);
@@ -132,8 +131,8 @@ sliders4Config[0] = {
 };
 
 sliders4Config[1] = {
-  value1Slider:  25,
-  value2Slider:  65,
+  value1Slider: 25,
+  value2Slider: 65,
   textField: ['.text-field9', '.text-field10'],
   sliderType: 'range',
   isScale: true,
