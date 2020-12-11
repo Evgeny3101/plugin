@@ -2,25 +2,24 @@ import '../../src/jquery-wrapper';
 import Controller from '../../src/components/controller';
 import Model from '../../src/components/model';
 import View from '../../src/components/view/view';
+import RangeSlider from '../../src/components/range-slider';
 
+const $: any = jQuery;
 
-setFixtures(
-  '<div class="js-plugin"></div>'
-);
+setFixtures('<div class="js-plugin"></div>');
 
-const $elem = $('.js-plugin').rangeSlider();
+const { defaultConfig } = $.fn.rangeSlider;
+const slider = new RangeSlider('.js-plugin', {}, defaultConfig);
 let controller: Controller;
 let model: Model;
 let view: View;
 
-
 const tests = () => {
   beforeEach(() => {
-    [controller] = $elem.rangeSlider.sliders;
-    model = controller.model;
-    view = controller.view;
+    controller = slider.controller;
+    model = slider.model;
+    view = slider.view;
   });
-
 
   it('Метод "subscribeToChangeValue". Подписка на уведомления при изменении значения слайдера. Уведомления методом "Model.updateValue".', () => {
     controller.subscribeToChangeValue();
@@ -37,7 +36,6 @@ const tests = () => {
     model.updateValue(33, 1);
 
     expect(spyMethod2).toHaveBeenCalledWith([11, 33]);
-
   });
 
   it('Метод "subscribeButtons". Подписка на уведомления от кнопок. Уведомления методом "Button.move" при нажатии на кнопку.', () => {
@@ -87,7 +85,6 @@ const tests = () => {
     expect(spyMethod).toHaveBeenCalled();
   });
 
-
   it('Метод "subscribePoint". Подписка на уведомления о клике по шкале. Уведомления методом "Point.clickPoint".', () => {
     controller.subscribePoint();
     const spyMethod = spyOn(model, 'updateValue');
@@ -97,9 +94,7 @@ const tests = () => {
 
     expect(spyMethod).toHaveBeenCalled();
   });
-
 };
-
 
 describe('Класс Controller.', () => {
   describe('isInvert == true.', () => {
@@ -107,16 +102,14 @@ describe('Класс Controller.', () => {
       setFixtures(
         '<input class="text-field"></input><input class="text-field2"></input>'
       );
-
-      $elem.rangeSlider('config', {
+      slider.setConfig({
         textField: ['.text-field', '.text-field2'],
         sliderType: 'range',
-        isInvert:  true,
+        isInvert: true,
         isVertical: true,
-        isScale:  true,
-        isLabel:  true,
+        isScale: true,
+        isLabel: true,
       });
-
     });
 
     tests();
@@ -127,17 +120,14 @@ describe('Класс Controller.', () => {
       setFixtures(
         '<input class="text-field"></input><input class="text-field2"></input>'
       );
-
-      $elem.rangeSlider('config', {
+      slider.setConfig({
         textField: ['.text-field', '.text-field2'],
         sliderType: 'progress',
-        isInvert:  false,
-        isVertical:  false,
-        isScale:  true,
+        isInvert: false,
+        isVertical: false,
+        isScale: true,
       });
-
     });
-
     tests();
   });
 });

@@ -33,8 +33,6 @@ class RangeSlider {
       newConfig.isProgress = sliderType === 'progress';
     }
 
-    delete newConfig.sliderType;
-
     this.currentConfig = newConfig;
     this.init();
   }

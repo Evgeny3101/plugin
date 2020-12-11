@@ -77,7 +77,7 @@ import RangeSlider from './components/range-slider';
     sliderType: 'single',
 
     sliderValues: [-25, 25],
-    minValue: 0,
+    minValue: -100,
     maxValue: 100,
     step: 1,
     textField: [],

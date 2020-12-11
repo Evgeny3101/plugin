@@ -1,20 +1,15 @@
 import '../../src/jquery-wrapper';
 
-
-setFixtures(
-  '<div class="js-plugin"></div>'
-);
+const $: any = jQuery;
+setFixtures('<div class="js-plugin"></div>');
 const $elem = $('.js-plugin').rangeSlider();
 
 let $input1: JQuery<HTMLElement>;
 let $input2: JQuery<HTMLElement>;
 
-
 describe('Обертка JQuery.', () => {
   beforeEach(() => {
-    setFixtures(
-      '<input class="text-field"></input><input class="text-field2"></input>'
-    );
+    setFixtures('<input class="text-field"></input><input class="text-field2"></input>');
 
     $input1 = $('.text-field');
     $input2 = $('.text-field2');
@@ -25,7 +20,6 @@ describe('Обертка JQuery.', () => {
       textField: ['.text-field', '.text-field2'],
     });
   });
-
 
   it('Доступен в объекте JQuery.', () => {
     expect($.fn.rangeSlider).toBeDefined();

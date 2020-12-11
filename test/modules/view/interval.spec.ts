@@ -1,14 +1,12 @@
 import '../../../src/jquery-wrapper';
 import Interval from '../../../src/components/view/interval/interval';
 
+const $: any = jQuery;
 
-setFixtures(
-  '<div class="js-plugin"></div>'
-);
+setFixtures('<div class="js-plugin"></div>');
 const $elem = $('.js-plugin').rangeSlider();
 
 let interval: Interval;
-
 
 describe('Класс Interval.', () => {
   beforeEach(() => {
@@ -19,12 +17,10 @@ describe('Класс Interval.', () => {
     interval = $elem.rangeSlider.sliders[0].view.interval;
   });
 
-
   it('Метод "checkOverrun". Проверяет перебег, если есть переворачивает координаты интервала.', () => {
     interval.buttonsCoord = [20, 10];
     interval.checkOverrun();
 
-    expect(interval.buttonsCoord ).toEqual([10, 20]);
+    expect(interval.buttonsCoord).toEqual([10, 20]);
   });
-
 });
