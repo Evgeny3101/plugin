@@ -31,8 +31,7 @@ class Model {
   }
 
   // Устанавливает новые значения
-  private setNewValues(values: number[]) {
-
+  setNewValues(values: number[]) {
     const { isRange } = this.config;
 
     let newValues: number[] = [];

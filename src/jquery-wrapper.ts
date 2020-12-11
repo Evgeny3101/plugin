@@ -1,5 +1,4 @@
 import RangeSlider from './components/range-slider';
-import IConfig from './components/interface/IConfig';
 
 ((jQuery) => {
   const $: any = jQuery;
@@ -7,8 +6,7 @@ import IConfig from './components/interface/IConfig';
   const methods: { [key: string]: Function } = {
     init(options: {}) {
       return this.each((index: number, elem: HTMLElement) => {
-        const config: IConfig = $.extend({}, $.fn.rangeSlider.config, options);
-        const newSlider = new RangeSlider(elem, config);
+        const newSlider = new RangeSlider(elem, options, $.fn.rangeSlider.defaultConfig);
 
         $.fn.rangeSlider.sliders.push(newSlider);
       });
@@ -16,10 +14,9 @@ import IConfig from './components/interface/IConfig';
 
     delete() {
       return this.each((index: number, elem: HTMLElement) => {
-        $.fn.rangeSlider.sliders.forEach((slider: Controller, i: number) => {
+        $.fn.rangeSlider.sliders.forEach((slider: RangeSlider, i: number) => {
           if (slider.mainDOM === elem) {
-            slider.view.removeListeners();
-            $(slider.mainDOM).empty();
+            slider.delete();
             delete $.fn.rangeSlider.sliders[i];
           }
           return false;
@@ -29,11 +26,10 @@ import IConfig from './components/interface/IConfig';
 
     config(options: {}) {
       return this.each((index: number, elem: HTMLElement) => {
-        $.fn.rangeSlider.sliders.forEach((slider: Controller) => {
+        $.fn.rangeSlider.sliders.forEach((slider: RangeSlider) => {
           if (slider.mainDOM === elem) {
-            $(slider.mainDOM).empty();
-            const config = $.extend({}, slider.config, options);
-            return slider.setNewConfig(config);
+            slider.delete();
+            slider.setConfig(options);
           }
           return false;
         });
@@ -42,10 +38,9 @@ import IConfig from './components/interface/IConfig';
 
     setListeners() {
       return this.each((index: number, elem: HTMLElement) => {
-        $.fn.rangeSlider.sliders.forEach((slider: Controller) => {
+        $.fn.rangeSlider.sliders.forEach((slider: RangeSlider) => {
           if (slider.mainDOM === elem) {
-            slider.view.setListeners();
-            return false;
+            slider.setListeners();
           }
           return false;
         });
@@ -54,10 +49,9 @@ import IConfig from './components/interface/IConfig';
 
     removeListeners() {
       return this.each((index: number, elem: HTMLElement) => {
-        $.fn.rangeSlider.sliders.forEach((slider: Controller) => {
+        $.fn.rangeSlider.sliders.forEach((slider: RangeSlider) => {
           if (slider.mainDOM === elem) {
-            slider.view.removeListeners();
-            return false;
+            slider.removeListeners();
           }
           return false;
         });
@@ -76,8 +70,10 @@ import IConfig from './components/interface/IConfig';
     return $.error(`Method named ${method} does not exist for jQuery.rangeSlider`);
   };
 
-  // Настройки по умолчанию
-  $.fn.rangeSlider.config = {
+  // Массив для слайдеров
+  $.fn.rangeSlider.sliders = [];
+
+  $.fn.rangeSlider.defaultConfig = {
     sliderType: 'single',
 
     sliderValues: [-25, 25],
@@ -97,7 +93,4 @@ import IConfig from './components/interface/IConfig';
     numberForEach: 4,
     longForEach: 2,
   };
-
-  // Массив для слайдеров
-  $.fn.rangeSlider.sliders = [];
 })(jQuery);

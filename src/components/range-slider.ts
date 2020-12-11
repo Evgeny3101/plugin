@@ -8,38 +8,16 @@ class RangeSlider {
   view!: View;
   controller!: Controller;
   mainDOM!: HTMLElement;
-  defaultConfig: any;
   currentConfig!: IConfig;
 
-  constructor(id: string, config: IConfig) {
-    this.defaultConfig = {
-      sliderType: 'single',
-
-      sliderValues: [-25, 25],
-      minValue: 0,
-      maxValue: 100,
-      step: 1,
-      textField: [],
-
-      isVertical: false,
-      isInvert: false,
-
-      isLabel: false,
-      isLabelOnClick: false,
-
-      isScale: false,
-      points: 13,
-      numberForEach: 4,
-      longForEach: 2,
-    };
-
+  constructor(id: string | HTMLElement, config: {}, public defaultConfig: any) {
     this.findDOM(id);
     this.setConfig(config);
   }
 
   setConfig(config: any) {
     const newConfig = { ...this.defaultConfig, ...this.currentConfig, ...config };
-    const { sliderType, value1Slider, value2Slider } = config;
+    const { sliderType, value1Slider, value2Slider } = newConfig;
 
     if (typeof value1Slider === 'number') {
       newConfig.sliderValues[0] = value1Slider;
@@ -138,9 +116,12 @@ class RangeSlider {
     this.mainDOM.innerHTML = '';
   }
 
-  private findDOM(id: string) {
-    const elem: HTMLElement | null = document.querySelector(id);
+  private findDOM(id: string | HTMLElement) {
+    let elem;
+    if (typeof id === 'string') elem = <HTMLElement>document.querySelector(id);
+    else elem = id;
     if (!elem) throw new Error('Main DOM element not found.');
+
     this.mainDOM = elem;
   }
 } // class

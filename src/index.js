@@ -7,5 +7,4 @@ import './components/view/scale/scale.styl';
 import './components/view/point/point.styl';
 
 // js
-// import './jquery-wrapper';
-import './components/range-slider';
+import './jquery-wrapper';

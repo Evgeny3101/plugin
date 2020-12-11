@@ -1,8 +1,8 @@
 // set the slider settings according to the specified options
 function setOptionsTuning(tuningDOM, sliderConfig) {
-  const defaultConfig = $.fn.rangeSlider.config;
+  const { defaultConfig } = $.fn.rangeSlider;
   const names = Object.keys(defaultConfig);
-  const config = $.extend({}, defaultConfig, sliderConfig);
+  const config = { ...defaultConfig, ...sliderConfig };
 
   names.forEach((name) => {
     if (name === 'sliderValues') {
