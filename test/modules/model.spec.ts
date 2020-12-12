@@ -4,15 +4,15 @@ import IConfig from '../../src/components/interface/IConfig';
 import RangeSlider from '../../src/components/range-slider';
 
 const $: any = jQuery;
+let model: any;
+let config: IConfig;
 
 const { defaultConfig } = $.fn.rangeSlider;
-const slider = new RangeSlider('.js-plugin', {}, defaultConfig);
-let model: Model;
-let config: IConfig;
+const { currentConfig } = new RangeSlider('.js-plugin', {}, defaultConfig);
 
 describe('Класс Model.', () => {
   beforeEach(() => {
-    model = new Model(slider.currentConfig);
+    model = new Model(currentConfig);
     config = model.config;
   });
 

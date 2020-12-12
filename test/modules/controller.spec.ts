@@ -1,18 +1,17 @@
 import '../../src/jquery-wrapper';
-import Controller from '../../src/components/controller';
 import Model from '../../src/components/model';
 import View from '../../src/components/view/view';
 import RangeSlider from '../../src/components/range-slider';
 
 const $: any = jQuery;
-
-setFixtures('<div class="js-plugin"></div>');
-
-const { defaultConfig } = $.fn.rangeSlider;
-const slider = new RangeSlider('.js-plugin', {}, defaultConfig);
-let controller: Controller;
+let controller: any;
 let model: Model;
 let view: View;
+
+setFixtures('<div class="js-plugin"></div>');
+const { defaultConfig } = $.fn.rangeSlider;
+const slider = new RangeSlider('.js-plugin', {}, defaultConfig);
+
 
 const tests = () => {
   beforeEach(() => {

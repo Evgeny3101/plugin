@@ -1,14 +1,12 @@
 import '../../src/jquery-wrapper';
 import RangeSlider from '../../src/components/range-slider';
-import View from '../../src/components/view/view';
 
 const $: any = jQuery;
+let view: any;
 
 setFixtures('<div class="js-plugin"></div>');
-
 const { defaultConfig } = $.fn.rangeSlider;
 const slider = new RangeSlider('.js-plugin', {}, defaultConfig);
-let view: View;
 
 describe('Класс RangeSlider.', () => {
   beforeEach(() => {
@@ -28,7 +26,7 @@ describe('Класс RangeSlider.', () => {
   it('Метод "removeListeners". Удаляет слушатели.', () => {
     slider.removeListeners();
     const spyMethod = spyOn(view, 'setValues');
-    const spyEvent = spyOnEvent(window, 'resize');
+    const spyEvent = spyOnEvent(<any>window, 'resize');
 
     const resize = new Event('resize');
     window.dispatchEvent(resize);

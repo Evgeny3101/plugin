@@ -1,11 +1,11 @@
 import '../../src/jquery-wrapper';
 
 const $: any = jQuery;
-setFixtures('<div class="js-plugin"></div>');
-const $elem = $('.js-plugin').rangeSlider();
-
 let $input1: JQuery<HTMLElement>;
 let $input2: JQuery<HTMLElement>;
+
+setFixtures('<div class="js-plugin"></div>');
+const $elem = $('.js-plugin').rangeSlider();
 
 describe('Обертка JQuery.', () => {
   beforeEach(() => {

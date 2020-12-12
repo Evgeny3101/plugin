@@ -1,12 +1,10 @@
 import '../../../src/jquery-wrapper';
-import Interval from '../../../src/components/view/interval/interval';
 
 const $: any = jQuery;
+let interval: any;
 
 setFixtures('<div class="js-plugin"></div>');
 const $elem = $('.js-plugin').rangeSlider();
-
-let interval: Interval;
 
 describe('Класс Interval.', () => {
   beforeEach(() => {

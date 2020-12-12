@@ -3,14 +3,13 @@ import RangeSlider from '../../../src/components/range-slider';
 import TextField from '../../../src/components/view/text-field';
 
 const $: any = jQuery;
-
-setFixtures('<div class="js-plugin"></div>');
-
-const { defaultConfig } = $.fn.rangeSlider;
-const slider = new RangeSlider('.js-plugin', {}, defaultConfig);
 let input: HTMLInputElement;
 let textField: TextField;
 let spyObservable: jasmine.Spy<(data: any) => void>;
+
+setFixtures('<div class="js-plugin"></div>');
+const { defaultConfig } = $.fn.rangeSlider;
+const slider = new RangeSlider('.js-plugin', {}, defaultConfig);
 
 describe('Класс TextField.', () => {
   beforeEach(() => {
