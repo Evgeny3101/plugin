@@ -1,5 +1,5 @@
 import { createHTML } from '../../../ts/mixins';
-import IPositionVars from '../../interface/IVarsPosition';
+import IVarsPosition from '../../interface/IVarsPosition';
 
 class Interval {
   buttonSize: number = 0;
@@ -8,7 +8,7 @@ class Interval {
 
   constructor(
     parent: HTMLElement,
-    public pos: IPositionVars,
+    public pos: IVarsPosition,
     public isProgress: boolean
   ) {
     this.DOM = createHTML(
@@ -20,7 +20,7 @@ class Interval {
     );
   }
 
-  setButtonValue(buttonSize: number) {
+  setButtonSize(buttonSize: number) {
     this.buttonSize = buttonSize;
   }
 

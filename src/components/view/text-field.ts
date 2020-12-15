@@ -3,11 +3,9 @@ import Observable from '../../ts/observable';
 class TextField {
   Observable = new Observable();
   DOM!: HTMLInputElement | HTMLElement;
-  handleTextFieldBlur: EventListener;
 
   constructor(field: string, public index: number) {
     this.find(field);
-    this.handleTextFieldBlur = this.getValue.bind(this);
   }
 
   find(field: string) {
@@ -18,7 +16,7 @@ class TextField {
   }
 
   // получает значения из текстового поля
-  getValue() {
+  handleTextFieldBlur = () => {
     let newValue;
     if (this.DOM instanceof HTMLInputElement) newValue = Number(this.DOM.value) || 0;
     else newValue = Number(this.DOM.innerText) || 0;
@@ -27,12 +25,12 @@ class TextField {
       value: newValue,
       index: this.index,
     });
-  }
+  };
 
   // устанавливает значения в текстовое поле
-  setValue(value: number) {
-    if (this.DOM instanceof HTMLInputElement) this.DOM.value = String(value);
-    else this.DOM.innerText = String(value);
+  setValue(value: string) {
+    if (this.DOM instanceof HTMLInputElement) this.DOM.value = value;
+    else this.DOM.innerText = value;
   }
 }
 

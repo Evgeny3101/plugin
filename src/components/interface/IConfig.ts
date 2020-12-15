@@ -1,23 +1,25 @@
 interface IConfig {
   sliderValues: number[];
-  minValue: number;
-  maxValue: number;
-  step: number;
-  textField: string[];
+  readonly minValue: number;
+  readonly maxValue: number;
+  readonly step: number;
+  readonly textField: string[];
 
-  isSingle: boolean;
-  isRange: boolean;
-  isProgress: boolean;
-  isVertical: boolean;
-  isInvert: boolean;
+  readonly isSingle: boolean;
+  readonly isRange: boolean;
+  readonly isProgress: boolean;
+  readonly isVertical: boolean;
+  readonly isInvert: boolean;
 
-  isLabel: boolean;
-  isLabelOnClick: boolean;
+  readonly isLabel: boolean;
+  readonly isLabelOnClick: boolean;
 
-  isScale: boolean;
-  points: number;
-  numberForEach: number;
-  longForEach: number;
+  readonly isScale: boolean;
+  readonly points: number;
+  readonly numberForEach: number;
+  readonly longForEach: number;
+
+  updateValues(sliderValues: number[]): string[];
 }
 
 export default IConfig;

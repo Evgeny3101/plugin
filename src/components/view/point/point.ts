@@ -8,7 +8,6 @@ class Point {
   DOM: HTMLElement;
   lineDOM: HTMLElement;
   numberDOM?: HTMLElement;
-  handlePointClick: EventListener;
 
   constructor(parent: HTMLElement, isNumber: boolean, isLong: boolean) {
     this.DOM = createHTML('<div class="js-scale-point"></div>', parent);
@@ -27,16 +26,13 @@ class Point {
         '<div class="js-scale-point__short-line"></div>',
         this.DOM
       );
-
-    this.handlePointClick = this.clickPoint.bind(this);
   }
 
-  // click handler on the points
-  clickPoint() {
+  handlePointClick = () => {
     this.Observable.notify({
       value: this.value,
     });
-  }
+  };
 } // class
 
 export default Point;

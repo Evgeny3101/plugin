@@ -2,25 +2,25 @@ interface ISize {
   height: number;
   width: number;
 }
-type SizeKeys = keyof ISize;
+type SizeTypes = keyof ISize;
 
 interface IOffsetFrom {
   offsetTop: number;
   offsetLeft: number;
 }
-type OffsetFromKeys = keyof IOffsetFrom;
+type OffsetFromTypes = keyof IOffsetFrom;
 
 interface IOffsetSize {
   offsetWidth: number;
   offsetHeight: number;
 }
-type OffsetSizeKeys = keyof IOffsetSize;
+type OffsetSizeTypes = keyof IOffsetSize;
 
 interface IClientSize {
   clientWidth: number;
   clientHeight: number;
 }
-type ClientSizeKeys = keyof IClientSize;
+type ClientSizeTypes = keyof IClientSize;
 
 interface IOffset {
   bottom: number;
@@ -28,21 +28,21 @@ interface IOffset {
   right: number;
   left: number;
 }
-type OffsetKeys = keyof IOffset;
+type OffsetTypes = keyof IOffset;
 
 interface IPage {
   pageX: number;
   pageY: number;
 }
-type PageKeys = keyof IPage;
+type PageTypes = keyof IPage;
 
-interface IPositionVars {
-  size: SizeKeys;
-  offset: OffsetKeys;
-  clientSize: ClientSizeKeys;
-  offsetSize: OffsetSizeKeys;
-  offsetFrom: OffsetFromKeys;
-  page: PageKeys;
+interface IVarsPosition {
+  readonly size: SizeTypes;
+  readonly offset: OffsetTypes;
+  readonly clientSize: ClientSizeTypes;
+  readonly offsetSize: OffsetSizeTypes;
+  readonly offsetFrom: OffsetFromTypes;
+  readonly page: PageTypes;
 }
 
-export default IPositionVars;
+export default IVarsPosition;

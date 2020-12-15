@@ -1,6 +1,6 @@
-import '../../../src/jquery-wrapper';
-import RangeSlider from '../../../src/components/range-slider';
-import TextField from '../../../src/components/view/text-field';
+import '../../src/jquery-wrapper';
+import RangeSlider from '../../src/components/range-slider';
+import TextField from '../../src/components/view/text-field';
 
 const $: any = jQuery;
 let input: HTMLInputElement;
@@ -34,9 +34,9 @@ describe('Класс TextField.', () => {
     }).toThrowError('Text field not found.');
   });
 
-  it('Метод "getValue". Обрабатывает значение введенное в текстовое поле.', () => {
+  it('Метод "handleTextFieldBlur". Обрабатывает значение введенное в текстовое поле.', () => {
     input.value = '-120';
-    textField.getValue();
+    textField.handleTextFieldBlur();
 
     expect(spyObservable).toHaveBeenCalledWith({
       value: -120,
@@ -44,43 +44,43 @@ describe('Класс TextField.', () => {
     });
   });
 
-  it('Метод "getValue". Если значение введенное в текстовое поле не определено примет как "0".', () => {
+  it('Метод "handleTextFieldBlur". Если значение введенное в текстовое поле не определено примет как "0".', () => {
     input.value = undefined!;
-    textField.getValue();
+    textField.handleTextFieldBlur();
     expect(spyObservable).toHaveBeenCalledWith({
       value: 0,
       index: 0,
     });
 
     input.value = null!;
-    textField.getValue();
+    textField.handleTextFieldBlur();
     expect(spyObservable).toHaveBeenCalledWith({
       value: 0,
       index: 0,
     });
 
     input.value = 'sdf';
-    textField.getValue();
+    textField.handleTextFieldBlur();
     expect(spyObservable).toHaveBeenCalledWith({
       value: 0,
       index: 0,
     });
 
     input.value = ''!;
-    textField.getValue();
+    textField.handleTextFieldBlur();
     expect(spyObservable).toHaveBeenCalledWith({
       value: 0,
       index: 0,
     });
   });
 
-  it('Метод "getValue". Обрабатывает значение введенное в HTMLElement.', () => {
+  it('Метод "handleTextFieldBlur". Обрабатывает значение введенное в HTMLElement.', () => {
     const textField2 = <TextField>slider.view.textField[1];
     const input2 = <HTMLInputElement>textField2.DOM;
     const spyObservable2 = spyOn(textField2.Observable, 'notify');
 
     input2.innerText = '120';
-    textField2.getValue();
+    textField2.handleTextFieldBlur();
 
     expect(spyObservable2).toHaveBeenCalledWith({
       value: 120,

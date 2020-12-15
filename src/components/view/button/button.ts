@@ -1,20 +1,17 @@
 import { createHTML } from '../../../ts/mixins';
 import Observable from '../../../ts/observable';
-import IPositionVars from '../../interface/IVarsPosition';
+import IVarsPosition from '../../interface/IVarsPosition';
 
 class Button {
   Observable = new Observable();
   coord!: number;
   DOM: HTMLElement;
-  handleButtonMousedown: EventListenerOrEventListenerObject;
 
-  constructor(parent: HTMLElement, public pos: IPositionVars, public isInvert: boolean) {
+  constructor(parent: HTMLElement, public pos: IVarsPosition, public isInvert: boolean) {
     this.DOM = createHTML('<div class="js-range-slider__button"></div>', parent);
-    this.handleButtonMousedown = <EventListenerObject>(<unknown>this.move.bind(this));
   } // constructor
 
-  // move(evt: MouseEvent): boolean {
-  move(evt: MouseEvent): boolean {
+  handleButtonMousedown = (evt: MouseEvent): boolean => {
     const { page, offsetFrom, offsetSize, clientSize } = this.pos;
     const { isInvert } = this;
 
@@ -54,7 +51,7 @@ class Button {
     };
 
     return false;
-  }
+  };
 
   setCoord(coord: number) {
     this.coord = coord;

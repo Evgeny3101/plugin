@@ -10,7 +10,9 @@
 
 ```js
 // установка
-\$('.my-slider-wrapper').rangeSlider();
+\$('.my-slider-wrapper').rangeSlider({
+  ...
+});
 
 // установка конфигурации
 \$('.my-slider-wrapper').rangeSlider('config', {
@@ -55,6 +57,15 @@
   points: 13,         // количество отметок шкалы (делений шкалы -1 = 12)
   numberForEach: 4,   // число отображается на каждом "n"
   longForEach: 2,     // длинная черточка на каждом "n"
+
+  // позволяет задать свою обработку значений слайдера
+  updateValues(values)  {
+    const valuesArr = values.map((name) => `${name.toLocaleString()}$`);
+
+    // возвращенное значение будет выставлено в textField и label
+    // без return будут выставлены обычные значения
+    return valuesArr;
+  }
 
 }
 ```

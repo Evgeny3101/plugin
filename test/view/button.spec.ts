@@ -1,5 +1,5 @@
-import '../../../src/jquery-wrapper';
-import Button from '../../../src/components/view/button/button';
+import '../../src/jquery-wrapper';
+import Button from '../../src/components/view/button/button';
 
 const $: any = jQuery;
 let button: Button;

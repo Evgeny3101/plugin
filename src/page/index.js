@@ -70,17 +70,22 @@ sliderConfigArr[0] = {
   textField: ['.text-field1', '.text-field2'],
   sliderType: 'range',
 
-  value1Slider: -22,
-  value2Slider: 43,
+  value1Slider: -1000,
+  value2Slider: 1000,
 
-  minValue: -100,
-  step: 10,
+  maxValue: 10000,
+  minValue: -10000,
+  step: 100,
 
-  isLabel: true,
-  isLabelOnClick: true,
+  isLabel: false,
 
   isScale: true,
   points: 21,
+
+  updateValues(values) {
+    const valuesArr = values.map((name) => `${name.toLocaleString()}$`);
+    return valuesArr;
+  },
 };
 
 // slider 2
@@ -93,6 +98,7 @@ sliderConfigArr[1] = {
   isRange: true,
   isScale: true,
   isLabel: true,
+  isLabelOnClick: true,
   isInvert: true,
 };
 
@@ -128,6 +134,7 @@ sliders4Config[0] = {
   sliderType: 'range',
   isScale: true,
   isLabel: true,
+  isLabelOnClick: true,
 };
 
 sliders4Config[1] = {

@@ -1,5 +1,5 @@
-import '../../../src/jquery-wrapper';
-import Point from '../../../src/components/view/point/point';
+import '../../src/jquery-wrapper';
+import Point from '../../src/components/view/point/point';
 
 const $: any = jQuery;
 
@@ -18,10 +18,10 @@ describe('Класс Point.', () => {
     [point] = $elem.rangeSlider.sliders[0].view.scale.points;
   });
 
-  it('Метод "clickPoint". Сообщает значение шкалы.', () => {
+  it('Метод "handlePointClick". Сообщает значение шкалы.', () => {
     const { minValue } = $elem.rangeSlider.sliders[0].currentConfig;
     const spyObservable = spyOn(point.Observable, 'notify');
-    point.clickPoint();
+    point.handlePointClick();
 
     expect(spyObservable).toHaveBeenCalledWith({
       value: minValue,

@@ -1,7 +1,7 @@
-import '../../src/jquery-wrapper';
-import Model from '../../src/components/model';
-import View from '../../src/components/view/view';
-import RangeSlider from '../../src/components/range-slider';
+import '../src/jquery-wrapper';
+import Model from '../src/components/model';
+import View from '../src/components/view/view';
+import RangeSlider from '../src/components/range-slider';
 
 const $: any = jQuery;
 let controller: any;
@@ -11,7 +11,6 @@ let view: View;
 setFixtures('<div class="js-plugin"></div>');
 const { defaultConfig } = $.fn.rangeSlider;
 const slider = new RangeSlider('.js-plugin', {}, defaultConfig);
-
 
 const tests = () => {
   beforeEach(() => {
@@ -66,7 +65,7 @@ const tests = () => {
     });
     document.dispatchEvent(event);
 
-    const spyViewMethod = spyOn(view, 'setCoords');
+    const spyViewMethod = spyOn(view, 'toPositionElements');
 
     const mouseup = new MouseEvent('mouseup');
     document.dispatchEvent(mouseup);
@@ -79,17 +78,17 @@ const tests = () => {
     controller.subscribeTextField();
     const spyMethod = spyOn(model, 'updateValue');
 
-    view.textField[0].getValue();
+    view.textField[0].handleTextFieldBlur();
 
     expect(spyMethod).toHaveBeenCalled();
   });
 
-  it('Метод "subscribePoint". Подписка на уведомления о клике по шкале. Уведомления методом "Point.clickPoint".', () => {
+  it('Метод "subscribePoint". Подписка на уведомления о клике по шкале. Уведомления методом "Point.handlePointClick".', () => {
     controller.subscribePoint();
     const spyMethod = spyOn(model, 'updateValue');
 
-    view.scale?.points[0].clickPoint();
-    view.scale?.points[12].clickPoint();
+    view.scale?.points[0].handlePointClick();
+    view.scale?.points[12].handlePointClick();
 
     expect(spyMethod).toHaveBeenCalled();
   });

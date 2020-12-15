@@ -70,7 +70,7 @@ class RangeSlider {
 
     if (isLabelOnClick) {
       view.label.forEach((elem, i) => {
-        elem.hide();
+        elem.handleButtonMouseup();
         view.button[i].DOM.addEventListener('mousedown', elem.handleButtonMousedown);
         document.addEventListener('mouseup', elem.handleButtonMouseup);
       });
@@ -102,7 +102,7 @@ class RangeSlider {
 
     if (isLabelOnClick) {
       view.label.forEach((elem, i) => {
-        elem.show();
+        elem.handleButtonMousedown();
         view.button[i].DOM.removeEventListener('mousedown', elem.handleButtonMousedown);
         document.removeEventListener('mouseup', elem.handleButtonMouseup);
       });

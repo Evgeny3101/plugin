@@ -1,11 +1,9 @@
 import { createHTML } from '../../../ts/mixins';
 
 class Label {
-  DOM!: HTMLInputElement; // wrapper for label
+  DOM!: HTMLElement; // wrapper for label
   input!: HTMLInputElement; // container for value
   coord!: number;
-  handleButtonMousedown!: EventListener;
-  handleButtonMouseup!: EventListener;
 
   constructor(
     parent: HTMLElement,
@@ -13,11 +11,6 @@ class Label {
     public positionName: string
   ) {
     this.createElements(parent);
-
-    if (isLabelOnClick) {
-      this.handleButtonMousedown = this.show.bind(this);
-      this.handleButtonMouseup = this.hide.bind(this);
-    }
   } // constructor
 
   setCoord(coord: number) {
@@ -28,17 +21,17 @@ class Label {
     this.DOM.setAttribute('style', `${this.positionName} : ${this.coord}px`);
   }
 
-  show() {
+  setValue(value: string) {
+    this.input.value = value;
+  }
+
+  handleButtonMousedown = () => {
     this.DOM.children[0].classList.remove('js-button-label_hide');
-  }
+  };
 
-  hide() {
+  handleButtonMouseup = () => {
     this.DOM.children[0].classList.add('js-button-label_hide');
-  }
-
-  setValue(value: number) {
-    this.input.value = String(value);
-  }
+  };
 
   private createElements(parent: HTMLElement) {
     this.DOM = createHTML(
@@ -49,7 +42,7 @@ class Label {
       </div>`,
       parent
     );
-    this.input = this.DOM.querySelector('input')!;
+    this.input = <HTMLInputElement>this.DOM.querySelector('input')!;
   }
 } // class
 

@@ -1,7 +1,7 @@
-import '../../src/jquery-wrapper';
-import Model from '../../src/components/model';
-import IConfig from '../../src/components/interface/IConfig';
-import RangeSlider from '../../src/components/range-slider';
+import '../src/jquery-wrapper';
+import Model from '../src/components/model';
+import IConfig from '../src/components/interface/IConfig';
+import RangeSlider from '../src/components/range-slider';
 
 const $: any = jQuery;
 let model: any;
@@ -22,7 +22,6 @@ describe('Класс Model.', () => {
   });
 
   it('Метод "putInStep". Проверяет шаг и возвращает значение. Должно вернуть [-20, 81].', () => {
-    config.step = 1;
     config.sliderValues = [-19.51, 81.49];
     expect(model.putInStep(config.sliderValues)).toEqual([-20, 81]);
   });

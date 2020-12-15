@@ -23,7 +23,6 @@ class Controller {
 
       if (!isMouseDown) {
         this.view.convertValues(value);
-        this.view.setCoords();
         this.view.toPositionElements();
       }
 
@@ -54,7 +53,6 @@ class Controller {
         }
 
         if (isMouseDown) {
-          this.view.setCoords();
           this.view.toPositionElements();
         }
 

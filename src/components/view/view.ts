@@ -1,5 +1,5 @@
 import IConfig from '../interface/IConfig';
-import IPositionVars from '../interface/IVarsPosition';
+import IVarsPosition from '../interface/IVarsPosition';
 import Range from './range/range';
 import Button from './button/button';
 import Interval from './interval/interval';
@@ -14,37 +14,37 @@ class View {
   label: Label[] = [];
   interval?: Interval;
   scale?: Scale;
-
-  pos!: IPositionVars;
+  pos!: IVarsPosition;
   step!: number;
   rangeSize!: number;
-  handleWindowResize!: EventListener;
 
   constructor(public parent: HTMLElement, public config: IConfig) {
     this.setPositionVariables();
     this.installComponents();
-    this.setElementsParameters();
+    this.setElementSizes(); // собираю размеры элементов после вставки в DOM
     this.setValues(this.config.sliderValues);
     this.convertValues(this.config.sliderValues);
-    this.setCoords();
     this.toPositionElements();
-
-    //
-    this.handleWindowResize = this.resizeSlider.bind(this);
   }
 
   setValues(sliderValues: number[]) {
     this.config.sliderValues = sliderValues;
 
+    let values: string[];
+    // значение обрабатывается пользовательской функцией из конфига
+    if (this.config.updateValues) values = this.config.updateValues(sliderValues);
+    else values = sliderValues.map((name) => name.toString());
+    if (!values) values = sliderValues.map((name) => name.toString());
+
     if (this.textField) {
       this.textField.forEach((element, i) => {
-        element.setValue(sliderValues[i]);
+        element.setValue(values[i]);
       });
     }
 
     if (this.label) {
       this.label.forEach((element, i) => {
-        element.setValue(sliderValues[i]);
+        element.setValue(values[i]);
       });
     }
   }
@@ -63,13 +63,17 @@ class View {
     }
   }
 
-  setCoords() {
+  toPositionElements() {
     const { isLabel, isInvert } = this.config;
     const buttonsCoords = this.button.map((elem) => elem.coord);
     const buttonsSizes = this.button.map((elem) => elem.DOM[this.pos.offsetSize]);
+    this.button.forEach((elem) => elem.toPosition());
 
     // sets coords for interval
-    if (this.interval) this.interval.setCoords(buttonsCoords);
+    if (this.interval) {
+      this.interval.setCoords(buttonsCoords);
+      this.interval.toPosition();
+    }
 
     // sets coords for label
     if (isLabel) {
@@ -77,21 +81,17 @@ class View {
         if (isInvert) {
           element.setCoord(buttonsCoords[i] + buttonsSizes[i]);
         } else element.setCoord(buttonsCoords[i]);
+        element.toPosition();
       });
     }
   }
 
-  toPositionElements() {
-    this.button.forEach((elem) => elem.toPosition());
-
-    if (this.interval) {
-      this.interval.toPosition();
-    }
-
-    if (this.label) {
-      this.label.forEach((elem) => elem.toPosition());
-    }
-  }
+  handleWindowResize = () => {
+    this.setElementSizes();
+    this.setValues(this.config.sliderValues);
+    this.convertValues(this.config.sliderValues);
+    this.toPositionElements();
+  };
 
   // устанавливает переменные для вертикального или горизонтального позиционирования
   private setPositionVariables() {
@@ -151,7 +151,7 @@ class View {
     // создание надписей над кнопками
     if (isLabel) {
       this.label = [];
-      this.button.forEach((element, i) => {
+      this.button.forEach((_element, i) => {
         this.label[i] = new Label(this.range.DOM, isLabelOnClick, this.pos.offset);
       });
     }
@@ -172,42 +172,21 @@ class View {
     this.parent.append(this.range.DOM);
   }
 
-  // устанавливает значения для this.rangeSize и this.step будет использоваться методом 'setValues'
-  // будет использоваться в методах setElementsParameters и handleWindowResize
-  private updateRangeSize() {
-    const { minValue, maxValue } = this.config;
-
-    const buttonSize = this.button[0].DOM[this.pos.offsetSize];
-    const rangeSize = this.range.DOM[this.pos.clientSize];
-
-    this.rangeSize = rangeSize - buttonSize;
-
-    const valueRange = Math.abs(maxValue - minValue);
-    this.step = this.rangeSize / valueRange;
-  }
-
   // задает параметры элементов
-  // необходим this.rangeSize (для метода Scale.setScale)
-  private setElementsParameters() {
-    this.updateRangeSize();
+  private setElementSizes() {
+    const { minValue, maxValue } = this.config;
+    const valueRange = Math.abs(maxValue - minValue);
+    const buttonSize = this.button[0].DOM[this.pos.offsetSize];
+    this.rangeSize = this.range.DOM[this.pos.clientSize] - buttonSize;
+    this.step = this.rangeSize / valueRange;
 
     if (this.interval) {
-      const buttonSize = this.button[0].DOM[this.pos.offsetSize];
-      this.interval.setButtonValue(buttonSize);
+      this.interval.setButtonSize(buttonSize);
     }
 
     if (this.scale) {
       this.scale.setScale(this.rangeSize);
     }
-  }
-
-  // обновляет размер диапазона и устанавливаем элементы в позицию
-  private resizeSlider() {
-    this.updateRangeSize();
-    this.setValues(this.config.sliderValues);
-    this.convertValues(this.config.sliderValues);
-    this.setCoords();
-    this.toPositionElements();
   }
 } // class View
 

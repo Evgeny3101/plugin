@@ -1,5 +1,5 @@
-import '../../src/jquery-wrapper';
-import RangeSlider from '../../src/components/range-slider';
+import '../src/jquery-wrapper';
+import RangeSlider from '../src/components/range-slider';
 
 const $: any = jQuery;
 let view: any;
