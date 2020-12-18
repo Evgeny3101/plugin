@@ -12,15 +12,12 @@ function roundToMultiple(num: number, multiple: number) {
 }
 
 // creates html from string.
-// if parent is specified inserts into it
-function createHTML(html: string, parent?: HTMLElement): HTMLElement {
+function createHTML(html: string): HTMLElement {
   // данный способ позволит редактировать элемент до вставки в документ
+  // пробовал заменить на фрагмент и template
   const wrapper = document.createElement('div');
   wrapper.innerHTML = html;
-
   const content = <HTMLElement>wrapper.firstElementChild!;
-  if (parent) parent.append(content);
-
   return content;
 }
 

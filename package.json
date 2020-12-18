@@ -3,11 +3,12 @@
   "version": "1.0.0",
   "description": "Customizable range slider.",
   "scripts": {
+    "start": "cross-env NODE_ENV=start       webpack-dev-server --mode development --open",
+    "test": "cross-env NODE_ENV=test         karma start karma.conf.js",
+    "build": "cross-env NODE_ENV=production  webpack --mode production",
     "lint": "eslint ./src/**/*.ts",
     "lint:fix": "eslint ./src/**/*.ts --fix",
-    "build": "cross-env NODE_ENV=production  webpack --mode production",
-    "start": "cross-env NODE_ENV=start       webpack-dev-server --mode development --open",
-    "test": "cross-env NODE_ENV=test         karma start karma.conf.js"
+    "deploy": "npm run build && gh-pages -d dist"
   },
   "browserslist": ">0.25%, not dead",
   "keywords": [
@@ -48,6 +49,7 @@
     "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-prettier": "^3.1.4",
     "file-loader": "^6.1.0",
+    "gh-pages": "^3.1.0",
     "html-webpack-plugin": "^4.2.1",
     "jasmine-jquery": "^2.1.1",
     "karma": "^4.1.0",

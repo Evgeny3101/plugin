@@ -7,8 +7,8 @@ class Button {
   coord!: number;
   DOM: HTMLElement;
 
-  constructor(parent: HTMLElement, public pos: IVarsPosition, public isInvert: boolean) {
-    this.DOM = createHTML('<div class="js-range-slider__button"></div>', parent);
+  constructor(public pos: IVarsPosition, public isInvert: boolean) {
+    this.DOM = createHTML('<div class="rs-range-slider__button"></div>');
   } // constructor
 
   handleButtonMousedown = (evt: MouseEvent): boolean => {

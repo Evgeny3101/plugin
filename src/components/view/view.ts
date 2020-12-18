@@ -18,7 +18,7 @@ class View {
   step!: number;
   rangeSize!: number;
 
-  constructor(public parent: HTMLElement, public config: IConfig) {
+  constructor(public mainDOM: HTMLElement, public config: IConfig) {
     this.setPositionVariables();
     this.installComponents();
     this.setElementSizes(); // собираю размеры элементов после вставки в DOM
@@ -134,31 +134,36 @@ class View {
 
     this.range = new Range();
     this.range.setClassPosition(isVertical);
+    const rangeDOM = this.range.DOM;
 
     // создание кнопок
     this.button = [];
 
     const buttonArrayLength = isRange ? 2 : 1;
     for (let i = 0; i < buttonArrayLength; i += 1) {
-      this.button[i] = new Button(this.range.DOM, this.pos, isInvert);
+      this.button[i] = new Button(this.pos, isInvert);
+      rangeDOM.appendChild(this.button[i].DOM);
     }
 
     // создание интервала между кнопок
     if (isInterval) {
-      this.interval = new Interval(this.range.DOM, this.pos, isProgress);
+      this.interval = new Interval(this.pos, isProgress);
+      rangeDOM.appendChild(this.interval.DOM);
     }
 
     // создание надписей над кнопками
     if (isLabel) {
       this.label = [];
       this.button.forEach((_element, i) => {
-        this.label[i] = new Label(this.range.DOM, isLabelOnClick, this.pos.offset);
+        this.label[i] = new Label(isLabelOnClick, this.pos.offset);
+        rangeDOM.appendChild(this.label[i].DOM);
       });
     }
 
     // создание шкалы
     if (isScale) {
-      this.scale = new Scale(this.range.DOM, this.config);
+      this.scale = new Scale(this.config);
+      rangeDOM.appendChild(this.scale.DOM);
     }
 
     // создает класс textField и ищет поле
@@ -169,7 +174,7 @@ class View {
     }
 
     // добавляет слайдер на страницу
-    this.parent.append(this.range.DOM);
+    this.mainDOM.appendChild(this.range.DOM);
   }
 
   // задает параметры элементов

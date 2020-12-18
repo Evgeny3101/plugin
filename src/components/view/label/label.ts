@@ -5,12 +5,15 @@ class Label {
   input!: HTMLInputElement; // container for value
   coord!: number;
 
-  constructor(
-    parent: HTMLElement,
-    public isLabelOnClick: boolean,
-    public positionName: string
-  ) {
-    this.createElements(parent);
+  constructor(public isLabelOnClick: boolean, public positionName: string) {
+    this.DOM = createHTML(
+      `<div class="rs-range-slider__container-label">
+        <div class="rs-button-label">
+          <input class="rs-button-label__input" readonly> </input>
+        </div>
+      </div>`
+    );
+    this.input = <HTMLInputElement>this.DOM.firstElementChild!.firstElementChild;
   } // constructor
 
   setCoord(coord: number) {
@@ -26,24 +29,12 @@ class Label {
   }
 
   handleButtonMousedown = () => {
-    this.DOM.children[0].classList.remove('js-button-label_hide');
+    this.DOM.children[0].classList.remove('rs-button-label_hide');
   };
 
   handleButtonMouseup = () => {
-    this.DOM.children[0].classList.add('js-button-label_hide');
+    this.DOM.children[0].classList.add('rs-button-label_hide');
   };
-
-  private createElements(parent: HTMLElement) {
-    this.DOM = createHTML(
-      `<div class="js-range-slider__container-label">
-        <div class="js-button-label">
-          <input class="js-button-label__input" readonly> </input>
-        </div>
-      </div>`,
-      parent
-    );
-    this.input = <HTMLInputElement>this.DOM.querySelector('input')!;
-  }
 } // class
 
 export default Label;

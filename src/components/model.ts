@@ -65,11 +65,13 @@ class Model {
 
   // Округляет значение по шагу
   private putInStep(numbersArr: number[]): number[] {
-    const { step } = this.config;
+    const { maxValue, step } = this.config;
     const roundValuesArr: number[] = [];
 
     numbersArr.forEach((number, i) => {
-      roundValuesArr[i] = roundToMultiple(number, step);
+      const roundValue = roundToMultiple(number, step);
+      const isOverLimit = number + step > maxValue;
+      roundValuesArr[i] = isOverLimit ? maxValue : roundValue;
     });
 
     return roundValuesArr;

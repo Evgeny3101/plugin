@@ -6,17 +6,11 @@ class Interval {
   DOM: HTMLElement;
   buttonsCoord!: number[];
 
-  constructor(
-    parent: HTMLElement,
-    public pos: IVarsPosition,
-    public isProgress: boolean
-  ) {
+  constructor(public pos: IVarsPosition, public isProgress: boolean) {
     this.DOM = createHTML(
-      `
-      <div class="js-range-slider__interval">
-        <div class="js-slider-interval"></div>
-      </div>`,
-      parent
+      `<div class="rs-range-slider__interval">
+        <div class="rs-slider-interval"></div>
+      </div>`
     );
   }
 

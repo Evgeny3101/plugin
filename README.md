@@ -2,7 +2,7 @@
 
 Имеет несколько типов слайдера с 1-2 бегунками и возможностью менять значения.
 
-[Примеры на сайте](https://evgeny3101.github.io/plugin/dist/index.html)
+[Примеры на сайте](https://evgeny3101.github.io/plugin/index.html)
 
 [Репозиторий](https://github.com/Evgeny3101/plugin.git)
 
@@ -100,6 +100,12 @@ npm test
 
 ```
 npm run build
+```
+
+Запуск линтера
+
+```
+npm run lint
 ```
 
 ## Архитектура

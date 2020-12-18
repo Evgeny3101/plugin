@@ -10,22 +10,19 @@ class Point {
   numberDOM?: HTMLElement;
 
   constructor(parent: HTMLElement, isNumber: boolean, isLong: boolean) {
-    this.DOM = createHTML('<div class="js-scale-point"></div>', parent);
+    this.DOM = createHTML('<div class="rs-scale-point"></div>');
 
     if (isNumber) {
-      this.numberDOM = createHTML('<div class="js-scale-point__number"></div>', this.DOM);
+      this.numberDOM = createHTML('<div class="rs-scale-point__number"></div>');
+      this.DOM.appendChild(this.numberDOM);
     }
 
     if (isLong)
-      this.lineDOM = createHTML(
-        '<div class="js-scale-point__long-line"></div>',
-        this.DOM
-      );
-    else
-      this.lineDOM = createHTML(
-        '<div class="js-scale-point__short-line"></div>',
-        this.DOM
-      );
+      this.lineDOM = createHTML('<div class="rs-scale-point__long-line"></div>');
+    else this.lineDOM = createHTML('<div class="rs-scale-point__short-line"></div>');
+    this.DOM.appendChild(this.lineDOM);
+
+    parent.appendChild(this.DOM);
   }
 
   handlePointClick = () => {

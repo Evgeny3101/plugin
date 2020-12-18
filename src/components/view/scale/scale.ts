@@ -6,8 +6,8 @@ class Scale {
   points: Point[] = [];
   DOM: HTMLElement;
 
-  constructor(parent: HTMLElement, public config: IConfig) {
-    this.DOM = createHTML('<div class="js-scale-range"></div>', parent);
+  constructor(public config: IConfig) {
+    this.DOM = createHTML('<div class="rs-scale-range"></div>');
     this.createPoints();
   } // constructor
 
@@ -24,18 +24,24 @@ class Scale {
     const rangeValues = Math.abs(minValue) + maxValue;
     const stepBetween = rangeValues / (this.points.length - 1);
 
-    let currentValue: number;
-    currentValue = isInvert ? maxValue : minValue;
+    let currentValue: number = isInvert ? maxValue : minValue;
 
     this.points.forEach((elem) => {
       const point: Point = elem;
-      point.value = roundToMultiple(currentValue, step);
+
+      if (isInvert) {
+        point.value =
+          this.points[0] === elem ? maxValue : roundToMultiple(currentValue, step);
+        currentValue -= stepBetween;
+      } else {
+        const pointLast = this.points[this.points.length - 1];
+        point.value = pointLast === elem ? maxValue : roundToMultiple(currentValue, step);
+        currentValue += stepBetween;
+      }
 
       if (point.numberDOM) {
         point.numberDOM.innerText = String(point.value);
       }
-
-      currentValue = isInvert ? currentValue - stepBetween : currentValue + stepBetween;
     });
   }
 
@@ -48,6 +54,7 @@ class Scale {
       const isLong = i % longForEach === 0;
 
       this.points[i] = new Point(this.DOM, isNumber, isLong);
+      this.DOM.appendChild(this.points[i].DOM);
     }
   }
 

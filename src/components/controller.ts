@@ -44,11 +44,11 @@ class Controller {
 
         if (isRange) {
           if (isMouseDown) {
-            elem.DOM.classList.add('js-range-slider__button_lift-up');
-            if (isLabel) label[index].DOM.classList.add('js-button-label_lift-up');
+            elem.DOM.classList.add('rs-range-slider__button_lift-up');
+            if (isLabel) label[index].DOM.classList.add('rs-button-label_lift-up');
           } else {
-            elem.DOM.classList.remove('js-range-slider__button_lift-up');
-            if (isLabel) label[index].DOM.classList.remove('js-button-label_lift-up');
+            elem.DOM.classList.remove('rs-range-slider__button_lift-up');
+            if (isLabel) label[index].DOM.classList.remove('rs-button-label_lift-up');
           }
         }
 

@@ -65,15 +65,15 @@ const sliderConfigArr = [];
 const tuningArr = document.querySelectorAll('.tuning');
 
 // slider 1
-sliderArr[0] = $('.rangeSlider1');
+sliderArr[0] = $('.js-range-slider1');
 sliderConfigArr[0] = {
-  textField: ['.text-field1', '.text-field2'],
+  textField: ['.js-text-field1', '.js-text-field2'],
   sliderType: 'range',
 
   value1Slider: -1000,
   value2Slider: 1000,
 
-  maxValue: 10000,
+  maxValue: 9949,
   minValue: -10000,
   step: 100,
 
@@ -83,15 +83,15 @@ sliderConfigArr[0] = {
   points: 21,
 
   updateValues(values) {
-    const valuesArr = values.map((name) => `${name.toLocaleString()}$`);
+    const valuesArr = values.map((name) => name.toLocaleString());
     return valuesArr;
   },
 };
 
 // slider 2
-sliderArr[1] = $('.rangeSlider2');
+sliderArr[1] = $('.js-range-slider2');
 sliderConfigArr[1] = {
-  textField: ['.text-field3', '.text-field4'],
+  textField: ['.js-text-field3', '.js-text-field4'],
   sliderValues: [-22.3, 33.2],
   step: 0.1,
 
@@ -103,10 +103,10 @@ sliderConfigArr[1] = {
 };
 
 // slider 3
-sliderArr[2] = $('.rangeSlider3');
+sliderArr[2] = $('.js-range-slider3');
 sliderConfigArr[2] = {
   value1Slider: 22,
-  textField: ['.text-field5', '.text-field6'],
+  textField: ['.js-text-field5', '.js-text-field6'],
   sliderType: 'progress',
   step: 0.001,
 
@@ -125,12 +125,12 @@ sliderArr.forEach((slider, i) => {
 });
 
 // two sliders with id '4'
-const $sliders4 = $('.rangeSlider4');
+const $sliders4 = $('.js-range-slider4');
 const tuningId4Arr = [tuningArr[3], tuningArr[4]];
 const sliders4Config = [];
 sliders4Config[0] = {
   sliderValues: [5, 25],
-  textField: ['.text-field7', '.text-field8'],
+  textField: ['.js-text-field7', '.js-text-field8'],
   sliderType: 'range',
   isScale: true,
   isLabel: true,
@@ -140,7 +140,7 @@ sliders4Config[0] = {
 sliders4Config[1] = {
   value1Slider: 25,
   value2Slider: 65,
-  textField: ['.text-field9', '.text-field10'],
+  textField: ['.js-text-field9', '.js-text-field10'],
   sliderType: 'range',
   isScale: true,
   isLabel: true,
