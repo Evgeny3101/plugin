@@ -34,6 +34,7 @@ class View {
     // значение обрабатывается пользовательской функцией из конфига
     if (this.config.updateValues) values = this.config.updateValues(sliderValues);
     else values = sliderValues.map((name) => name.toString());
+
     if (!values) values = sliderValues.map((name) => name.toString());
 
     if (this.textField) {

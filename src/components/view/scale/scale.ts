@@ -12,9 +12,9 @@ class Scale {
   } // constructor
 
   // устанавливает шкалу согласно параметрам
-  setScale(size: number) {
+  setScale(rangeSize: number) {
     this.setValue();
-    this.determineСoordScale(size);
+    this.determineСoordScale(rangeSize);
   }
 
   // устанавливает значения шкалы
@@ -28,20 +28,19 @@ class Scale {
 
     this.points.forEach((elem) => {
       const point: Point = elem;
+      let newValue: number;
 
       if (isInvert) {
-        point.value =
+        newValue =
           this.points[0] === elem ? maxValue : roundToMultiple(currentValue, step);
         currentValue -= stepBetween;
       } else {
         const pointLast = this.points[this.points.length - 1];
-        point.value = pointLast === elem ? maxValue : roundToMultiple(currentValue, step);
+        newValue = pointLast === elem ? maxValue : roundToMultiple(currentValue, step);
         currentValue += stepBetween;
       }
 
-      if (point.numberDOM) {
-        point.numberDOM.innerText = String(point.value);
-      }
+      point.setValue(newValue);
     });
   }
 
@@ -66,8 +65,8 @@ class Scale {
     let coord = isInvert ? rangeSize : 0;
 
     this.points.forEach((elem) => {
-      const point = elem;
-      point.coord = coord;
+      elem.setCoord(coord);
+
       coord = isInvert ? (coord -= step) : (coord += step);
     });
   }
