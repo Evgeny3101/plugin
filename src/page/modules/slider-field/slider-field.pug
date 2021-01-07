@@ -1,0 +1,7 @@
+mixin slider-field(options)
+  .slider-field
+    .slider-field__container
+      input.slider-field__input(class=options.textField[0])
+      input.slider-field__input(class=options.textField[1])
+      span.slider-field__value.js-result-value
+    .slider-field__plugin(class=options.classToInstall)

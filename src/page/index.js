@@ -28,8 +28,7 @@ function setOptionsTuning(tuningDOM, sliderConfig) {
   });
 }
 
-// event handling //
-
+// event handling
 function convertStringsInValue(string) {
   let value = string;
   const isString = Number.isNaN(Number(value));
@@ -60,12 +59,12 @@ function setListeners(tuningDOM, slider) {
   );
 }
 
-const sliderArr = [];
+// ==========================
+// config
 const sliderConfigArr = [];
-const tuningArr = document.querySelectorAll('.tuning');
 
 // slider 1
-sliderArr[0] = $('.js-range-slider1');
+const resultValueDOM = document.querySelectorAll('.js-result-value')[0];
 sliderConfigArr[0] = {
   textField: ['.js-text-field1', '.js-text-field2'],
   sliderType: 'range',
@@ -74,7 +73,7 @@ sliderConfigArr[0] = {
   value2Slider: 1000,
 
   maxValue: 9949,
-  minValue: -10000,
+  minValue: -9949,
   step: 100,
 
   isLabel: false,
@@ -83,13 +82,15 @@ sliderConfigArr[0] = {
   points: 21,
 
   updateValues(values) {
-    const valuesArr = values.map((name) => name.toLocaleString());
-    return valuesArr;
+    const formalizedValuesArr = values.map((name) => {
+      return `${name.toLocaleString()} ₽`;
+    });
+
+    resultValueDOM.innerText = formalizedValuesArr.join(' – ');
   },
 };
 
 // slider 2
-sliderArr[1] = $('.js-range-slider2');
 sliderConfigArr[1] = {
   textField: ['.js-text-field3', '.js-text-field4'],
   sliderValues: [-22.3, 33.2],
@@ -103,7 +104,6 @@ sliderConfigArr[1] = {
 };
 
 // slider 3
-sliderArr[2] = $('.js-range-slider3');
 sliderConfigArr[2] = {
   value1Slider: 22,
   textField: ['.js-text-field5', '.js-text-field6'],
@@ -117,13 +117,22 @@ sliderConfigArr[2] = {
   longForEach: 3,
 };
 
+// ==========================
 // init sliders with id '1-3'
+const sliderArr = [];
+const tuningArr = document.querySelectorAll('.tuning');
+
+sliderArr[0] = $('.js-range-slider1');
+sliderArr[1] = $('.js-range-slider2');
+sliderArr[2] = $('.js-range-slider3');
+
 sliderArr.forEach((slider, i) => {
   slider.rangeSlider(sliderConfigArr[i]);
   setListeners(tuningArr[i], sliderArr[i]);
   setOptionsTuning(tuningArr[i], sliderConfigArr[i]);
 });
 
+// ==========================
 // two sliders with id '4'
 const $sliders4 = $('.js-range-slider4');
 const tuningId4Arr = [tuningArr[3], tuningArr[4]];
@@ -146,7 +155,6 @@ sliders4Config[1] = {
   isLabel: true,
 };
 
-// init sliders with id '4'
 $.each($sliders4, (i, elem) => {
   $(elem).rangeSlider(sliders4Config[i]);
   setListeners(tuningId4Arr[i], elem);

@@ -30,13 +30,20 @@ class Scale {
       const point: Point = elem;
       let newValue: number;
 
+      const isFirstPoint = this.points[0] === elem;
+      const isLastPoint = this.points[this.points.length - 1] === elem;
+
       if (isInvert) {
-        newValue =
-          this.points[0] === elem ? maxValue : roundToMultiple(currentValue, step);
+        if (isFirstPoint) newValue = maxValue;
+        else if (isLastPoint) newValue = minValue;
+        else newValue = roundToMultiple(currentValue, step);
+
         currentValue -= stepBetween;
       } else {
-        const pointLast = this.points[this.points.length - 1];
-        newValue = pointLast === elem ? maxValue : roundToMultiple(currentValue, step);
+        if (isFirstPoint) newValue = minValue;
+        else if (isLastPoint) newValue = maxValue;
+        else newValue = roundToMultiple(currentValue, step);
+
         currentValue += stepBetween;
       }
 
