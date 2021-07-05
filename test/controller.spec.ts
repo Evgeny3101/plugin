@@ -95,7 +95,7 @@ const tests = () => {
 };
 
 describe('Класс Controller.', () => {
-  describe('isInvert == true.', () => {
+  describe('isInvert === true.', () => {
     beforeEach(() => {
       setFixtures(
         '<input class="text-field"></input><input class="text-field2"></input>'
@@ -113,7 +113,7 @@ describe('Класс Controller.', () => {
     tests();
   });
 
-  describe('isInvert == false.', () => {
+  describe('isInvert === false.', () => {
     beforeEach(() => {
       setFixtures(
         '<input class="text-field"></input><input class="text-field2"></input>'

@@ -18,7 +18,7 @@ class View {
   step!: number;
   rangeSize!: number;
 
-  constructor(public mainDOM: HTMLElement, public config: IConfig) {
+  constructor(public elem: HTMLElement, public config: IConfig) {
     this.setPositionVariables();
     this.installComponents();
     this.setElementSizes(); // собираю размеры элементов после вставки в DOM
@@ -105,6 +105,7 @@ class View {
         clientSize: 'clientHeight',
         offsetSize: 'offsetHeight',
         page: 'pageY',
+        offsetCoord: 'offsetY',
         offsetFrom: 'offsetTop',
       };
     } else {
@@ -114,6 +115,7 @@ class View {
         clientSize: 'clientWidth',
         offsetSize: 'offsetWidth',
         page: 'pageX',
+        offsetCoord: 'offsetX',
         offsetFrom: 'offsetLeft',
       };
     }
@@ -131,9 +133,10 @@ class View {
       isScale,
       textField,
     } = this.config;
+    const {pos} = this;
     const isInterval = isRange || isProgress;
 
-    this.range = new Range();
+    this.range = new Range(pos, isInvert);
     this.range.setClassPosition(isVertical);
     const rangeDOM = this.range.DOM;
 
@@ -142,13 +145,13 @@ class View {
 
     const buttonArrayLength = isRange ? 2 : 1;
     for (let i = 0; i < buttonArrayLength; i += 1) {
-      this.button[i] = new Button(this.pos, isInvert);
+      this.button[i] = new Button(pos, isInvert);
       rangeDOM.appendChild(this.button[i].DOM);
     }
 
     // создание интервала между кнопок
     if (isInterval) {
-      this.interval = new Interval(this.pos, isProgress);
+      this.interval = new Interval(pos, isProgress);
       rangeDOM.appendChild(this.interval.DOM);
     }
 
@@ -156,7 +159,7 @@ class View {
     if (isLabel) {
       this.label = [];
       this.button.forEach((_element, i) => {
-        this.label[i] = new Label(isLabelOnClick, this.pos.offset);
+        this.label[i] = new Label(isLabelOnClick, pos.offset);
         rangeDOM.appendChild(this.label[i].DOM);
       });
     }
@@ -175,16 +178,20 @@ class View {
     }
 
     // добавляет слайдер на страницу
-    this.mainDOM.appendChild(this.range.DOM);
+    this.elem.appendChild(rangeDOM);
   }
 
   // задает параметры элементов
   private setElementSizes() {
     const { minValue, maxValue } = this.config;
+    const { pos } = this;
     const valueRange = Math.abs(maxValue - minValue);
-    const buttonSize = this.button[0].DOM[this.pos.offsetSize];
-    this.rangeSize = this.range.DOM[this.pos.clientSize] - buttonSize;
+    const buttonSize = this.button[0].DOM[pos.offsetSize];
+    
+    this.rangeSize = this.range.DOM[pos.clientSize] - buttonSize;
     this.step = this.rangeSize / valueRange;
+
+    this.range.setOptions(buttonSize);
 
     if (this.interval) {
       this.interval.setButtonSize(buttonSize);

@@ -7,7 +7,7 @@ class RangeSlider {
   model!: Model;
   view!: View;
   controller!: Controller;
-  mainDOM!: HTMLElement;
+  elem!: HTMLElement;
   currentConfig!: IConfig;
 
   constructor(id: string | HTMLElement, config: {}, public defaultConfig: any) {
@@ -40,7 +40,7 @@ class RangeSlider {
   init() {
     this.model = new Model(this.currentConfig);
     this.currentConfig.sliderValues = this.model.config.sliderValues; // после проверки лимитов и шага в Model
-    this.view = new View(this.mainDOM, this.currentConfig);
+    this.view = new View(this.elem, this.currentConfig);
     this.controller = new Controller(this.model, this.view, this.currentConfig);
     this.setListeners();
   }
@@ -52,8 +52,13 @@ class RangeSlider {
 
     window.addEventListener('resize', view.handleWindowResize);
 
+    view.range.lineDOM.addEventListener('click', view.range.handleRangeClick);
+
     view.button.forEach((btn) => {
       btn.DOM.addEventListener('mousedown', btn.handleButtonMousedown);
+      btn.DOM.addEventListener('touchstart', btn.handleButtonTouchstart);
+      btn.DOM.addEventListener('touchmove', btn.handleButtonTouchmove);
+      btn.DOM.addEventListener('touchend', btn.handleButtonTouchend);
     });
 
     view.textField.forEach((elem) => {
@@ -72,7 +77,9 @@ class RangeSlider {
       view.label.forEach((elem, i) => {
         elem.handleButtonMouseup();
         view.button[i].DOM.addEventListener('mousedown', elem.handleButtonMousedown);
+        view.button[i].DOM.addEventListener('touchstart', elem.handleButtonMousedown);
         document.addEventListener('mouseup', elem.handleButtonMouseup);
+        document.addEventListener('touchend', elem.handleButtonMouseup);
       });
     }
   }
@@ -83,9 +90,14 @@ class RangeSlider {
       this.currentConfig.isLabel && this.currentConfig.isLabelOnClick;
 
     window.removeEventListener('resize', view.handleWindowResize);
+    
+    view.range.lineDOM.removeEventListener('click', view.range.handleRangeClick);
 
     view.button.forEach((btn) => {
       btn.DOM.removeEventListener('mousedown', btn.handleButtonMousedown);
+      btn.DOM.removeEventListener('touchstart', btn.handleButtonTouchstart);
+      btn.DOM.removeEventListener('touchmove', btn.handleButtonTouchmove);
+      btn.DOM.removeEventListener('touchend', btn.handleButtonTouchend);
     });
 
     view.textField.forEach((elem) => {
@@ -104,14 +116,16 @@ class RangeSlider {
       view.label.forEach((elem, i) => {
         elem.handleButtonMousedown();
         view.button[i].DOM.removeEventListener('mousedown', elem.handleButtonMousedown);
+        view.button[i].DOM.removeEventListener('touchstart', elem.handleButtonMousedown);
         document.removeEventListener('mouseup', elem.handleButtonMouseup);
+        document.removeEventListener('touchend', elem.handleButtonMouseup);
       });
     }
   }
 
   delete() {
     this.removeListeners();
-    this.mainDOM.innerHTML = '';
+    this.elem.innerHTML = '';
   }
 
   private findDOM(id: string | HTMLElement) {
@@ -120,7 +134,7 @@ class RangeSlider {
     else elem = id;
     if (!elem) throw new Error('Main DOM element not found.');
 
-    this.mainDOM = elem;
+    this.elem = elem;
   }
 } // class
 

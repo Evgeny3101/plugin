@@ -10,6 +10,7 @@ class Controller {
     this.subscribeToChangeValue();
 
     ///  notify View ///
+    this.subscribeRange();
     this.subscribeButtons();
     this.subscribeTextField();
     this.subscribePoint();
@@ -27,6 +28,37 @@ class Controller {
       }
 
       this.view.setValues(value);
+    });
+  }
+
+  // уведомляет метод Range.handleRangeClick
+  private subscribeRange()  {
+    this.view.range.Observable.subscribe((options: { clickPosition: number }) => {
+      const { clickPosition } = options;
+      const { isRange } = this.config;
+      const { step } = this.view;
+
+      // определяем индекс ближайшей кнопки
+      const buttonsCoords = this.view.button.map((btn) => btn.coord);
+      const coord = clickPosition;
+      let indexOfRequiredButton = 0;
+
+      if (isRange) {
+        const btn1 = buttonsCoords[0];
+        const btn2 = buttonsCoords[1];
+        const range = btn2 - btn1;
+        const btn1Diapason = range / 2 + btn1;
+
+        indexOfRequiredButton = coord > btn1Diapason ? 1 : 0;
+      }
+      
+      buttonsCoords[indexOfRequiredButton] = coord;
+
+      this.model.convertCoords({
+        buttonsCoords,
+        stepInCoord: step,
+      });
+      
     });
   }
 
@@ -83,17 +115,12 @@ class Controller {
           const { value } = options;
           const { isRange } = this.config;
 
-          let indexOfRequiredButton;
+          let indexOfRequiredButton = 0;
 
-          // начальное количество кнопок не определено
-          if (!isRange) {
-            indexOfRequiredButton = 0;
-          } else {
-            // ищем ближайшую кнопку
-            // получаем текущие координаты кнопок
+          if (isRange) {
+            // определяем индекс ближайшей кнопки
             const btn1 = this.view.button[0].coord;
             const btn2 = this.view.button[1].coord;
-
             const range = btn2 - btn1;
             const btn1Diapason = range / 2 + btn1;
 

@@ -15,7 +15,7 @@ import RangeSlider from './components/range-slider';
     delete() {
       return this.each((index: number, elem: HTMLElement) => {
         $.fn.rangeSlider.sliders.forEach((slider: RangeSlider, i: number) => {
-          if (slider.mainDOM === elem) {
+          if (slider.elem === elem) {
             slider.delete();
             delete $.fn.rangeSlider.sliders[i];
           }
@@ -27,7 +27,7 @@ import RangeSlider from './components/range-slider';
     config(options: {}) {
       return this.each((index: number, elem: HTMLElement) => {
         $.fn.rangeSlider.sliders.forEach((slider: RangeSlider) => {
-          if (slider.mainDOM === elem) {
+          if (slider.elem === elem) {
             slider.delete();
             slider.setConfig(options);
           }
@@ -39,7 +39,7 @@ import RangeSlider from './components/range-slider';
     setListeners() {
       return this.each((index: number, elem: HTMLElement) => {
         $.fn.rangeSlider.sliders.forEach((slider: RangeSlider) => {
-          if (slider.mainDOM === elem) {
+          if (slider.elem === elem) {
             slider.setListeners();
           }
           return false;
@@ -50,7 +50,7 @@ import RangeSlider from './components/range-slider';
     removeListeners() {
       return this.each((index: number, elem: HTMLElement) => {
         $.fn.rangeSlider.sliders.forEach((slider: RangeSlider) => {
-          if (slider.mainDOM === elem) {
+          if (slider.elem === elem) {
             slider.removeListeners();
           }
           return false;

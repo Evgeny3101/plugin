@@ -36,6 +36,12 @@ interface IPage {
 }
 type PageTypes = keyof IPage;
 
+interface IOffsetCoord {
+  offsetX: number;
+  offsetY: number;
+}
+type OffsetCoordTypes = keyof IOffsetCoord;
+
 interface IVarsPosition {
   readonly size: SizeTypes;
   readonly offset: OffsetTypes;
@@ -43,6 +49,7 @@ interface IVarsPosition {
   readonly offsetSize: OffsetSizeTypes;
   readonly offsetFrom: OffsetFromTypes;
   readonly page: PageTypes;
+  readonly offsetCoord: OffsetCoordTypes;
 }
 
 export default IVarsPosition;

@@ -21,7 +21,6 @@ const tests = () => {
     const event = new MouseEvent('mousemove');
     document.dispatchEvent(event);
 
-    expect('mousemove').toHaveBeenTriggeredOn(<any>document);
     expect(spyEvent).toHaveBeenTriggered();
   });
 
@@ -32,7 +31,6 @@ const tests = () => {
     const event = new MouseEvent('mouseup');
     document.dispatchEvent(event);
 
-    expect('mouseup').toHaveBeenTriggeredOn(<any>document);
     expect(spyEvent).toHaveBeenTriggered();
     expect(document.onmouseup).toBe(null);
     expect(document.onmousemove).toBe(null);
@@ -42,8 +40,41 @@ const tests = () => {
   });
 };
 
+const touchTests = () => {
+  beforeEach(() => {
+    [button] = $elem.rangeSlider.sliders[0].view.button;
+  });
+
+  it('Событие "touchmove".', () => {
+    spyOn(<any>button, 'handleButtonTouchmove');
+    const touchmove = new TouchEvent('touchmove');
+    button.handleButtonTouchmove(touchmove);
+
+    expect(button.handleButtonTouchmove).toHaveBeenCalled()
+  });
+
+  it('Событие "touchend".', () => {
+    spyOn(<any>button, 'handleButtonTouchend');
+    const touchend = new TouchEvent('touchend');
+    button.handleButtonTouchend(touchend);
+
+    expect(button.handleButtonTouchend).toHaveBeenCalled()
+  });
+
+  it('Сообщение о "isMouseDown: false".', () => {
+    const spyObservable = spyOn(button.Observable, 'notify');
+    const touchend = new TouchEvent('touchend');
+
+    button.handleButtonTouchend(touchend);
+
+    expect(spyObservable).toHaveBeenCalledWith({
+      isMouseDown: false,
+    });
+  });
+};
+
 describe('Класс Button.', () => {
-  describe('isInvert == true', () => {
+  describe('isInvert === true.', () => {
     beforeEach(() => {
       setFixtures(
         '<input class="text-field"></input><input class="text-field2"></input>'
@@ -57,9 +88,10 @@ describe('Класс Button.', () => {
     });
 
     tests();
+    touchTests();
   });
 
-  describe('isInvert == false', () => {
+  describe('isInvert === false.', () => {
     beforeEach(() => {
       setFixtures(
         '<input class="text-field"></input><input class="text-field2"></input>'
@@ -73,5 +105,6 @@ describe('Класс Button.', () => {
     });
 
     tests();
+    touchTests();
   });
 });
