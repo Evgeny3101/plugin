@@ -41,8 +41,8 @@ class Button {
 
   handleButtonTouchstart = (evt: TouchEvent) => {
     const { page } = this.pos;
-
-    this.basePosition = evt.changedTouches[0][page];
+    
+    this.basePosition = evt.targetTouches[0][page];
     this.setOptions();
 
     document.ontouchend = () => {

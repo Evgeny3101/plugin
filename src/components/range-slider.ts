@@ -23,16 +23,47 @@ class RangeSlider {
       newConfig.sliderValues[0] = value1Slider;
       delete newConfig.value1Slider;
     }
+
     if (typeof value2Slider === 'number') {
       newConfig.sliderValues[1] = value2Slider;
       delete newConfig.value2Slider;
     }
+
     if (sliderType) {
       newConfig.isSingle = sliderType === 'single';
       newConfig.isRange = sliderType === 'range';
       newConfig.isProgress = sliderType === 'progress';
     }
 
+    if( newConfig.minValue > newConfig.maxValue) {
+      const min = newConfig.minValue;
+      const max = newConfig.maxValue;
+
+      newConfig.minValue = max;
+      newConfig.maxValue = min;
+    }
+
+    if(newConfig.points < 2) newConfig.points = 2;
+
+    const { minValue, maxValue, step, points } = newConfig;
+    const interval = maxValue - minValue;
+    const isStepFall = step === 0 || interval < step;
+    const isIntegerStep = Number.isInteger(interval / step);
+    const isExcessPoints = interval / step < points - 1;
+
+    if(isStepFall) {
+      newConfig.step = interval;
+      newConfig.points = 2;
+    } else if(interval === 0) {
+      newConfig.step = 0;
+      newConfig.points = 2;
+    } else if(!isIntegerStep) {
+      newConfig.points = Math.ceil(interval / step);
+      newConfig.step = interval / (newConfig.points - 1);
+    } else if(isExcessPoints) {
+      newConfig.points = (interval / step) + 1;
+    }
+ 
     this.currentConfig = newConfig;
     this.init();
   }

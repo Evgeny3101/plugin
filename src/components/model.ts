@@ -69,17 +69,7 @@ class Model {
     const roundValuesArr: number[] = [];
 
     numbersArr.forEach((number, i) => {
-      const roundValue = roundToMultiple(number, step);
-      const isOverMaxLimit: boolean = number + step > maxValue;
-      const isOverMinLimit: boolean = number - step < minValue;
-
-      if (isOverMaxLimit) {
-        if (number > roundValue) roundValuesArr[i] = maxValue;
-        else roundValuesArr[i] = roundValue;
-      } else if (isOverMinLimit) {
-        if (number < roundValue) roundValuesArr[i] = minValue;
-        else roundValuesArr[i] = roundValue;
-      } else roundValuesArr[i] = roundValue;
+      roundValuesArr[i]  = roundToMultiple(number, step, minValue, maxValue);
     });
 
     return roundValuesArr;

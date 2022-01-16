@@ -20,35 +20,25 @@ class Scale {
   // устанавливает значения шкалы
   setValue() {
     const { minValue, maxValue, step, isInvert } = this.config;
+    const { points } = this;
 
-    const rangeValues = Math.abs(minValue) + maxValue;
-    const stepBetween = rangeValues / (this.points.length - 1);
+    if(step === 0) points.forEach((point) => point.setValue(minValue));
+    else {
+      const rangeValues: number = maxValue - minValue;
+      const stepBetween: number = rangeValues / (points.length - 1);
+      let currentValue: number = isInvert ? maxValue : minValue;
 
-    let currentValue: number = isInvert ? maxValue : minValue;
+      points.forEach((elem) => {
+        const point: Point = elem;
+        const newValue = roundToMultiple(currentValue, step, minValue, maxValue);
 
-    this.points.forEach((elem) => {
-      const point: Point = elem;
-      let newValue: number;
+        if(isInvert) {
+          currentValue -= stepBetween;
+        } else currentValue += stepBetween;
 
-      const isFirstPoint = this.points[0] === elem;
-      const isLastPoint = this.points[this.points.length - 1] === elem;
-
-      if (isInvert) {
-        if (isFirstPoint) newValue = maxValue;
-        else if (isLastPoint) newValue = minValue;
-        else newValue = roundToMultiple(currentValue, step);
-
-        currentValue -= stepBetween;
-      } else {
-        if (isFirstPoint) newValue = minValue;
-        else if (isLastPoint) newValue = maxValue;
-        else newValue = roundToMultiple(currentValue, step);
-
-        currentValue += stepBetween;
-      }
-
-      point.setValue(newValue);
-    });
+        point.setValue(newValue);
+      });
+    }
   }
 
   // создать точки шкалы

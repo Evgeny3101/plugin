@@ -43,6 +43,18 @@ const tests = () => {
 const touchTests = () => {
   beforeEach(() => {
     [button] = $elem.rangeSlider.sliders[0].view.button;
+
+  });
+
+  it('Событие "touchstart".', () => {
+
+    spyOn(<any>button, 'handleButtonTouchstart');
+    const touch = new Event('touch');
+    button.DOM.dispatchEvent(touch);
+
+    button.handleButtonTouchstart(touch);
+
+    expect(button.handleButtonTouchstart).toHaveBeenCalled();
   });
 
   it('Событие "touchmove".', () => {
@@ -50,22 +62,20 @@ const touchTests = () => {
     const touchmove = new TouchEvent('touchmove');
     button.handleButtonTouchmove(touchmove);
 
-    expect(button.handleButtonTouchmove).toHaveBeenCalled()
+    expect(button.handleButtonTouchmove).toHaveBeenCalled();
   });
 
   it('Событие "touchend".', () => {
     spyOn(<any>button, 'handleButtonTouchend');
-    const touchend = new TouchEvent('touchend');
-    button.handleButtonTouchend(touchend);
+    button.handleButtonTouchend();
 
-    expect(button.handleButtonTouchend).toHaveBeenCalled()
+    expect(button.handleButtonTouchend).toHaveBeenCalled();
   });
 
   it('Сообщение о "isMouseDown: false".', () => {
     const spyObservable = spyOn(button.Observable, 'notify');
-    const touchend = new TouchEvent('touchend');
 
-    button.handleButtonTouchend(touchend);
+    button.handleButtonTouchend();
 
     expect(spyObservable).toHaveBeenCalledWith({
       isMouseDown: false,
@@ -88,7 +98,9 @@ describe('Класс Button.', () => {
     });
 
     tests();
-    touchTests();
+    describe('Тест касаний.', () => {
+      touchTests();
+    });
   });
 
   describe('isInvert === false.', () => {
@@ -105,6 +117,9 @@ describe('Класс Button.', () => {
     });
 
     tests();
-    touchTests();
+
+    describe('Тест касаний.', () => {
+      touchTests();
+    });
   });
 });

@@ -1,7 +1,12 @@
 // rounds by number and removes unnecessary signs
-function roundToMultiple(num: number, multiple: number) {
+function roundToMultiple(num: number, multiple: number, minValue?: number, maxValue?: number) {
+  let result: number;
   // rounding
-  let result: number = Math.round(num / multiple) * multiple;
+  if(minValue) {
+    result = (Math.round((num - minValue)/ multiple) * multiple) + minValue;
+  } else result = Math.round(num/ multiple) * multiple;
+  if(maxValue) result = result > maxValue ? maxValue : result;  
+
   // decimal places calculation
   const decimalPlaces = multiple.toString().includes('.')
     ? multiple.toString().split('.').pop()!.length

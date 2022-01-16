@@ -55,11 +55,11 @@ class View {
 
     if (isRange) {
       sliderValues.forEach((num, i) => {
-        const newCoord = this.step * (num + Math.abs(minValue));
+        const newCoord = this.step * (num - minValue);
         this.button[i].setCoord(newCoord);
       });
     } else {
-      const newCoord = this.step * (sliderValues[0] + Math.abs(minValue));
+      const newCoord = this.step * (sliderValues[0] - minValue);
       this.button[0].setCoord(newCoord);
     }
   }
