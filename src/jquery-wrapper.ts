@@ -79,7 +79,7 @@ import RangeSlider from './components/range-slider';
     sliderValues: [-25, 25],
     minValue: -100,
     maxValue: 100,
-    step: 1,
+    step: 10,
     textField: [],
 
     isVertical: false,
@@ -89,7 +89,7 @@ import RangeSlider from './components/range-slider';
     isLabelOnClick: false,
 
     isScale: false,
-    points: 13,
+    pointsForEach: 1,
     numberForEach: 4,
     longForEach: 2,
   };

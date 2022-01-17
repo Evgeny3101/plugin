@@ -43,7 +43,10 @@ class Scale {
 
   // создать точки шкалы
   private createPoints() {
-    const { points, numberForEach, longForEach } = this.config;
+    const { pointsForEach, numberForEach, longForEach, maxValue, minValue, step  } = this.config;
+    const interval: number = maxValue - minValue;
+    const pointsAll = interval / step;
+    const points = Math.floor(pointsAll/ pointsForEach) + 1;
 
     for (let i = 0; i < points; i += 1) {
       const isNumber = i % numberForEach === 0;

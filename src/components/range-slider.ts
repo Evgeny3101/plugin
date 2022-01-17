@@ -43,26 +43,21 @@ class RangeSlider {
       newConfig.maxValue = min;
     }
 
-    if(newConfig.points < 2) newConfig.points = 2;
+    if(newConfig.pointsForEach < 1) newConfig.pointsForEach = 1;
 
-    const { minValue, maxValue, step, points } = newConfig;
+    const { minValue, maxValue, step } = newConfig;
     const interval = maxValue - minValue;
     const isStepFall = step === 0 || interval < step;
     const isIntegerStep = Number.isInteger(interval / step);
-    const isExcessPoints = interval / step < points - 1;
 
     if(isStepFall) {
       newConfig.step = interval;
-      newConfig.points = 2;
     } else if(interval === 0) {
       newConfig.step = 0;
-      newConfig.points = 2;
     } else if(!isIntegerStep) {
-      newConfig.points = Math.ceil(interval / step);
-      newConfig.step = interval / (newConfig.points - 1);
-    } else if(isExcessPoints) {
-      newConfig.points = (interval / step) + 1;
-    }
+      const points = Math.ceil(interval / step);
+      newConfig.step = interval / (points - 1);
+    } 
  
     this.currentConfig = newConfig;
     this.init();

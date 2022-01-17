@@ -85,7 +85,7 @@ sliderConfigArr[0] = {
   step: 25,
   isLabel: false,
   isScale: true,
-  points: 5,
+  pointsForEach: 2,
   numberForEach: 1,
   longForEach: 1,
 
@@ -103,6 +103,7 @@ sliderConfigArr[1] = {
   textField: ['.js-text-field3', '.js-text-field4'],
   sliderValues: [-22.3, 33.2],
   step: 0.1,
+  pointsForEach: 100,
   isRange: true,
   isScale: true,
   isLabel: true,
@@ -118,9 +119,9 @@ sliderConfigArr[2] = {
   step: 0.001,
   isVertical: true,
   isScale: true,
-  points: 10,
-  numberForEach: 3,
-  longForEach: 3,
+  pointsForEach: 10000,
+  numberForEach: 4,
+  longForEach: 2,
 };
 
 // ==========================

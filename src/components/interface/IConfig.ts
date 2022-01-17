@@ -15,7 +15,7 @@ interface IConfig {
   readonly isLabelOnClick: boolean;
 
   readonly isScale: boolean;
-  readonly points: number;
+  readonly pointsForEach: number;
   readonly numberForEach: number;
   readonly longForEach: number;
 
