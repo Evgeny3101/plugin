@@ -83,7 +83,7 @@ sliderConfigArr[0] = {
   maxValue: NaN,
   minValue: 100,
   step: 25,
-  isLabel: false,
+  isLabel: true,
   isScale: true,
   pointsForEach: 2,
   numberForEach: 1,

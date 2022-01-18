@@ -65,7 +65,7 @@ class View {
   }
 
   toPositionElements() {
-    const { isLabel, isInvert } = this.config;
+    const { isLabel } = this.config;
     const buttonsCoords = this.button.map((elem) => elem.coord);
     const buttonsSizes = this.button.map((elem) => elem.DOM[this.pos.offsetSize]);
     this.button.forEach((elem) => elem.toPosition());
@@ -79,9 +79,7 @@ class View {
     // sets coords for label
     if (isLabel) {
       this.label.forEach((element, i) => {
-        if (isInvert) {
-          element.setCoord(buttonsCoords[i] + buttonsSizes[i]);
-        } else element.setCoord(buttonsCoords[i]);
+        element.setCoord(buttonsCoords[i] + (buttonsSizes[i] / 2));
         element.toPosition();
       });
     }

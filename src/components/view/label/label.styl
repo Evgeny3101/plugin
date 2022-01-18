@@ -1,19 +1,27 @@
 .rs-button-label
   position        : absolute
-  margin-top      : -59px
-  margin-left     : -14px
-  transform       : rotate(45deg)
-
-  width           : 45px
-  height          : 45px
+  bottom          : 16px
+  left            : -22px
+  width           : 42px
+  height          : 42px
   z-index         : 1
-
   border          : 2px solid rgb(167, 169, 180)
-  border-radius   : 100% 100% 0 100%
+  border-radius   : 100% 
   background      : #fff
 
+  &:after
+    content: ""
+    position        : absolute
+    top             : 27px
+    right           : 10px
+    width           : 16px
+    height          : 16px
+    transform       : rotate(45deg)
+    background      : #fff
+    border-bottom   : 2px solid rgb(167, 169, 180)
+    border-right    : 2px solid rgb(167, 169, 180)
+
   &__input
-    transform       : rotate(-45deg)
     width           : 90%
     height          : 100%
     border          : none
