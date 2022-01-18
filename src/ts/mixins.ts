@@ -2,9 +2,12 @@
 function roundToMultiple(num: number, multiple: number, minValue?: number, maxValue?: number) {
   let result: number;
   // rounding
+  if(minValue === maxValue) return minValue || 0;
+
   if(minValue) {
     result = (Math.round((num - minValue)/ multiple) * multiple) + minValue;
   } else result = Math.round(num/ multiple) * multiple;
+
   if(maxValue) result = result > maxValue ? maxValue : result;  
 
   // decimal places calculation

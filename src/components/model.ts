@@ -53,13 +53,14 @@ class Model {
   // Проверяет значения по лимитам
   private checkLimit(numbersArr: number[]): number[] {
     const { minValue, maxValue } = this.config;
-
     const result: number[] = [];
+
     numbersArr.forEach((number) => {
       if (number < minValue) result.push(minValue);
       else if (number > maxValue) result.push(maxValue);
       else result.push(number);
     });
+
     return result;
   }
 

@@ -16,16 +16,25 @@ class RangeSlider {
   }
 
   setConfig(config: any) {
-    const newConfig = { ...this.defaultConfig, ...this.currentConfig, ...config };
-    const { sliderType, value1Slider, value2Slider } = newConfig;
+    const baseConfig = {...this.defaultConfig, ...this.currentConfig};
+    const newConfig = { ...this.defaultConfig, ...this.currentConfig, ...config};
+    const { sliderType, value1Slider, value2Slider, sliderValues } = config;
 
-    if (typeof value1Slider === 'number') {
-      newConfig.sliderValues[0] = value1Slider;
-      delete newConfig.value1Slider;
+    if(sliderValues) {
+      sliderValues.forEach((value: number, i: number) => {
+        const isNumber = typeof value === 'number' && !Number.isNaN(value);
+        newConfig.sliderValues[i] = isNumber ? value : baseConfig.sliderValues[i];
+      });
     }
 
-    if (typeof value2Slider === 'number') {
-      newConfig.sliderValues[1] = value2Slider;
+    if(value1Slider || value2Slider) {
+      const values = [value1Slider, value2Slider];
+      values.forEach((value: number, i: number) => {
+        const isNumber = typeof value === 'number' && !Number.isNaN(value);
+        newConfig.sliderValues[i] = isNumber ? value : baseConfig.sliderValues[i];
+      });
+
+      delete newConfig.value1Slider;
       delete newConfig.value2Slider;
     }
 
@@ -33,7 +42,29 @@ class RangeSlider {
       newConfig.isSingle = sliderType === 'single';
       newConfig.isRange = sliderType === 'range';
       newConfig.isProgress = sliderType === 'progress';
+
+      delete newConfig.sliderType;
     }
+
+    const configNames = Object.keys(config);
+    const validNames = configNames.filter(name => Object.prototype.hasOwnProperty.call(this.defaultConfig, name));
+
+    validNames.forEach(name => {
+      const checkValue = config[name];
+      const typeValue =  typeof this.defaultConfig[name];
+
+      if(typeValue === 'number') {
+        const isValid = typeof checkValue === 'number' && !Number.isNaN(checkValue) && Number.isFinite(checkValue);
+
+        newConfig[name] = isValid ? checkValue : baseConfig[name];
+      } else if(typeValue === 'boolean') {
+        const isValid = typeof checkValue === 'boolean';
+
+        newConfig[name] = isValid ? config[name] : baseConfig[name];
+      } else {
+        newConfig[name] = baseConfig[name];
+      }
+    });
 
     if( newConfig.minValue > newConfig.maxValue) {
       const min = newConfig.minValue;
@@ -65,7 +96,9 @@ class RangeSlider {
 
   init() {
     this.model = new Model(this.currentConfig);
-    this.currentConfig.sliderValues = this.model.config.sliderValues; // после проверки лимитов и шага в Model
+    // после проверки лимитов и шага в Model
+    this.currentConfig.sliderValues = this.model.config.sliderValues; 
+
     this.view = new View(this.elem, this.currentConfig);
     this.controller = new Controller(this.model, this.view, this.currentConfig);
     this.setListeners();
