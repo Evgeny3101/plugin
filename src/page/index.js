@@ -163,7 +163,8 @@ sliders4Config[1] = {
 };
 
 $.each($sliders4, (i, elem) => {
-  $(elem).rangeSlider(sliders4Config[i]);
-  setListeners(tuningId4Arr[i], elem);
+  const $elem = $(elem);
+  $elem.rangeSlider(sliders4Config[i]);
+  setListeners(tuningId4Arr[i], $elem);
   setOptionsTuning(tuningId4Arr[i], sliders4Config[i]);
 });

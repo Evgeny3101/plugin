@@ -17,7 +17,7 @@ class RangeSlider {
 
   setConfig(config: any) {
     const baseConfig = {...this.defaultConfig, ...this.currentConfig};
-    const newConfig = { ...this.defaultConfig, ...this.currentConfig, ...config};
+    const newConfig = { ...baseConfig, ...config};
     const { sliderType, value1Slider, value2Slider, sliderValues } = config;
 
     if(sliderValues) {
@@ -38,13 +38,6 @@ class RangeSlider {
       delete newConfig.value2Slider;
     }
 
-    if (sliderType) {
-      newConfig.isSingle = sliderType === 'single';
-      newConfig.isRange = sliderType === 'range';
-      newConfig.isProgress = sliderType === 'progress';
-
-      delete newConfig.sliderType;
-    }
 
     const configNames = Object.keys(config);
     const validNames = configNames.filter(name => Object.prototype.hasOwnProperty.call(this.defaultConfig, name));
@@ -61,9 +54,13 @@ class RangeSlider {
         const isValid = typeof checkValue === 'boolean';
 
         newConfig[name] = isValid ? config[name] : baseConfig[name];
-      } else {
-        newConfig[name] = baseConfig[name];
-      }
+      } else if(typeValue === 'string' && name === 'sliderType') {
+        newConfig.isSingle = sliderType === 'single';
+        newConfig.isRange = sliderType === 'range';
+        newConfig.isProgress = sliderType === 'progress';
+
+        delete newConfig.sliderType;
+      } 
     });
 
     if( newConfig.minValue > newConfig.maxValue) {
