@@ -1,4 +1,4 @@
-import { roundToMultiple, createHTML } from '../../../ts/mixins';
+import { roundToMultiple, createHTML } from '../../utils/mixins';
 import IConfig from '../../interface/IConfig';
 import Point from '../point/point';
 

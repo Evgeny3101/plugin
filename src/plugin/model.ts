@@ -1,5 +1,5 @@
-import { roundToMultiple } from '../ts/mixins';
-import Observable from '../ts/observable';
+import { roundToMultiple } from './utils/mixins';
+import Observable from './utils/observable';
 import IConfig from './interface/IConfig';
 
 class Model {

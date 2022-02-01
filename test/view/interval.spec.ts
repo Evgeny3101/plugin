@@ -1,4 +1,4 @@
-import '../../src/jquery-wrapper';
+import '../../src/plugin/jquery-wrapper';
 
 const $: any = jQuery;
 let interval: any;

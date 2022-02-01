@@ -18,7 +18,6 @@ module.exports = {
 
   output: {
     filename: '[name].js',
-    // filename: '[name].[hash].js',
     path: path.resolve(__dirname, 'dist'),
   },
 
@@ -114,12 +113,12 @@ module.exports = {
 
   plugins: [
     new CopyWebpackPlugin({
-      patterns: [{ from: './page/favicons', to: './favicons' }],
+      patterns: [{ from: './components/favicons', to: './favicons' }],
     }),
 
     new HTMLWebpackPlugin({
       filename: 'index.html',
-      template: './page/index.pug',
+      template: './components/index.pug',
       // сжимать файл HTML
       minify: {
         collapseWhitespace: isProd,
@@ -132,7 +131,6 @@ module.exports = {
     // извлекает css в отдельный файл
     new MiniCssExtractPlugin({
       filename: '[name].css',
-      // filename: '[name].[hash].css',
     }),
 
     // new webpack.ProvidePlugin({
@@ -142,11 +140,6 @@ module.exports = {
     // }),
   ],
 
-  // optimization: {
-  //   splitChunks: {
-  //     chunks: 'all',
-  //   },
-  // },
 
   devServer: {
     port: 4420,

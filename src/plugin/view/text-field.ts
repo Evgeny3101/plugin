@@ -1,4 +1,4 @@
-import Observable from '../../ts/observable';
+import Observable from '../utils/observable';
 
 class TextField {
   Observable = new Observable();

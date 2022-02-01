@@ -1,4 +1,4 @@
-import RangeSlider from './components/range-slider';
+import RangeSlider from './range-slider';
 
 ((jQuery) => {
   const $: any = jQuery;

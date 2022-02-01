@@ -1,10 +1,10 @@
 // stylus
-import './components/view/range/range.styl';
-import './components/view/button/button.styl';
-import './components/view/interval/interval.styl';
-import './components/view/label/label.styl';
-import './components/view/scale/scale.styl';
-import './components/view/point/point.styl';
+import './plugin/view/range/range.styl';
+import './plugin/view/button/button.styl';
+import './plugin/view/interval/interval.styl';
+import './plugin/view/label/label.styl';
+import './plugin/view/scale/scale.styl';
+import './plugin/view/point/point.styl';
 
 // js
-import './jquery-wrapper';
+import './plugin/jquery-wrapper';

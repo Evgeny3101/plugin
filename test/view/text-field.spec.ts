@@ -1,6 +1,6 @@
-import '../../src/jquery-wrapper';
-import RangeSlider from '../../src/components/range-slider';
-import TextField from '../../src/components/view/text-field';
+import '../../src/plugin/jquery-wrapper';
+import RangeSlider from '../../src/plugin/range-slider';
+import TextField from '../../src/plugin/view/text-field';
 
 const $: any = jQuery;
 let input: HTMLInputElement;

@@ -1,4 +1,4 @@
-import { createHTML } from '../../../ts/mixins';
+import { createHTML } from '../../utils/mixins';
 import IVarsPosition from '../../interface/IVarsPosition';
 
 class Interval {

@@ -1,7 +1,7 @@
-import '../src/jquery-wrapper';
-import Model from '../src/components/model';
-import IConfig from '../src/components/interface/IConfig';
-import RangeSlider from '../src/components/range-slider';
+import '../src/plugin/jquery-wrapper';
+import Model from '../src/plugin/model';
+import IConfig from '../src/plugin/interface/IConfig';
+import RangeSlider from '../src/plugin/range-slider';
 
 const $: any = jQuery;
 let model: any;

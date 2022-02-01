@@ -1,5 +1,5 @@
-import '../../src/jquery-wrapper';
-import Button from '../../src/components/view/button/button';
+import '../../src/plugin/jquery-wrapper';
+import Button from '../../src/plugin/view/button/button';
 
 const $: any = jQuery;
 let button: Button;
@@ -49,7 +49,7 @@ const touchTests = () => {
   it('Событие "touchstart".', () => {
 
     spyOn(<any>button, 'handleButtonTouchstart');
-    const touch = new Event('touch');
+    const touch: any = new Event('touch');
     button.DOM.dispatchEvent(touch);
 
     button.handleButtonTouchstart(touch);

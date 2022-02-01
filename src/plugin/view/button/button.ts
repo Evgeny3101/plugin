@@ -1,5 +1,5 @@
-import { createHTML } from '../../../ts/mixins';
-import Observable from '../../../ts/observable';
+import { createHTML } from '../../utils/mixins';
+import Observable from '../../utils/observable';
 import IVarsPosition from '../../interface/IVarsPosition';
  
 class Button {

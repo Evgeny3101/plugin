@@ -1,4 +1,4 @@
-import { createHTML } from '../../../ts/mixins';
+import { createHTML } from '../../utils/mixins';
 
 class Label {
   DOM!: HTMLElement; // wrapper for label

@@ -1,5 +1,5 @@
-import '../../src/jquery-wrapper';
-import Point from '../../src/components/view/point/point';
+import '../../src/plugin/jquery-wrapper';
+import Point from '../../src/plugin/view/point/point';
 
 const $: any = jQuery;
 
