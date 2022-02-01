@@ -1,73 +1,4 @@
-// set the slider settings according to the specified options
-function setOptionsTuning(tuningDOM, sliderConfig) {
-  const { defaultConfig } = $.fn.rangeSlider;
-  const names = Object.keys(defaultConfig);
-  const config = { ...defaultConfig, ...sliderConfig };
-
-  names.forEach((name) => {
-    if (name === 'sliderValues') {
-      const value1 = tuningDOM.querySelector(`input[name=${'value1Slider'}]`);
-      const value2 = tuningDOM.querySelector(`input[name=${'value2Slider'}]`);
-      if (value1) value1.value = config.sliderValues[0] || 0;
-      if (value2) value2.value = config.sliderValues[1] || 0;
-    }
-
-    const inputs = tuningDOM.querySelectorAll(`input[name=${name}]`);
-    inputs.forEach((input) => {
-      const elem = input;
-
-      if (elem.type === 'text') {
-        elem.value = config[name];
-        return;
-      }
-
-      if (elem.value === String(config[name])) {
-        elem.checked = true;
-      }
-    });
-  });
-}
-
-// event handling
-function convertStringsInValue(string) {
-  let value = string;
-  const isString = Number.isNaN(Number(value));
-
-  if (!isString) value = Number(value);
-  if (value === 'true') value = true;
-  if (value === 'false') value = false;
-
-  return value;
-}
-
-function handleButtonClick(slider, event) {
-  const { value, name } = event.target;
-  const newOption = {};
-  newOption[name] = convertStringsInValue(value);
-
-  slider.rangeSlider('config', newOption);
-}
-
-function handleButtonBlur(slider, inputsText) {
-  const newConfig = {};
-  inputsText.forEach(input => {
-    newConfig[input.name] = convertStringsInValue(input.value); 
-  });
-
-  slider.rangeSlider('config', newConfig);
-}
-
-function setListeners(tuningDOM, slider) {
-  const inputsRadio = tuningDOM.querySelectorAll('input[type="radio"]');
-  const inputsText = tuningDOM.querySelectorAll('input[type="text"]');
-
-  inputsRadio.forEach((elem) =>
-    elem.addEventListener('click', handleButtonClick.bind(tuningDOM, slider))
-  );
-  inputsText.forEach((elem) =>
-    elem.addEventListener('blur', handleButtonBlur.bind(tuningDOM, slider, inputsText))
-  );
-}
+import Tuning from './modules/tuning/tuning';
 
 // ==========================
 // config
@@ -78,10 +9,10 @@ const resultValueDOM = document.querySelectorAll('.js-result-value')[0];
 sliderConfigArr[0] = {
   textField: ['.js-text-field1', '.js-text-field2'],
   sliderType: 'range',
-  value1Slider: 50,
+  value1Slider: -60,
   value2Slider: 1000,
-  maxValue: NaN,
-  minValue: 100,
+  maxValue: 100,
+  minValue: -100,
   step: 25,
   isLabel: true,
   isScale: true,
@@ -105,7 +36,7 @@ sliderConfigArr[1] = {
   step: 0.1,
   pointsForEach: 100,
   isRange: true,
-  isScale: true,
+  isScale: false,
   isLabel: true,
   isLabelOnClick: true,
   isInvert: true,
@@ -126,23 +57,25 @@ sliderConfigArr[2] = {
 
 // ==========================
 // init sliders with id '1-3'
-const $slidersArr = [];
-const tuningArr = document.querySelectorAll('.tuning');
+const slidersArr = [
+  $('.js-range-slider1'), 
+  $('.js-range-slider2'),
+  $('.js-range-slider3')
+];
+const tuningArrDOM = document.querySelectorAll('.tuning');
 
-$slidersArr[0] = $('.js-range-slider1');
-$slidersArr[1] = $('.js-range-slider2');
-$slidersArr[2] = $('.js-range-slider3');
-
-$slidersArr.forEach((slider, i) => {
-  slider.rangeSlider(sliderConfigArr[i]);
-  setListeners(tuningArr[i], $slidersArr[i]);
-  setOptionsTuning(tuningArr[i], sliderConfigArr[i]);
+const tuningArr = [];
+slidersArr.forEach(($slider, i) => {
+  $slider.rangeSlider(sliderConfigArr[i]);
+  const slider = $.fn.rangeSlider.sliders[i];
+  tuningArr[i] = new Tuning(tuningArrDOM[i], slider);
 });
+
 
 // ==========================
 // two sliders with id '4'
 const $sliders4 = $('.js-range-slider4');
-const tuningId4Arr = [tuningArr[3], tuningArr[4]];
+const tuningArrId4DOM = [tuningArrDOM[3], tuningArrDOM[4]];
 const sliders4Config = [];
 sliders4Config[0] = {
   sliderValues: [5, 25],
@@ -162,9 +95,9 @@ sliders4Config[1] = {
   isLabel: true,
 };
 
-$.each($sliders4, (i, elem) => {
-  const $elem = $(elem);
-  $elem.rangeSlider(sliders4Config[i]);
-  setListeners(tuningId4Arr[i], $elem);
-  setOptionsTuning(tuningId4Arr[i], sliders4Config[i]);
+const tuningId4Arr = [];
+$sliders4.each((i, elem) => {
+  $(elem).rangeSlider(sliders4Config[i]);
+  const slider = $.fn.rangeSlider.sliders[i + 3];
+  tuningId4Arr[i] = new Tuning(tuningArrId4DOM[i], slider);
 });

@@ -15,36 +15,31 @@ class RangeSlider {
     this.setConfig(config);
   }
 
+  init() {
+    this.model = new Model(this.currentConfig);
+    // после проверки лимитов и шага в Model
+    this.currentConfig.sliderValues = this.model.config.sliderValues; 
+
+    this.view = new View(this.elem, this.currentConfig);
+    this.controller = new Controller(this.model, this.view, this.currentConfig);
+    this.setListeners();
+  }
+
+  delete() {
+    this.removeListeners();
+    this.elem.innerHTML = '';
+  }
+
   setConfig(config: any) {
-    const baseConfig = {...this.defaultConfig, ...this.currentConfig};
-    const newConfig = { ...baseConfig, ...config};
-    const { sliderType, value1Slider, value2Slider, sliderValues } = config;
-
-    if(sliderValues) {
-      sliderValues.forEach((value: number, i: number) => {
-        const isNumber = typeof value === 'number' && !Number.isNaN(value);
-        newConfig.sliderValues[i] = isNumber ? value : baseConfig.sliderValues[i];
-      });
-    }
-
-    if(value1Slider || value2Slider) {
-      const values = [value1Slider, value2Slider];
-      values.forEach((value: number, i: number) => {
-        const isNumber = typeof value === 'number' && !Number.isNaN(value);
-        newConfig.sliderValues[i] = isNumber ? value : baseConfig.sliderValues[i];
-      });
-
-      delete newConfig.value1Slider;
-      delete newConfig.value2Slider;
-    }
-
+    const { defaultConfig, currentConfig } = this;
+    const baseConfig = { ...defaultConfig, ...currentConfig };
+    let newConfig = { ...baseConfig, ...config };
+    newConfig = this.validValues(newConfig);
 
     const configNames = Object.keys(config);
-    const validNames = configNames.filter(name => Object.prototype.hasOwnProperty.call(this.defaultConfig, name));
-
-    validNames.forEach(name => {
+    configNames.forEach(name => {
       const checkValue = config[name];
-      const typeValue =  typeof this.defaultConfig[name];
+      const typeValue = typeof this.defaultConfig[name];
 
       if(typeValue === 'number') {
         const isValid = typeof checkValue === 'number' && !Number.isNaN(checkValue) && Number.isFinite(checkValue);
@@ -55,15 +50,15 @@ class RangeSlider {
 
         newConfig[name] = isValid ? config[name] : baseConfig[name];
       } else if(typeValue === 'string' && name === 'sliderType') {
+        const { sliderType } = config;
+
         newConfig.isSingle = sliderType === 'single';
         newConfig.isRange = sliderType === 'range';
         newConfig.isProgress = sliderType === 'progress';
-
-        delete newConfig.sliderType;
       } 
     });
 
-    if( newConfig.minValue > newConfig.maxValue) {
+    if(newConfig.minValue > newConfig.maxValue) {
       const min = newConfig.minValue;
       const max = newConfig.maxValue;
 
@@ -73,32 +68,9 @@ class RangeSlider {
 
     if(newConfig.pointsForEach < 1) newConfig.pointsForEach = 1;
 
-    const { minValue, maxValue, step } = newConfig;
-    const interval = maxValue - minValue;
-    const isStepFall = step === 0 || interval < step;
-    const isIntegerStep = Number.isInteger(interval / step);
-
-    if(isStepFall) {
-      newConfig.step = interval;
-    } else if(interval === 0) {
-      newConfig.step = 0;
-    } else if(!isIntegerStep) {
-      const points = Math.ceil(interval / step);
-      newConfig.step = interval / (points - 1);
-    } 
- 
+    this.validStep(config);
     this.currentConfig = newConfig;
     this.init();
-  }
-
-  init() {
-    this.model = new Model(this.currentConfig);
-    // после проверки лимитов и шага в Model
-    this.currentConfig.sliderValues = this.model.config.sliderValues; 
-
-    this.view = new View(this.elem, this.currentConfig);
-    this.controller = new Controller(this.model, this.view, this.currentConfig);
-    this.setListeners();
   }
 
   setListeners() {
@@ -179,9 +151,47 @@ class RangeSlider {
     }
   }
 
-  delete() {
-    this.removeListeners();
-    this.elem.innerHTML = '';
+  private validValues(config: any) {
+    const baseConfig = { ...this.defaultConfig, ...this.currentConfig };
+    const newConfig = { ...baseConfig, ...config };
+    const { value1Slider, value2Slider, sliderValues } = config;
+
+    if(sliderValues) {
+      sliderValues.forEach((value: number, i: number) => {
+        const isNumber = typeof value === 'number' && !Number.isNaN(value);
+        newConfig.sliderValues[i] = isNumber ? value : baseConfig.sliderValues[i];
+      });
+    }
+
+    if(value1Slider || value2Slider) {
+      const values = [value1Slider, value2Slider];
+      values.forEach((value: number, i: number) => {
+        const isNumber = typeof value === 'number' && !Number.isNaN(value);
+        newConfig.sliderValues[i] = isNumber ? value : baseConfig.sliderValues[i];
+      });
+
+      delete newConfig.value1Slider;
+      delete newConfig.value2Slider;
+    }
+
+    return newConfig;
+  }
+
+  private validStep(config: any) {
+    const newConfig = { ...this.defaultConfig, ...this.currentConfig, ...config };
+    const { minValue, maxValue, step } = newConfig;
+    const interval = maxValue - minValue;
+    const isStepFall = step === 0 || interval < step;
+    const isIntegerStep = Number.isInteger(interval / step);
+
+    if(isStepFall) {
+      newConfig.step = interval;
+    } else if(interval === 0) {
+      newConfig.step = 0;
+    } else if(!isIntegerStep) {
+      const points = Math.ceil(interval / step);
+      newConfig.step = interval / (points - 1);
+    }
   }
 
   private findDOM(id: string | HTMLElement) {
