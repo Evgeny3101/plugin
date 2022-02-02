@@ -1,132 +1,28 @@
-mixin tuning()
+include ../parameter/parameter
+
+mixin tuning(config=false)
+  - if (!config) config = require('./modules/tuning/tuning.json');
+
   form.tuning
 
-    .tuning__parameter
-      .tuning-parameter
-        h3.tuning-parameter__name slider type
+    .tuning__container
+      +parameter
 
-        .tuning-parameter__options-container
-          label.tuning-parameter__options
-            input(type='radio' name='sliderType' value='single' checked).tuning-parameter__input
-            |single
-          label.tuning-parameter__options
-            input(type='radio' name='sliderType' value='range').tuning-parameter__input
-            |range
-          label.tuning-parameter__options
-            input(type='radio' name='sliderType' value='progress').tuning-parameter__input
-            |progress
+    hr.tuning__line
+    - for (let i = 1; i <= 5; i += 1)
+      .tuning__container
+        +parameter(config[i])
 
-    hr
 
-    .tuning__parameter
-      .tuning-parameter
-        h3.tuning-parameter__name vertical
+    hr.tuning__line
 
-        .tuning-parameter__options-container
-          label.tuning-parameter__options
-            input(type='radio' name='isVertical' value='true' checked).tuning-parameter__input
-            |true
+    .tuning__container
+      +parameter(config[6])
 
-          label.tuning-parameter__options
-            input(type='radio' name='isVertical' value='false').tuning-parameter__input
-            |false
+    .tuning__container
+      +parameter(config[7])
 
-    .tuning__parameter
-      .tuning-parameter
-        h3.tuning-parameter__name invert
-
-        .tuning-parameter__options-container
-          label.tuning-parameter__options
-            input(type='radio' name='isInvert' value='true' checked).tuning-parameter__input
-            |true
-
-          label.tuning-parameter__options
-            input(type='radio' name='isInvert' value='false').tuning-parameter__input
-            |false
-
-    .tuning__parameter
-      .tuning-parameter
-        h3.tuning-parameter__name values
-
-        .tuning-parameter__options-container
-          input(name='value1Slider' type='text' placeholder='number' value='-50').tuning-parameter__input.field-style
-          input(name='value2Slider' type='text' placeholder='number' value='50').tuning-parameter__input.field-style
-
-    .tuning__parameter
-      .tuning-parameter
-        h3.tuning-parameter__name min max values
-
-        .tuning-parameter__options-container
-          input(name='minValue' type='text' placeholder='min' value='-100').tuning-parameter__input.field-style
-          input(name='maxValue' type='text' placeholder='max' value='100' ).tuning-parameter__input.field-style
-
-    .tuning__parameter
-      .tuning-parameter
-        h3.tuning-parameter__name step
-
-        .tuning-parameter__options-container
-          input(name='step' type='text' placeholder='number' value='1').tuning-parameter__input.field-style
-
-    hr
-
-    .tuning__parameter
-      .tuning-parameter
-        h3.tuning-parameter__name label
-
-        .tuning-parameter__options-container
-          label.tuning-parameter__options
-            input(type='radio' name='isLabel' value='true' checked).tuning-parameter__input
-            |true
-
-          label.tuning-parameter__options
-            input(type='radio' name='isLabel' value='false').tuning-parameter__input
-            |false
-
-    .tuning__parameter
-      .tuning-parameter
-        h3.tuning-parameter__name onClick
-
-        .tuning-parameter__options-container
-          label.tuning-parameter__options
-            input(type='radio' name='isLabelOnClick' value='true' checked).tuning-parameter__input
-            |true
-
-          label.tuning-parameter__options
-            input(type='radio' name='isLabelOnClick' value='false').tuning-parameter__input
-            |false
-
-    hr
-
-    .tuning__parameter
-      .tuning-parameter
-        h3.tuning-parameter__name scale
-
-        .tuning-parameter__options-container
-          label.tuning-parameter__options
-            input(type='radio' name='isScale' value='true' checked).tuning-parameter__input
-            |true
-
-          label.tuning-parameter__options
-            input(type='radio' name='isScale' value='false').tuning-parameter__input
-            |false
-
-    .tuning__parameter
-      .tuning-parameter
-        h3.tuning-parameter__name pointsForEach
-
-        .tuning-parameter__options-container
-          input(name='pointsForEach' type='text' placeholder='number' value='13').tuning-parameter__input.field-style
-
-    .tuning__parameter
-      .tuning-parameter
-        h3.tuning-parameter__name numberForEach
-
-        .tuning-parameter__options-container
-          input(name='numberForEach' type='text' placeholder='number' value='4').tuning-parameter__input.field-style
-
-    .tuning__parameter
-      .tuning-parameter
-        h3.tuning-parameter__name longForEach
-
-        .tuning-parameter__options-container
-          input(name='longForEach' type='text' placeholder='number' value='2').tuning-parameter__input.field-style
+    hr.tuning__line
+    - for (let i = 8; i <= 11; i += 1)
+      .tuning__container
+        +parameter(config[i])

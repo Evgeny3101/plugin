@@ -8,7 +8,6 @@ html
     meta(charset='utf-8')
     meta(name='viewport' content='width=device-width, initial-scale=1')
     title range plugin
-
     link(rel='apple-touch-icon', sizes='180x180', href='/favicons/apple-touch-icon.png')
     link(rel='icon' type='image/png', sizes='32x32', href='/favicons/favicon-32x32.png')
     link(rel='icon' type='image/png', sizes='194x194', href='/favicons/favicon-194x194.png')
@@ -23,44 +22,39 @@ html
     meta(name='theme-color', content='#ffffff')
     script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js')
 
+
 body.page
-  .wrapper
+  .page__wrapper
     +tuning()
     +slider-field({
       classToInstall: 'js-range-slider1',
       textField: ['js-text-field1', 'js-text-field2']
     })
 
-  .wrapper
+  .page__wrapper
     +tuning()
     +slider-field({
       classToInstall: 'js-range-slider2',
       textField: ['js-text-field3', 'js-text-field4']
     })
 
-
-  .wrapper
+  .page__wrapper
     +tuning()
     +slider-field({
       classToInstall: 'js-range-slider3',
       textField: ['js-text-field5', 'js-text-field6']
     })
 
-  .wrapper
+  .page__wrapper
     +tuning()
     +slider-field({
       classToInstall: 'js-range-slider4',
       textField: ['js-text-field7', 'js-text-field8']
     })
 
-  .wrapper
+  .page__wrapper
     +tuning()
     +slider-field({
       classToInstall: 'js-range-slider4',
       textField: ['js-text-field9', 'js-text-field10']
     })
-
-
-
-
-

@@ -1,0 +1,21 @@
+mixin parameter(config=false)
+  - if (!config) config = require('./modules/parameter/parameter.json')[0];
+  - const { title, type, values } = config;
+
+  .parameter
+    h3.parameter__name= title 
+    .parameter__container
+      - if(type === 'radio') 
+        - const { name, checked } = config;
+
+        each value in values
+          label.parameter__label
+            input(type='radio' name=name value=value checked).parameter__input-radio
+            = value
+
+      - if(type === 'text') 
+        - const { names, placeholders } = config;
+
+        - for (let i = 0; i < names.length; i += 1)
+          label.parameter__label
+            input(type='text' name=names[i] value=values[i] placeholder=placeholders[i]).parameter__input-value

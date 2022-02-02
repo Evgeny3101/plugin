@@ -1,0 +1,16 @@
+[
+  {
+    "title": "slider type",
+    "type": "radio",
+    "name": "sliderType",
+    "values": ["single", "range", "progress"],
+    "checked": 0
+  },
+  {
+    "title": "slider type",
+    "type": "radio",
+    "name": "sliderType",
+    "values": ["single", "range", "progress"],
+    "checked": 0
+  }
+]

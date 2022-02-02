@@ -1,0 +1,86 @@
+[
+  {
+    "title": "slider type",
+    "type": "radio",
+    "name": "sliderType",
+    "values": ["single", "range", "progress"],
+    "checked": 0
+  },
+  {
+    "title": "vertical",
+    "type": "radio",
+    "name": "isVertical",
+    "values": ["true", "false"],
+    "checked": 0
+  },
+  {
+    "title": "invert",
+    "type": "radio",
+    "name": "isInvert",
+    "values": ["true", "false"],
+    "checked": 0
+  },
+  {
+    "title": "values",
+    "type": "text",
+    "names": ["value1Slider", "value2Slider"],
+    "values": [-50, 50],
+    "placeholders": ["number", "number"]
+  },
+  {
+    "title": "min max values",
+    "type": "text",
+    "names": ["min", "max"],
+    "values": [-100, 100],
+    "placeholders": ["number", "number"]
+  },
+  {
+    "title": "step",
+    "type": "text",
+    "names": ["step"],
+    "values": [1],
+    "placeholders": ["number"]
+  },
+  {
+    "title": "label",
+    "type": "radio",
+    "name": "isLabel",
+    "values": ["true", "false"],
+    "checked": 0
+  },
+  {
+    "title": "onClick",
+    "type": "radio",
+    "name": "isLabelOnClick",
+    "values": ["true", "false"],
+    "checked": 0
+  },
+  {
+    "title": "scale",
+    "type": "radio",
+    "name": "isScale",
+    "values": ["true", "false"],
+    "checked": 0
+  },
+  {
+    "title": "pointsForEach",
+    "type": "text",
+    "names": ["pointsForEach"],
+    "values": [13],
+    "placeholders": ["number"]
+  },
+  {
+    "title": "numberForEach",
+    "type": "text",
+    "names": ["numberForEach"],
+    "values": [4],
+    "placeholders": ["number"]
+  },
+  {
+    "title": "longForEach",
+    "type": "text",
+    "names": ["longForEach"],
+    "values": [2],
+    "placeholders": ["number"]
+  }
+]
