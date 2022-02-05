@@ -1,0 +1,17 @@
+{
+  "textField": "",
+  "sliderType": "single",
+  "value1Slider": -25,
+  "value2Slider": 25,
+  "minValue": -100,
+  "maxValue": 100,
+  "step": 10,
+  "isVertical": "false",
+  "isInvert": "false",
+  "isLabel": "false",
+  "isLabelOnClick": "false",
+  "isScale": "false",
+  "pointsForEach": 1,
+  "numberForEach": 4,
+  "longForEach": 2
+}

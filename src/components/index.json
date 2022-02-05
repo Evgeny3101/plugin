@@ -1,0 +1,52 @@
+[
+  {
+    "textField": ".js-text-field1, .js-text-field2",
+    "sliderType": "range",
+    "value1Slider": -60,
+    "value2Slider": 1000,
+    "maxValue": 100,
+    "minValue": -100,
+    "step": 25,
+    "isLabel": "true",
+    "isScale": "true",
+    "pointsForEach": 2,
+    "numberForEach": 1,
+    "longForEach": 1
+  },
+  {
+    "textField": ".js-text-field3, .js-text-field4",
+    "sliderValues": [-22.3, 33.2],
+    "step": 0.1,
+    "pointsForEach": 100,
+    "isRange": "true",
+    "isLabel": "true",
+    "isInvert": "true"
+  },
+  {
+    "textField": ".js-text-field5, .js-text-field6",
+    "value1Slider": 22,
+    "sliderType": "progress",
+    "step": 0.001,
+    "isVertical": "true",
+    "isScale": "true",
+    "pointsForEach": 10000,
+    "numberForEach": 4,
+    "longForEach": 2
+  },
+  {
+    "textField": ".js-text-field7, .js-text-field8",
+    "sliderValues": [5, 25],
+    "sliderType": "range",
+    "isScale": "true",
+    "isLabel": "true",
+    "isLabelOnClick": "true"
+  },
+  {
+    "textField": ".js-text-field9, .js-text-field10",
+    "value1Slider": 25,
+    "value2Slider": 65,
+    "sliderType": "range",
+    "isScale": "true",
+    "isLabel": "true"
+  }
+]

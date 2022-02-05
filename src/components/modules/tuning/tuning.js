@@ -14,8 +14,8 @@ class Tuning {
   
     names.forEach((name) => {
       if (name === 'sliderValues') {
-        const inputDOM1 = tuningDOM.querySelector(`input[name=${'value1Slider'}]`);
-        const inputDOM2 = tuningDOM.querySelector(`input[name=${'value2Slider'}]`);
+        const inputDOM1 = tuningDOM.querySelector('input[name="value1Slider"]');
+        const inputDOM2 = tuningDOM.querySelector('input[name="value2Slider"]');
 
         [inputDOM1.value, inputDOM2.value ] = config.sliderValues;
         return;

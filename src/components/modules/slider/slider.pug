@@ -1,0 +1,21 @@
+mixin slider(config)
+  - const defaultConfig = require('./modules/slider/slider.json');
+  - const newConfig = { ...defaultConfig, ...config };
+
+  div.slider.js-slider(
+    data-textField=newConfig.textField
+    data-sliderType=newConfig.sliderType
+    data-isVertical=newConfig.isVertical
+    data-isInvert=newConfig.isInvert
+    data-value1Slider=newConfig.value1Slider
+    data-value2Slider=newConfig.value2Slider
+    data-minValue=newConfig.minValue
+    data-maxValue=newConfig.maxValue
+    data-step=newConfig.step
+    data-isLabel=newConfig.isLabel
+    data-isLabelOnClick=newConfig.isLabelOnClick
+    data-isScale=newConfig.isScale
+    data-pointsForEach=newConfig.pointsForEach
+    data-numberForEach=newConfig.numberForEach
+    data-longForEach=newConfig.longForEach
+  )

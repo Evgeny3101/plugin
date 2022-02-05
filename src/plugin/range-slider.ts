@@ -10,7 +10,27 @@ class RangeSlider {
   elem!: HTMLElement;
   currentConfig!: IConfig;
 
-  constructor(id: string | HTMLElement, config: {}, public defaultConfig: any) {
+  constructor(id: string | HTMLElement, config: {}, public defaultConfig?: any) {
+    if(defaultConfig === undefined) this.defaultConfig = {
+      sliderType: 'single',
+  
+      sliderValues: [-25, 25],
+      minValue: -100,
+      maxValue: 100,
+      step: 10,
+      textField: [],
+  
+      isVertical: false,
+      isInvert: false,
+  
+      isLabel: false,
+      isLabelOnClick: false,
+  
+      isScale: false,
+      pointsForEach: 1,
+      numberForEach: 4,
+      longForEach: 2,
+    };
     this.findDOM(id);
     this.setConfig(config);
   }
@@ -19,7 +39,6 @@ class RangeSlider {
     this.model = new Model(this.currentConfig);
     // после проверки лимитов и шага в Model
     this.currentConfig.sliderValues = this.model.config.sliderValues; 
-
     this.view = new View(this.elem, this.currentConfig);
     this.controller = new Controller(this.model, this.view, this.currentConfig);
     this.setListeners();
@@ -68,7 +87,7 @@ class RangeSlider {
 
     if(newConfig.pointsForEach < 1) newConfig.pointsForEach = 1;
 
-    this.validStep(config);
+    newConfig.step = this.validStep(config);
     this.currentConfig = newConfig;
     this.init();
   }
@@ -178,13 +197,16 @@ class RangeSlider {
   }
 
   private validStep(config: any) {
+    const baseConfig = { ...this.defaultConfig, ...this.currentConfig };
     const newConfig = { ...this.defaultConfig, ...this.currentConfig, ...config };
     const { minValue, maxValue, step } = newConfig;
     const interval = maxValue - minValue;
     const isStepFall = step === 0 || interval < step;
     const isIntegerStep = Number.isInteger(interval / step);
 
-    if(isStepFall) {
+    if(step < 0) {
+      newConfig.step = baseConfig.step;
+    }  else if(isStepFall) {
       newConfig.step = interval;
     } else if(interval === 0) {
       newConfig.step = 0;
@@ -192,6 +214,8 @@ class RangeSlider {
       const points = Math.ceil(interval / step);
       newConfig.step = interval / (points - 1);
     }
+
+    return newConfig.step;
   }
 
   private findDOM(id: string | HTMLElement) {

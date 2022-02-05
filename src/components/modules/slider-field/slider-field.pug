@@ -1,9 +1,14 @@
-mixin slider-field(options)
+include ../slider/slider
+
+mixin slider-field(config)
+  - const { textField } = config;
+  - const fieldArr = textField.replace(/[\s.]/g, '').split(',')
+
   .slider-field
     .slider-field__container
-      input.slider-field__input(class=options.textField[0])
-      input.slider-field__input(class=options.textField[1])
+      input.slider-field__input(class=fieldArr[0])
+      input.slider-field__input(class=fieldArr[1])
       span.slider-field__value.js-result-value
-
-    .slider-field__plugin(class=options.classToInstall)
     
+    .slider-field__plugin
+      +slider(config)
