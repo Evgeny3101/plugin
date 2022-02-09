@@ -4,15 +4,14 @@ mixin tuning(config=false)
   - if (!config) config = require('./modules/tuning/tuning.json');
 
   form.tuning
-
     .tuning__container
       +parameter
 
     hr.tuning__line
+    
     - for (let i = 1; i <= 5; i += 1)
       .tuning__container
         +parameter(config[i])
-
 
     hr.tuning__line
 

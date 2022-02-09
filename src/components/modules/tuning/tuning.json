@@ -30,7 +30,7 @@
   {
     "title": "min max values",
     "type": "text",
-    "names": ["min", "max"],
+    "names": ["minValue", "maxValue"],
     "values": [-100, 100],
     "placeholders": ["number", "number"]
   },
