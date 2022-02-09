@@ -12,7 +12,7 @@ module.exports = {
   context: path.resolve(__dirname, 'src'),
 
   entry: {
-    'range-slider': './index.js',
+    'range-slider': './plugin.js',
     page: './page.js',
   },
 
@@ -113,12 +113,12 @@ module.exports = {
 
   plugins: [
     new CopyWebpackPlugin({
-      patterns: [{ from: './components/favicons', to: './favicons' }],
+      patterns: [{ from: './assets/favicons', to: '/favicons' }],
     }),
 
     new HTMLWebpackPlugin({
       filename: 'index.html',
-      template: './components/index.pug',
+      template: './components/page/page.pug',
       // сжимать файл HTML
       minify: {
         collapseWhitespace: isProd,

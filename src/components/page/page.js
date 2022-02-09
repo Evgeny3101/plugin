@@ -1,5 +1,5 @@
-import { slidersArr } from'./modules/slider/slider';
-import Tuning from'./modules/tuning/tuning';
+import { slidersArr } from'../modules/slider/slider';
+import Tuning from'../modules/tuning/tuning';
 
 const tuningArrDOM = document.querySelectorAll('.tuning');
 const tuningArr = [];

@@ -1,7 +1,7 @@
 include ../parameter/parameter
 
 mixin tuning(config=false)
-  - if (!config) config = require('./modules/tuning/tuning.json');
+  - if (!config) config = require('../modules/tuning/tuning.json');
 
   form.tuning
     .tuning__container

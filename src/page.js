@@ -1,5 +1,5 @@
 // stylus
-import './components/index.styl';
+import './components/page/page.styl';
 
 // js
-import './components/index';
+import './components/page/page';

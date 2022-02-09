@@ -1,5 +1,5 @@
-include ./modules/tuning/tuning
-include ./modules/slider-field/slider-field
+include ../modules/tuning/tuning
+include ../modules/slider-field/slider-field
 
 
 doctype html
@@ -24,7 +24,7 @@ html
 
 
 body.page
-  - const sliderConfigsArr = require('./index.json');
+  - const sliderConfigsArr = require('./page.json');
       
   each config in sliderConfigsArr
     .page__wrapper

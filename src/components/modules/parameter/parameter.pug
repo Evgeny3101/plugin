@@ -1,5 +1,5 @@
 mixin parameter(config=false)
-  - if (!config) config = require('./modules/parameter/parameter.json')[0];
+  - if (!config) config = require('../modules/parameter/parameter.json')[0];
   - const { title, type, values } = config;
 
   .parameter
