@@ -11,17 +11,6 @@ class Model {
     this.setNewValues(sliderValues);
   } // constructor
 
-  convertCoords(options: { buttonsCoords: number[]; stepInCoord: number }) {
-    const { buttonsCoords, stepInCoord } = options;
-    const { minValue } = this.config;
-
-    const newValues: number[] = buttonsCoords.map(
-      (coord) => coord / stepInCoord + minValue
-    );
-
-    this.setNewValues(newValues);
-  }
-
   // Обновит значение слайдера по id
   updateValue(number: number, index: number) {
     const values = this.config.sliderValues;
@@ -31,7 +20,7 @@ class Model {
   }
 
   // Устанавливает новые значения
-  private setNewValues(values: number[]) {
+  setNewValues(values: number[]) {
     const { isRange } = this.config;
 
     let newValues: number[] = [];

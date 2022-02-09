@@ -64,6 +64,34 @@ class View {
     }
   }
 
+  convertCoords(buttonsCoords: number[]): number[] {
+    const { minValue } = this.config;
+    const { step } = this;
+
+    const newValues: number[] = buttonsCoords.map(
+      (buttonCoords) => buttonCoords / step + minValue
+    );
+
+    return newValues;
+  }
+
+  defineButtonIndexByCoord(coord: number): number {
+    const { isRange } = this.config;
+    const buttonsCoords = this.button.map((btn) => btn.coord);
+    let indexOfRequiredButton = 0;
+
+    if (isRange) {
+      const btn1 = buttonsCoords[0];
+      const btn2 = buttonsCoords[1];
+      const range = btn2 - btn1;
+      const btn1Diapason = range / 2 + btn1;
+
+      indexOfRequiredButton = coord > btn1Diapason ? 1 : 0;
+    }
+    
+    return indexOfRequiredButton;
+  }
+
   toPositionElements() {
     const { isLabel } = this.config;
     const buttonsCoords = this.button.map((elem) => elem.coord);

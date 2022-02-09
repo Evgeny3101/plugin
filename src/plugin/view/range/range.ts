@@ -34,10 +34,12 @@ class Range {
       clickPosition = this.DOM[offsetSize] - (e[offsetCoord] + (this.buttonSize / 2 + this.borderSize));
     } else clickPosition = e[offsetCoord] - (this.buttonSize / 2 - this.borderSize);
 
-    this.Observable.notify({
+    this.Observable.notify(
       clickPosition
-    });
+    );
   };
+
+
 }
 
 export default Range;

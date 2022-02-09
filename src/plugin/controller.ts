@@ -33,32 +33,14 @@ class Controller {
 
   // уведомляет метод Range.handleRangeClick
   private subscribeRange()  {
-    this.view.range.Observable.subscribe((options: { clickPosition: number }) => {
-      const { clickPosition } = options;
-      const { isRange } = this.config;
-      const { step } = this.view;
+    this.view.range.Observable.subscribe(( clickPosition: number ) => {
 
-      // определяем индекс ближайшей кнопки
+      const indexOfRequiredButton = this.view.defineButtonIndexByCoord(clickPosition);
       const buttonsCoords = this.view.button.map((btn) => btn.coord);
-      const coord = clickPosition;
-      let indexOfRequiredButton = 0;
+      buttonsCoords[indexOfRequiredButton] = clickPosition;
+      const newValues = this.view.convertCoords(buttonsCoords); 
 
-      if (isRange) {
-        const btn1 = buttonsCoords[0];
-        const btn2 = buttonsCoords[1];
-        const range = btn2 - btn1;
-        const btn1Diapason = range / 2 + btn1;
-
-        indexOfRequiredButton = coord > btn1Diapason ? 1 : 0;
-      }
-      
-      buttonsCoords[indexOfRequiredButton] = coord;
-
-      this.model.convertCoords({
-        buttonsCoords,
-        stepInCoord: step,
-      });
-      
+      this.model.setNewValues(newValues);
     });
   }
 
@@ -67,10 +49,8 @@ class Controller {
     this.view.button.forEach((elem, index) => {
       elem.Observable.subscribe((options: { isMouseDown: boolean }) => {
         const { isMouseDown } = options;
-        const { step, label } = this.view;
+        const { label } = this.view;
         const { isRange, isLabel } = this.config;
-
-        const buttonsCoords = this.view.button.map((btn) => btn.coord);
 
         this.isMouseDown = isMouseDown;
 
@@ -88,10 +68,10 @@ class Controller {
           this.view.toPositionElements();
         }
 
-        this.model.convertCoords({
-          buttonsCoords,
-          stepInCoord: step,
-        });
+        const buttonsCoords = this.view.button.map((btn) => btn.coord);
+        const newValues = this.view.convertCoords(buttonsCoords); 
+  
+        this.model.setNewValues(newValues);
       });
     });
   }
