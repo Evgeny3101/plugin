@@ -17,8 +17,8 @@ class Range {
 
   // устанавливает класс (CSS), отвечающий за положение диапазона
   setClassPosition(isVertical: boolean) {
-    if (isVertical) this.DOM.classList.add('rs-range-slider_vertical');
-    else this.DOM.classList.add('rs-range-slider_horizontal');
+    if (isVertical) this.DOM.classList.add('rs-range-slider_position_vertical');
+    else this.DOM.classList.add('rs-range-slider_position_horizontal');
   }
 
   setOptions(buttonSize: number) {
