@@ -29,7 +29,7 @@ import RangeSlider from './range-slider';
         $.fn.rangeSlider.sliders.forEach((slider: RangeSlider) => {
           if (slider.elem === elem) {
             slider.delete();
-            slider.setConfig(options);
+            slider.init(options);
           }
           return false;
         });

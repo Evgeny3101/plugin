@@ -72,7 +72,7 @@ class Tuning {
     const newOptions = {[name]: value};
     
     slider.delete();
-    slider.setConfig(newOptions);
+    slider.init(newOptions);
     this.setOptionsTuning(slider.currentConfig);
   };
   
