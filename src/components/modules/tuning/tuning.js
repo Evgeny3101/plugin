@@ -95,7 +95,7 @@ class Tuning {
     });
 
     slider.delete();
-    slider.setConfig(newOptions);
+    slider.init(newOptions);
     this.setOptionsTuning(slider.currentConfig);
   };
 }

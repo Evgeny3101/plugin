@@ -7,7 +7,7 @@ class Model {
   currentConfig!: IConfig;
   config!: IConfig;
 
-  constructor( config: IConfig, currentConfig: IConfig, public defaultConfig: any) {
+  constructor( config: any, currentConfig: IConfig, public defaultConfig: any) {
     this.setConfig(config, currentConfig);
 
     const { sliderValues } = this.config;
@@ -84,7 +84,7 @@ class Model {
     });
   }
 
-  private validValues(options: any, currentConfig: IConfig) {
+  private validValues(options: any, currentConfig: IConfig): object {
     const baseConfig = { ...this.defaultConfig, ...currentConfig };
     const newConfig = { ...baseConfig, ...options };
     const { value1Slider, value2Slider, sliderValues } = options;
@@ -110,7 +110,7 @@ class Model {
     return newConfig;
   }
 
-  private validStep(options: any, currentConfig: IConfig) {
+  private validStep(options: any, currentConfig: IConfig): object {
     const baseConfig = { ...this.defaultConfig, ...currentConfig };
     const newConfig = { ...baseConfig, ...options };
     const { minValue, maxValue, step } = newConfig;

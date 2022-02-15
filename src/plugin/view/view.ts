@@ -120,6 +120,82 @@ class View {
     this.toPositionElements();
   };
 
+  setListeners() {
+    const isLabelOnClick =
+      this.config.isLabel && this.config.isLabelOnClick;
+
+    window.addEventListener('resize', this.handleWindowResize);
+
+    this.range.lineDOM.addEventListener('click', this.range.handleRangeClick);
+
+    this.button.forEach((btn) => {
+      btn.DOM.addEventListener('mousedown', btn.handleButtonMousedown);
+      btn.DOM.addEventListener('touchstart', btn.handleButtonTouchstart, {passive: true});
+      btn.DOM.addEventListener('touchmove', btn.handleButtonTouchmove, {passive: true});
+      btn.DOM.addEventListener('touchend', btn.handleButtonTouchend);
+    });
+
+    this.textField.forEach((elem) => {
+      if (elem.DOM) {
+        elem.DOM.addEventListener('blur', elem.handleTextFieldBlur);
+      }
+    });
+
+    if (this.scale) {
+      this.scale.points.forEach((elem) => {
+        elem.DOM.addEventListener('click', elem.handlePointClick);
+      });
+    }
+
+    if (isLabelOnClick) {
+      this.label.forEach((elem, i) => {
+        elem.handleButtonMouseup();
+        this.button[i].DOM.addEventListener('mousedown', elem.handleButtonMousedown);
+        this.button[i].DOM.addEventListener('touchstart', elem.handleButtonMousedown, {passive: true});
+        document.addEventListener('mouseup', elem.handleButtonMouseup);
+        document.addEventListener('touchend', elem.handleButtonMouseup);
+      });
+    }
+  }
+
+  removeListeners() {
+    const isLabelOnClick =
+      this.config.isLabel && this.config.isLabelOnClick;
+
+    window.removeEventListener('resize', this.handleWindowResize);
+    
+    this.range.lineDOM.removeEventListener('click', this.range.handleRangeClick);
+
+    this.button.forEach((btn) => {
+      btn.DOM.removeEventListener('mousedown', btn.handleButtonMousedown);
+      btn.DOM.removeEventListener('touchstart', btn.handleButtonTouchstart);
+      btn.DOM.removeEventListener('touchmove', btn.handleButtonTouchmove);
+      btn.DOM.removeEventListener('touchend', btn.handleButtonTouchend);
+    });
+
+    this.textField.forEach((elem) => {
+      if (elem.DOM) {
+        elem.DOM.removeEventListener('blur', elem.handleTextFieldBlur);
+      }
+    });
+
+    if (this.scale) {
+      this.scale.points.forEach((elem) => {
+        elem.DOM.removeEventListener('click', elem.handlePointClick);
+      });
+    }
+
+    if (isLabelOnClick) {
+      this.label.forEach((elem, i) => {
+        elem.handleButtonMousedown();
+        this.button[i].DOM.removeEventListener('mousedown', elem.handleButtonMousedown);
+        this.button[i].DOM.removeEventListener('touchstart', elem.handleButtonMousedown);
+        document.removeEventListener('mouseup', elem.handleButtonMouseup);
+        document.removeEventListener('touchend', elem.handleButtonMouseup);
+      });
+    }
+  }
+
   // устанавливает переменные для вертикального или горизонтального позиционирования
   private setPositionVariables() {
     const { isVertical, isInvert } = this.config;

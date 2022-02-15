@@ -38,8 +38,6 @@ class Range {
       clickPosition
     );
   };
-
-
 }
 
 export default Range;
