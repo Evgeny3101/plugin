@@ -15,7 +15,6 @@ class TextField {
     this.DOM = elem;
   }
 
-  // получает значения из текстового поля
   handleTextFieldBlur = () => {
     let newValue;
     if (this.DOM instanceof HTMLInputElement) newValue = Number(this.DOM.value) || 0;
@@ -27,7 +26,6 @@ class TextField {
     });
   };
 
-  // устанавливает значения в текстовое поле
   setValue(value: string) {
     if (this.DOM instanceof HTMLInputElement) this.DOM.value = value;
     else this.DOM.innerText = value;

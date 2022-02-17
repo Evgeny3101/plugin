@@ -21,7 +21,7 @@ class View {
   constructor(public elem: HTMLElement, public config: IConfig) {
     this.setPositionVariables();
     this.installComponents();
-    this.setElementSizes(); // собираю размеры элементов после вставки в DOM
+    this.setElementSizes(); 
     this.setValues(this.config.sliderValues);
     this.convertValues(this.config.sliderValues);
     this.toPositionElements();
@@ -196,7 +196,6 @@ class View {
     }
   }
 
-  // устанавливает переменные для вертикального или горизонтального позиционирования
   private setPositionVariables() {
     const { isVertical, isInvert } = this.config;
 
@@ -223,7 +222,6 @@ class View {
     }
   }
 
-  // создание классов компонентов и DOM элементов
   private installComponents() {
     const {
       isRange,
@@ -283,7 +281,6 @@ class View {
     this.elem.appendChild(rangeDOM);
   }
 
-  // задает параметры элементов
   private setElementSizes() {
     const { minValue, maxValue } = this.config;
     const { pos } = this;

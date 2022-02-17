@@ -46,6 +46,6 @@ class Point {
 
     parent.appendChild(this.DOM);
   }
-} // class
+} 
 
 export default Point;

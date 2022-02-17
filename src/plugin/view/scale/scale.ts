@@ -9,16 +9,14 @@ class Scale {
   constructor(public config: IConfig) {
     this.DOM = createHTML('<div class="rs-scale-range"></div>');
     this.createPoints();
-  } // constructor
+  } 
 
-  // устанавливает шкалу согласно параметрам
   setScale(rangeSize: number) {
     this.setValue();
     this.determineСoordScale(rangeSize);
   }
 
-  // устанавливает значения шкалы
-  setValue() {
+  private setValue() {
     const { minValue, maxValue, step, isInvert } = this.config;
     const { points } = this;
 
@@ -41,7 +39,6 @@ class Scale {
     }
   }
 
-  // создать точки шкалы
   private createPoints() {
     const { pointsForEach, numberForEach, longForEach, maxValue, minValue, step  } = this.config;
     const interval: number = maxValue - minValue;

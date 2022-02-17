@@ -12,7 +12,7 @@ class Model {
 
     const { sliderValues } = this.config;
     this.setNewValues(sliderValues);
-  } // constructor
+  } 
 
   setConfig(options: any, currentConfig: IConfig) {
     const { defaultConfig } = this;
@@ -56,7 +56,6 @@ class Model {
     this.config = newConfig;
   }
 
-  // Обновит значение слайдера по id
   updateValue(number: number, index: number) {
     const values = this.config.sliderValues;
     values[index] = number;
@@ -64,7 +63,6 @@ class Model {
     this.setNewValues(values);
   }
 
-  // Устанавливает новые значения
   setNewValues(values: number[]) {
     const { isRange } = this.config;
 
@@ -132,7 +130,6 @@ class Model {
     return newConfig.step;
   }
 
-  // Проверяет значения по лимитам
   private checkLimit(numbersArr: number[]): number[] {
     const { minValue, maxValue } = this.config;
     const result: number[] = [];
@@ -146,7 +143,6 @@ class Model {
     return result;
   }
 
-  // Округляет значение по шагу
   private putInStep(numbersArr: number[]): number[] {
     const { maxValue, minValue, step } = this.config;
     const roundValuesArr: number[] = [];

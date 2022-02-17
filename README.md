@@ -54,7 +54,7 @@
   isLabelOnClick: false, // отображение по нажатию
 
   isScale: false,
-  pointsForEach: 2,   // отметка отображается на каждом "n" шаге
+  pointsForEach: 1,   // отметка отображается на каждом "n" шаге
   numberForEach: 4,   // число отображается на каждой "n" отметке
   longForEach: 2,     // длинная черточка на каждом "n" отметке
 

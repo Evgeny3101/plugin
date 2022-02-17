@@ -13,7 +13,7 @@ class Button {
 
   constructor(public pos: IVarsPosition, public isInvert: boolean) {
     this.DOM = createHTML('<div class="rs-range-slider__button"></div>');
-  } // constructor
+  } 
 
   handleButtonMousedown = (evt: MouseEvent): boolean => {
     const { page } = this.pos;
@@ -104,6 +104,6 @@ class Button {
     this.rangeShift = DOM[offsetFrom];
     this.rangeSize = this.parentDOM[clientSize] - DOM[offsetSize];
   }
-} // class
+} 
 
 export default Button;

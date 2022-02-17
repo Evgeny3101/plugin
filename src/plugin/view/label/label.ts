@@ -14,7 +14,7 @@ class Label {
       </div>`
     );
     this.input = <HTMLInputElement>this.DOM.firstElementChild!.firstElementChild;
-  } // constructor
+  } 
 
   setCoord(coord: number) {
     this.coord = coord;
@@ -35,6 +35,6 @@ class Label {
   handleButtonMouseup = () => {
     this.DOM.children[0].classList.add('rs-button-label_hide');
   };
-} // class
+} 
 
 export default Label;

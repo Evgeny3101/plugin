@@ -15,7 +15,6 @@ class Range {
     this.DOM.appendChild(this.lineDOM);
   }
 
-  // устанавливает класс (CSS), отвечающий за положение диапазона
   setClassPosition(isVertical: boolean) {
     if (isVertical) this.DOM.classList.add('rs-range-slider_position_vertical');
     else this.DOM.classList.add('rs-range-slider_position_horizontal');

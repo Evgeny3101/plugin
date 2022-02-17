@@ -6,10 +6,7 @@ class Controller {
   isMouseDown: boolean = false;
 
   constructor(public model: Model, public view: View, public config: IConfig) {
-    ///  notify Model  ///
     this.subscribeToChangeValue();
-
-    ///  notify View ///
     this.subscribeRange();
     this.subscribeButtons();
     this.subscribeTextField();
