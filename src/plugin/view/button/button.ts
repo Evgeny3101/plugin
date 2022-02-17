@@ -21,22 +21,26 @@ class Button {
     this.basePosition = evt[page];
     this.setOptions();
 
-    document.onmousemove = (event: MouseEvent) => {
-      const currentPosition: number = event[page];
-      
-      this.move(currentPosition);
-    };
-
-    document.onmouseup = () => {
-      this.Observable.notify({
-        isMouseDown: false,
-      });
-
-      document.onmousemove = null;
-      document.onmouseup = null;
-    };
+    document.addEventListener('mousemove', this.handleButtonMove);
+    document.addEventListener('mouseup', this.handleButtonMouseup);
 
     return false;
+  };
+
+  handleButtonMove = (evt: MouseEvent) => { 
+    const { page } = this.pos;
+    const currentPosition: number = evt[page];
+
+    this.move(currentPosition);
+  };
+
+  handleButtonMouseup = () => { 
+    this.Observable.notify({
+      isMouseDown: false,
+    });
+
+    document.removeEventListener('mousemove', this.handleButtonMove);
+    document.removeEventListener('mouseup', this.handleButtonMouseup);
   };
 
   handleButtonTouchstart = (evt: TouchEvent) => {
@@ -45,13 +49,7 @@ class Button {
     this.basePosition = evt.targetTouches[0][page];
     this.setOptions();
 
-    document.ontouchend = () => {
-      this.Observable.notify({
-        isMouseDown: false,
-      });
-
-      document.ontouchend = null;
-    };
+    document.addEventListener('touchend', this.handleButtonTouchend);
 
     evt.preventDefault();
   };
@@ -60,14 +58,25 @@ class Button {
     const currentPosition: number = evt.changedTouches[0][this.pos.page];
     this.move(currentPosition);
   };
-
+  
   handleButtonTouchend = () => {
     this.Observable.notify({
       isMouseDown: false,
     });
+
+    document.removeEventListener('touchend', this.handleButtonTouchend);
+
   };
 
-  move(currentPosition: number) {
+  setCoord(coord: number) {
+    this.coord = coord;
+  }
+
+  toPosition() {
+    this.DOM.setAttribute('style', `${this.pos.offset} : ${this.coord}px`);
+  }
+
+  private move(currentPosition: number) {
     const { basePosition, rangeSize, rangeShift, isInvert } = this;
     let newCoord;
     
@@ -86,14 +95,6 @@ class Button {
     this.Observable.notify({
       isMouseDown: true,
     });
-  }
-
-  setCoord(coord: number) {
-    this.coord = coord;
-  }
-
-  toPosition() {
-    this.DOM.setAttribute('style', `${this.pos.offset} : ${this.coord}px`);
   }
 
   private setOptions() {
