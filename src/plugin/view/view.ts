@@ -14,7 +14,7 @@ class View {
   label: Label[] = [];
   interval?: Interval;
   scale?: Scale;
-  pos!: IVarsPosition;
+  position!: IVarsPosition;
   step!: number;
   rangeSize!: number;
 
@@ -95,7 +95,7 @@ class View {
   toPositionElements() {
     const { isLabel } = this.config;
     const buttonsCoords = this.button.map((elem) => elem.coord);
-    const buttonsSizes = this.button.map((elem) => elem.DOM[this.pos.offsetSize]);
+    const buttonsSizes = this.button.map((elem) => elem.DOM[this.position.offsetSize]);
     this.button.forEach((elem) => elem.toPosition());
 
     // sets coords for interval
@@ -200,7 +200,7 @@ class View {
     const { isVertical, isInvert } = this.config;
 
     if (isVertical) {
-      this.pos = {
+      this.position = {
         size: 'height',
         offset: isInvert ? 'bottom' : 'top',
         clientSize: 'clientHeight',
@@ -210,7 +210,7 @@ class View {
         offsetFrom: 'offsetTop',
       };
     } else {
-      this.pos = {
+      this.position = {
         size: 'width',
         offset: isInvert ? 'right' : 'left',
         clientSize: 'clientWidth',
@@ -233,10 +233,10 @@ class View {
       isScale,
       textField,
     } = this.config;
-    const {pos} = this;
+    const { position } = this;
     const isInterval = isRange || isProgress;
 
-    this.range = new Range(pos, isInvert);
+    this.range = new Range(position, isInvert);
     this.range.setClassPosition(isVertical);
     const rangeDOM = this.range.DOM;
 
@@ -245,13 +245,13 @@ class View {
 
     const buttonArrayLength = isRange ? 2 : 1;
     for (let i = 0; i < buttonArrayLength; i += 1) {
-      this.button[i] = new Button(pos, isInvert);
+      this.button[i] = new Button(position, isInvert);
       rangeDOM.appendChild(this.button[i].DOM);
     }
 
     // создание интервала между кнопок
     if (isInterval) {
-      this.interval = new Interval(pos, isProgress);
+      this.interval = new Interval(position, isProgress);
       rangeDOM.appendChild(this.interval.DOM);
     }
 
@@ -259,7 +259,7 @@ class View {
     if (isLabel) {
       this.label = [];
       this.button.forEach((_element, i) => {
-        this.label[i] = new Label(isLabelOnClick, pos.offset);
+        this.label[i] = new Label(isLabelOnClick, position.offset);
         rangeDOM.appendChild(this.label[i].DOM);
       });
     }
@@ -283,11 +283,11 @@ class View {
 
   private setElementSizes() {
     const { minValue, maxValue } = this.config;
-    const { pos } = this;
+    const { position } = this;
     const valueRange = Math.abs(maxValue - minValue);
-    const buttonSize = this.button[0].DOM[pos.offsetSize];
+    const buttonSize = this.button[0].DOM[position.offsetSize];
     
-    this.rangeSize = this.range.DOM[pos.clientSize] - buttonSize;
+    this.rangeSize = this.range.DOM[position.clientSize] - buttonSize;
     this.step = this.rangeSize / valueRange;
 
     this.range.setOptions(buttonSize);

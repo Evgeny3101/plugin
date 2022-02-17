@@ -6,7 +6,7 @@ class Interval {
   DOM: HTMLElement;
   buttonsCoord!: number[];
 
-  constructor(public pos: IVarsPosition, public isProgress: boolean) {
+  constructor(public position: IVarsPosition, public isProgress: boolean) {
     this.DOM = createHTML(
       `<div class="rs-range-slider__interval">
         <div class="rs-slider-interval"></div>
@@ -36,8 +36,8 @@ class Interval {
 
     this.DOM.setAttribute(
       'style',
-      ` ${this.pos.offset}: ${offset}px;
-        ${this.pos.size}: ${size}px;
+      ` ${this.position.offset}: ${offset}px;
+        ${this.position.size}: ${size}px;
       `
     );
   }

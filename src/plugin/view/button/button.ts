@@ -11,12 +11,12 @@ class Button {
   rangeSize!: number;
   basePosition!: number;
 
-  constructor(public pos: IVarsPosition, public isInvert: boolean) {
+  constructor(public position: IVarsPosition, public isInvert: boolean) {
     this.DOM = createHTML('<div class="rs-range-slider__button"></div>');
   } 
 
   handleButtonMousedown = (evt: MouseEvent): boolean => {
-    const { page } = this.pos;
+    const { page } = this.position;
 
     this.basePosition = evt[page];
     this.setOptions();
@@ -28,7 +28,7 @@ class Button {
   };
 
   handleButtonMove = (evt: MouseEvent) => { 
-    const { page } = this.pos;
+    const { page } = this.position;
     const currentPosition: number = evt[page];
 
     this.move(currentPosition);
@@ -44,7 +44,7 @@ class Button {
   };
 
   handleButtonTouchstart = (evt: TouchEvent) => {
-    const { page } = this.pos;
+    const { page } = this.position;
     
     this.basePosition = evt.targetTouches[0][page];
     this.setOptions();
@@ -55,7 +55,7 @@ class Button {
   };
 
   handleButtonTouchmove = (evt: TouchEvent) => {
-    const currentPosition: number = evt.changedTouches[0][this.pos.page];
+    const currentPosition: number = evt.changedTouches[0][this.position.page];
     this.move(currentPosition);
   };
   
@@ -73,7 +73,7 @@ class Button {
   }
 
   toPosition() {
-    this.DOM.setAttribute('style', `${this.pos.offset} : ${this.coord}px`);
+    this.DOM.setAttribute('style', `${this.position.offset} : ${this.coord}px`);
   }
 
   private move(currentPosition: number) {
@@ -99,7 +99,7 @@ class Button {
 
   private setOptions() {
     const { DOM } = this;
-    const { offsetFrom, offsetSize, clientSize } = this.pos;
+    const { offsetFrom, offsetSize, clientSize } = this.position;
 
     this.parentDOM = DOM.parentElement!;
     this.rangeShift = DOM[offsetFrom];

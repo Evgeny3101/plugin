@@ -9,7 +9,7 @@ class Range {
   buttonSize!: number;
   borderSize!: number;
 
-  constructor(public pos: IVarsPosition, public isInvert: boolean) {
+  constructor(public position: IVarsPosition, public isInvert: boolean) {
     this.DOM = createHTML('<div class="rs-range-slider"></div>');
     this.lineDOM = createHTML('<div class="rs-range-slider__line"></div>');
     this.DOM.appendChild(this.lineDOM);
@@ -26,7 +26,7 @@ class Range {
   }
 
   handleRangeClick = (e: MouseEvent) => {
-    const { offsetCoord, offsetSize } = this.pos;
+    const { offsetCoord, offsetSize } = this.position;
     let clickPosition ;
     
     if(this.isInvert) {
